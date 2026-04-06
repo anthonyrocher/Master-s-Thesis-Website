@@ -3,21 +3,21 @@ project:
   output-dir: docs
 
 website:
-  site-url: https://anthonyrocher.github.io/master_thesis
+  site-url: https://anthonyrocher.github.io/Master-s-Thesis-Website
   title: "Master's Thesis"
   navbar:
     right:
       - text: "Home"
         href: index.html
+      - text: "Paper"
+        href: paper.html
+      - text: "Data"
+        href: data.html
       - text: "Workflow"
         href: workflow.html
+      - text: "Design"
+        href: design.html
   search: false
-  announcement:
-    icon: info-circle
-    dismissable: true
-    content: "**Alert** - Page under construction."
-    type: primary
-    position: below-navbar
 
 format:
   html:

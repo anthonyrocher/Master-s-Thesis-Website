@@ -67,58 +67,7 @@ data_mlit_sample <- data_mlit |>
 
 Let's clean this database!
 
-## Data cleaning
 
-More coding samples will be available soon.
-
-First, I take a look at the data. There are several things that need to be fixed:
-
--   many cells are missing, whereas there should be NA.
-
--   totaltransactionvalue should appear clearly as a numerical
-
--   neareststationdistance is a string
-
--   etc.
-
-```{r}
-data_mlit
-```
-
-```{r}
-data_mlit |>
-  distinct(prefecture)
-# We need to retreive "Prefecture" from prefecture
-```
-
-Let's first deal with the **missing values**.
-
-```{r}
-# Let's first replace empty cells (string and numerical) by NA
-data_mlit <- data_mlit |>
-  mutate_if(is.character, list(~na_if(.,"")))
-
-# Let's count how many rows contain at least one NA
-data_mlit_na <- data_mlit |>
-  filter(if_any(everything(), is.na))
-```
-
-```{r}
-# Example plot
-library(ggplot2)
-ggplot(mtcars, aes(x = wt, y = mpg)) +
-  geom_point() +
-  theme_minimal() +
-  labs(title = "Car Weight vs MPG")
-```
-
-## Analysis
-
-```{r}
-library(ggplot2)
-```
-
-Look forward for the results!
 
 ------------------------------------------------------------------------
 

@@ -1,11 +1,63 @@
 ---
 title: "Seismic Hazard Mapping In Japan: effects on land and real estate prices"
+subtitle: "Under the supervision of Florence Goffette-Nagot (CERGIC) & Sophie Buhnik (ESPI)"
 format: html
 editor: visual
 ---
 
-## About the Project
+This website shows my master’s thesis in progress and will be updated frequently. Its main objectives are to present real-time progress to my supervisors and to showcase my code, as well as beautiful maps (stay tuned!)—since I really enjoy working with spatial data.
+
+## Intuition
+
+My master's thesis investigates the social costs of being exposed to seismic risk. I decide to focus on the impacts of risk mapping on housing prices in exposed areas. The basic ideal goes as it follows:
+
+```{r}
+#| echo: false
+#| warning: false
+#| error: false
+library(ggplot2)
+library(sf)
+library(rnaturalearth)
+library(ggforce)
+
+japan <- ne_countries(scale = "medium", country = "japan", returnclass = "sf")
+japan_simple <- st_simplify(japan, dTolerance = 0.5)
+
+ovales_violets <- data.frame(
+  x0 = c(139.7, 131.0, 144.5), # Longitude
+  y0 = c(35.7, 32.8, 43.3),    # Latitude
+  a = c(1.2, 0.8, 1.5),        # Rayon horizontal
+  b = c(0.8, 0.7, 0.6),        # Rayon vertical
+  angle = c(pi/4, 0, 0)        # Rotation
+)
+
+# 2. Ajout à votre carte (en supposant que japan_simple existe déjà)
+ggplot() +
+  geom_sf(data = japan_simple, fill = "white", color = "black", size = 1) +
+  # Dessin des ovales violets
+  geom_ellipse(data = ovales_violets, 
+               aes(x0 = x0, y0 = y0, a = a, b = b, angle = angle),
+               fill = "purple", alpha = 0.6, color = NA) +
+  theme_void() +
+  coord_sf(datum = NA)
+```
 
 ## Motivation
 
-## The MLIT Dataset
+What should we care?
+
+Taking a step back, this work addresses the following questions: are people willing to leave in more risk exposed areas? Are they even aware where are the more likely threats, despite the sensitization policies? Are people's responses different when such a natural disaster occurs?
+
+Japan is likely to experience a big earthquake in the next 30 years, namely the Nankai Through. However, seismic risk more broadly threatens other places, such as The Big One megatrust eathquake, which is anticipated along Western North America.
+
+Finally, the same logic may apply to climate change.
+
+## Contribution
+
+This work relies on many papers that have studied the impact of earthquakes, and other types of natural disasters (see literature review section ???). The papers brings two contributions to the existing literature:
+
+-   It investigates the housing market, including the rental market, thanks to the use of a new data set not used in previous studies.
+
+-   It includes a panel survey and bridges a gap between objective risk impact and subjective perception.
+
+## Data

@@ -4,7 +4,7 @@
     "href": "index.html#motivation",
     "title": "Seismic Hazard Mapping In Japan: effects on land and real estate prices",
     "section": "Motivation",
-    "text": "Motivation"
+    "text": "Motivation\nWhat should we care?\nTaking a step back, this work addresses the following questions: are people willing to leave in more risk exposed areas? Are they even aware where are the more likely threats, despite the sensitization policies? Are people’s responses different when such a natural disaster occurs?\nJapan is likely to experience a big earthquake in the next 30 years, namely the Nankai Through. However, seismic risk more broadly threatens other places, such as The Big One megatrust eathquake, which is anticipated along Western North America.\nFinally, the same logic may apply to climate change."
   },
   {
     "objectID": "index.html#the-mlit-dataset",
@@ -18,7 +18,7 @@
     "href": "workflow.html",
     "title": "Workflow",
     "section": "",
-    "text": "The data used in this analysis comes from the MLIT Dataset, which contains records of real estate price transactions across Japan since 2003.\nYou can select the prefectures you want to download. I chose to download all of them and ended up with 47 datasets, corresponding to the 47 prefectures of Japan.\n\n\n\nI use Stata to combine the 47 datasets and save the big one file as data_mlit, since Stata is more convenient for handling encoding issues. Note that it might take some time.\n\ncd \"/Users/anthony/Desktop/master_thesis/data/raw/mlit\"\n\nlocal prefectures : dir \".\" files \"*.csv\"\nclear\n\nforeach prefecture of local prefectures {\n    preserve\n    import delimited \"`f'\", clear\n    tempfile temp\n    save `temp'\n    restore \n    append using `temp'\n}\n\nsave data_mlit, replace\n\n\n\n\nI go back using R here. The data take a lot of time to load.\n\n\nShow code to load packages\nlibrary(haven)\nlibrary(tidyverse)\nlibrary(kableExtra)\n\n\n\ndata_mlit_raw &lt;- read_dta(\"/Users/anthony/Desktop/master_thesis/data/raw/mlit/data_mlit.dta\")\ndata_mlit &lt;- data_mlit_raw\n\nSince loading the data requires a lot of time, I generate also a sample in case, 10% of the initial data_mlit.\n\ndata_mlit_sample &lt;- data_mlit |&gt;\n  slice_sample(prop = 0.1)\n\nLet’s clean this database!"
+    "text": "The data used in this analysis comes from the MLIT Dataset, which contains records of real estate price transactions across Japan since 2003.\nYou can select the prefectures you want to download. I chose to download all of them and ended up with 47 datasets, corresponding to the 47 prefectures of Japan.\n\n\n\nI use Stata to combine the 47 datasets and save the big one file as data_mlit, since Stata is more convenient for handling encoding issues. Note that it might take some time.\n\ncd \"/Users/anthony/Desktop/master_thesis/data/raw/mlit\"\n\nlocal prefectures : dir \".\" files \"*.csv\"\nclear\n\nforeach prefecture of local prefectures {\n    preserve\n    import delimited \"`prefecture'\", clear\n    tempfile temp\n    save `temp'\n    restore \n    append using `temp'\n}\n\nsave data_mlit, replace\n\n\n\n\nI go back using R here. The data take a lot of time to load.\n\n\nShow code to load packages\nlibrary(haven)\nlibrary(tidyverse)\nlibrary(kableExtra)\n\n\n\ndata_mlit_raw &lt;- read_dta(\"/Users/anthony/Desktop/master_thesis/data/raw/mlit/data_mlit.dta\")\ndata_mlit &lt;- data_mlit_raw\n\nSince loading the data requires a lot of time, I generate also a sample in case, 10% of the initial data_mlit.\n\ndata_mlit_sample &lt;- data_mlit |&gt;\n  slice_sample(prop = 0.1)\n\nLet’s clean this database!\n\nBack to Home"
   },
   {
     "objectID": "workflow.html#my-workflow",
@@ -32,7 +32,7 @@
     "href": "workflow.html#data-wrangling",
     "title": "Workflow",
     "section": "",
-    "text": "The data used in this analysis comes from the MLIT Dataset, which contains records of real estate price transactions across Japan since 2003.\nYou can select the prefectures you want to download. I chose to download all of them and ended up with 47 datasets, corresponding to the 47 prefectures of Japan.\n\n\n\nI use Stata to combine the 47 datasets and save the big one file as data_mlit, since Stata is more convenient for handling encoding issues. Note that it might take some time.\n\ncd \"/Users/anthony/Desktop/master_thesis/data/raw/mlit\"\n\nlocal prefectures : dir \".\" files \"*.csv\"\nclear\n\nforeach prefecture of local prefectures {\n    preserve\n    import delimited \"`f'\", clear\n    tempfile temp\n    save `temp'\n    restore \n    append using `temp'\n}\n\nsave data_mlit, replace\n\n\n\n\nI go back using R here. The data take a lot of time to load.\n\n\nShow code to load packages\nlibrary(haven)\nlibrary(tidyverse)\nlibrary(kableExtra)\n\n\n\ndata_mlit_raw &lt;- read_dta(\"/Users/anthony/Desktop/master_thesis/data/raw/mlit/data_mlit.dta\")\ndata_mlit &lt;- data_mlit_raw\n\nSince loading the data requires a lot of time, I generate also a sample in case, 10% of the initial data_mlit.\n\ndata_mlit_sample &lt;- data_mlit |&gt;\n  slice_sample(prop = 0.1)\n\nLet’s clean this database!"
+    "text": "The data used in this analysis comes from the MLIT Dataset, which contains records of real estate price transactions across Japan since 2003.\nYou can select the prefectures you want to download. I chose to download all of them and ended up with 47 datasets, corresponding to the 47 prefectures of Japan.\n\n\n\nI use Stata to combine the 47 datasets and save the big one file as data_mlit, since Stata is more convenient for handling encoding issues. Note that it might take some time.\n\ncd \"/Users/anthony/Desktop/master_thesis/data/raw/mlit\"\n\nlocal prefectures : dir \".\" files \"*.csv\"\nclear\n\nforeach prefecture of local prefectures {\n    preserve\n    import delimited \"`prefecture'\", clear\n    tempfile temp\n    save `temp'\n    restore \n    append using `temp'\n}\n\nsave data_mlit, replace\n\n\n\n\nI go back using R here. The data take a lot of time to load.\n\n\nShow code to load packages\nlibrary(haven)\nlibrary(tidyverse)\nlibrary(kableExtra)\n\n\n\ndata_mlit_raw &lt;- read_dta(\"/Users/anthony/Desktop/master_thesis/data/raw/mlit/data_mlit.dta\")\ndata_mlit &lt;- data_mlit_raw\n\nSince loading the data requires a lot of time, I generate also a sample in case, 10% of the initial data_mlit.\n\ndata_mlit_sample &lt;- data_mlit |&gt;\n  slice_sample(prop = 0.1)\n\nLet’s clean this database!\n\nBack to Home"
   },
   {
     "objectID": "workflow.html#data-cleaning",
@@ -47,5 +47,131 @@
     "title": "Workflow",
     "section": "Analysis",
     "text": "Analysis\n\nlibrary(ggplot2)\n\nLook forward for the results!\n\nBack to Home"
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Seismic Hazard Mapping In Japan: effects on land and real estate prices",
+    "section": "",
+    "text": "This website shows my master’s thesis in progress and will be updated frequently. Its main objectives are to present real-time progress to my supervisors and to showcase my code, as well as beautiful maps (stay tuned!)—since I really enjoy working with spatial data."
+  },
+  {
+    "objectID": "index.html#intuition",
+    "href": "index.html#intuition",
+    "title": "Seismic Hazard Mapping In Japan: effects on land and real estate prices",
+    "section": "Intuition",
+    "text": "Intuition\nMy master’s thesis investigates the social costs of being exposed to seismic risk. I decide to focus on the impacts of risk mapping on housing prices in exposed areas. The basic ideal goes as it follows:"
+  },
+  {
+    "objectID": "index.html#contribution",
+    "href": "index.html#contribution",
+    "title": "Seismic Hazard Mapping In Japan: effects on land and real estate prices",
+    "section": "Contribution",
+    "text": "Contribution\nThis work relies on many papers that have studied the impact of earthquakes, and other types of natural disasters (see literature review section ???). The papers brings two contributions to the existing literature:\n\nIt investigates the housing market, including the rental market, thanks to the use of a new data set not used in previous studies.\nIt includes a panel survey and bridges a gap between objective risk impact and subjective perception."
+  },
+  {
+    "objectID": "index.html#data",
+    "href": "index.html#data",
+    "title": "Seismic Hazard Mapping In Japan: effects on land and real estate prices",
+    "section": "Data",
+    "text": "Data"
+  },
+  {
+    "objectID": "data.html",
+    "href": "data.html",
+    "title": "Data",
+    "section": "",
+    "text": "Data used in this work:"
+  },
+  {
+    "objectID": "paper.html",
+    "href": "paper.html",
+    "title": "Slides",
+    "section": "",
+    "text": "Slides\nYou may find the paper slides. Frequently updated.\n\n\n\n\nPaper\nHere is the associated paper. Still at an early stage."
+  },
+  {
+    "objectID": "paper.html#presentation",
+    "href": "paper.html#presentation",
+    "title": "Paper",
+    "section": "Presentation",
+    "text": "Presentation\nYou may also find the associated slides."
+  },
+  {
+    "objectID": "slides.html#research-question-motivation",
+    "href": "slides.html#research-question-motivation",
+    "title": "Master’s Thesis Seminar",
+    "section": "Research Question & Motivation",
+    "text": "Research Question & Motivation\n\n\n\n\n\n\n\nResearch Question\n\n\nHow costly it is to be exposed to natural disasters?\n\n\n\n\nWhy does it matter?\nIntensifying disasters with climate change.\nDisasters: floods, hurricanes, wildfires, and droughts.\nIn Japan: earthquakes, tsunamis.\nThe setting: Hazard risk mapping in Japan and its consequences on real estate prices."
+  },
+  {
+    "objectID": "slides.html#literature-review",
+    "href": "slides.html#literature-review",
+    "title": "Master’s Thesis Seminar",
+    "section": "Literature review",
+    "text": "Literature review\nMany papers on natural disasters and their consequences on housing prices (Brookshire et al. (1985), Hidano, Hoshino, and Sugiura (2015), Balboni (2025) among many others).\nMy work heavily relies on Ikefuji et al. (2022).\nMy main contributions:\n\nWhat about the unaffected areas but still at risk?\nExtending the analysis to the housing market\nControling for other type of risk (not done by the authors)"
+  },
+  {
+    "objectID": "slides.html#data-1",
+    "href": "slides.html#data-1",
+    "title": "Master’s Thesis Seminar",
+    "section": "Data (1)",
+    "text": "Data (1)\n\n\n\n\n\nRisk mapping data\n\n\n\nJapan Meteorological Agency Records (JMA)\nall earthquakes records\ncoordinates / magnitude\nJapan Seismic Hazard Information Station (J-SHIS)\nrisk hazard maps\nchange over time\n\n\n\n\n\n\n\n\nReal estate data\n\n\n\nMinistry of Land, Infrastructure, Transport and Tourism (MLIT)\naccurate description of the properties (nearest station, type of use, etc.)\nLIFULL HOMES\n70GB of housing information\nincluding rentals\ntwo limitations: estimation only,, from 2015 to 2016 only\n\n\n\n\n\nPossible extension: Panel Data from Keio University."
+  },
+  {
+    "objectID": "slides.html#data-2",
+    "href": "slides.html#data-2",
+    "title": "Master’s Thesis Seminar",
+    "section": "Data (2)",
+    "text": "Data (2)"
+  },
+  {
+    "objectID": "slides.html#data-3",
+    "href": "slides.html#data-3",
+    "title": "Master’s Thesis Seminar",
+    "section": "Data (3)",
+    "text": "Data (3)"
+  },
+  {
+    "objectID": "slides.html#empirical-strategy",
+    "href": "slides.html#empirical-strategy",
+    "title": "Master’s Thesis Seminar",
+    "section": "Empirical Strategy",
+    "text": "Empirical Strategy\nWhat about the counterfactual?\n\nEvent Study\nSynthetic Control Method (SCM)\n\n\n\nThank you for your attention!"
+  },
+  {
+    "objectID": "slides.html#references",
+    "href": "slides.html#references",
+    "title": "Master’s Thesis Seminar",
+    "section": "References",
+    "text": "References\n\n\n\n\nBalboni, Clare. 2025. “In Harm’s Way? Infrastructure Investments and the Persistence of Coastal Cities.” American Economic Review 115 (1): 77–116. https://doi.org/10.1257/aer.20191943.\n\n\nBrookshire, David S., Mark A. Thayer, John Tschirhart, and William D. Schulze. 1985. “A Test of the Expected Utility Model: Evidence from Earthquake Risks.” Journal of Political Economy 93 (2): 369–89. http://www.jstor.org/stable/1832182.\n\n\nHidano, Noboru, Tadao Hoshino, and Ayako Sugiura. 2015. “The Effect of Seismic Hazard Risk Information on Property Prices: Evidence from a Spatial Regression Discontinuity Design.” Regional Science and Urban Economics 53 (July): 113–22. https://doi.org/10.1016/j.regsciurbeco.2015.05.005.\n\n\nIkefuji, Masako, Roger J. A. Laeven, Jan R. Magnus, and Yuan Yue. 2022. “Earthquake Risk Embedded in Property Prices: Evidence from Five Japanese Cities.” Journal of the American Statistical Association 117 (537): 82–93. https://doi.org/10.1080/01621459.2021.1928512."
+  },
+  {
+    "objectID": "paper.html#paper",
+    "href": "paper.html#paper",
+    "title": "Master's Thesis",
+    "section": "",
+    "text": "You may find my work in progress just below:"
+  },
+  {
+    "objectID": "paper.html#slides",
+    "href": "paper.html#slides",
+    "title": "Master's Thesis",
+    "section": "Slides",
+    "text": "Slides\nYou may also find the associated slides."
+  },
+  {
+    "objectID": "index.html#tes",
+    "href": "index.html#tes",
+    "title": "Seismic Hazard Mapping In Japan: effects on land and real estate prices",
+    "section": "TEs",
+    "text": "TEs\n\n\n\n&lt;img src=\"images/japan_map.png\" alt=\"Japan Geometry\" style=\"width:100%; display:block;\"&gt;\n\n      \n&lt;!-- Flèche 1 : Du texte \"Earthquake\" vers Kyushu (Bas Gauche) --&gt;\n&lt;path d=\"M 180 120 Q 190 250 160 380\" stroke=\"#9b26b6\" stroke-width=\"2\" fill=\"none\" marker-end=\"url(#arrow)\" /&gt;\n\n&lt;!-- Flèche 2 : Du texte \"Impact\" vers Kanto (Milieu) --&gt;\n&lt;path d=\"M 580 480 Q 500 400 450 340\" stroke=\"#9b26b6\" stroke-width=\"2\" fill=\"none\" marker-end=\"url(#arrow)\" /&gt;\n\n&lt;!-- Flèche 3 : Du texte \"Impact\" vers Hokkaido (Haut Droite) --&gt;\n&lt;path d=\"M 620 480 Q 700 300 650 120\" stroke=\"#9b26b6\" stroke-width=\"2\" fill=\"none\" marker-end=\"url(#arrow)\" /&gt;\n\n\n\nIf there is anearthquake here,\n\n\nhow does it impactthose areas?"
+  },
+  {
+    "objectID": "index.html#test",
+    "href": "index.html#test",
+    "title": "Seismic Hazard Mapping In Japan: effects on land and real estate prices",
+    "section": "Test",
+    "text": "Test\n\n\n\n\nIf there is an earthquake here,\n\nhow does it impact those areas?"
   }
 ]

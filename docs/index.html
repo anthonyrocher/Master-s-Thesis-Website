@@ -78,8 +78,20 @@ ul.task-list li input[type="checkbox"] {
 <span class="menu-text">Home</span></a>
   </li>  
   <li class="nav-item">
+    <a class="nav-link" href="./paper.html"> 
+<span class="menu-text">Paper</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./data.html"> 
+<span class="menu-text">Data</span></a>
+  </li>  
+  <li class="nav-item">
     <a class="nav-link" href="./workflow.html"> 
 <span class="menu-text">Workflow</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./design.html"> 
+<span class="menu-text">Design</span></a>
   </li>  
 </ul>
           </div> <!-- /navcollapse -->
@@ -87,9 +99,6 @@ ul.task-list li input[type="checkbox"] {
 </div>
       </div> <!-- /container-fluid -->
     </nav>
-  <div id="quarto-announcement" data-announcement-id="5572b11570aefa6fc94766cbb35c9c75" class="alert alert-primary hidden"><i class="bi bi-info-circle quarto-announcement-icon"></i><div class="quarto-announcement-content">
-<p><strong>Alert</strong> - Page under construction.</p>
-</div><i class="bi bi-x-lg quarto-announcement-action"></i></div>
 </header>
 <!-- content -->
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
@@ -100,9 +109,10 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#about-the-project" id="toc-about-the-project" class="nav-link active" data-scroll-target="#about-the-project">About the Project</a></li>
+  <li><a href="#intuition" id="toc-intuition" class="nav-link active" data-scroll-target="#intuition">Intuition</a></li>
   <li><a href="#motivation" id="toc-motivation" class="nav-link" data-scroll-target="#motivation">Motivation</a></li>
-  <li><a href="#the-mlit-dataset" id="toc-the-mlit-dataset" class="nav-link" data-scroll-target="#the-mlit-dataset">The MLIT Dataset</a></li>
+  <li><a href="#contribution" id="toc-contribution" class="nav-link" data-scroll-target="#contribution">Contribution</a></li>
+  <li><a href="#data" id="toc-data" class="nav-link" data-scroll-target="#data">Data</a></li>
   </ul>
 </nav>
     </div>
@@ -112,6 +122,7 @@ ul.task-list li input[type="checkbox"] {
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
 <h1 class="title">Seismic Hazard Mapping In Japan: effects on land and real estate prices</h1>
+<p class="subtitle lead">Under the supervision of Florence Goffette-Nagot (CERGIC) &amp; Sophie Buhnik (ESPI)</p>
 </div>
 
 
@@ -128,14 +139,37 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<section id="about-the-project" class="level2">
-<h2 class="anchored" data-anchor-id="about-the-project">About the Project</h2>
+<p>This website shows my master’s thesis in progress and will be updated frequently. Its main objectives are to present real-time progress to my supervisors and to showcase my code, as well as beautiful maps (stay tuned!)—since I really enjoy working with spatial data.</p>
+<section id="intuition" class="level2">
+<h2 class="anchored" data-anchor-id="intuition">Intuition</h2>
+<p>My master’s thesis investigates the social costs of being exposed to seismic risk. I decide to focus on the impacts of risk mapping on housing prices in exposed areas. The basic ideal goes as it follows:</p>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="index_files/figure-html/unnamed-chunk-1-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
 </section>
 <section id="motivation" class="level2">
 <h2 class="anchored" data-anchor-id="motivation">Motivation</h2>
+<p>What should we care?</p>
+<p>Taking a step back, this work addresses the following questions: are people willing to leave in more risk exposed areas? Are they even aware where are the more likely threats, despite the sensitization policies? Are people’s responses different when such a natural disaster occurs?</p>
+<p>Japan is likely to experience a big earthquake in the next 30 years, namely the Nankai Through. However, seismic risk more broadly threatens other places, such as The Big One megatrust eathquake, which is anticipated along Western North America.</p>
+<p>Finally, the same logic may apply to climate change.</p>
 </section>
-<section id="the-mlit-dataset" class="level2">
-<h2 class="anchored" data-anchor-id="the-mlit-dataset">The MLIT Dataset</h2>
+<section id="contribution" class="level2">
+<h2 class="anchored" data-anchor-id="contribution">Contribution</h2>
+<p>This work relies on many papers that have studied the impact of earthquakes, and other types of natural disasters (see literature review section ???). The papers brings two contributions to the existing literature:</p>
+<ul>
+<li><p>It investigates the housing market, including the rental market, thanks to the use of a new data set not used in previous studies.</p></li>
+<li><p>It includes a panel survey and bridges a gap between objective risk impact and subjective perception.</p></li>
+</ul>
+</section>
+<section id="data" class="level2">
+<h2 class="anchored" data-anchor-id="data">Data</h2>
 
 
 </section>
@@ -214,7 +248,7 @@ ul.task-list li input[type="checkbox"] {
     }
       var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
       var mailtoRegex = new RegExp(/^mailto:/);
-        var filterRegex = new RegExp("https:\/\/anthonyrocher\.github\.io\/master_thesis");
+        var filterRegex = new RegExp("https:\/\/anthonyrocher\.github\.io\/Master-s-Thesis-Website");
       var isInternal = (href) => {
           return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
       }

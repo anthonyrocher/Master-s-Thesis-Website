@@ -1,0 +1,57 @@
+---
+title: "Data"
+editor: visual
+---
+
+Data used in this work:
+
+```{r}
+#| echo: false
+#| warning: false
+#| error: false
+library(plotly)
+
+labels <- c(
+  "Data",
+  "Risk mapping", "Real estate",
+  "JMA", "J-SHIS", "MLIT", "LIFULL",
+  "Earthquakes", "Coordinates/Magnitude",
+  "Hazard maps", "Time evolution",
+  "Property details",
+  "Housing data", "Limitations"
+)
+
+parents <- c(
+  "",
+  "Data", "Data",
+  "Risk mapping", "Risk mapping", "Real estate", "Real estate",
+  "JMA", "JMA",
+  "J-SHIS", "J-SHIS",
+  "MLIT",
+  "LIFULL", "LIFULL"
+)
+
+# 👉 valeurs cohérentes (parents > enfants)
+values <- c(
+  20,
+  10, 10,
+  5, 5, 5, 5,
+  2, 3,
+  2, 3,
+  5,
+  3, 2
+)
+
+fig <- plot_ly(
+  labels = labels,
+  parents = parents,
+  values = values,
+  type = "sunburst",
+  branchvalues = "total",
+  maxdepth = 3
+)
+
+fig
+```
+
+
