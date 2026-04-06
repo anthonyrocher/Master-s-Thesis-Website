@@ -1,0 +1,11 @@
+---
+title: "Seismic Hazard Mapping In Japan: effects on land and real estate prices"
+format: html
+editor: visual
+---
+
+## About the Project
+
+## Motivation
+
+## The MLIT Dataset

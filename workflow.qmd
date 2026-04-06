@@ -1,0 +1,125 @@
+---
+title: "Workflow"
+---
+
+## Data wrangling
+
+### The MLIT Dataset
+
+The data used in this analysis comes from the [MLIT Dataset](https://www.reinfolib.mlit.go.jp/realEstatePrices/), which contains records of real estate price transactions across Japan since 2003.
+
+You can select the prefectures you want to download. I chose to download all of them and ended up with 47 datasets, corresponding to the 47 prefectures of Japan.
+
+### Wrangling the data
+
+I use Stata to combine the 47 datasets and save the big one file as `data_mlit`, since Stata is more convenient for handling encoding issues. Note that it might take some time.
+
+```{stata}
+#| eval: false
+cd "/Users/anthony/Desktop/master_thesis/data/raw/mlit"
+
+local prefectures : dir "." files "*.csv"
+clear
+
+foreach prefecture of local prefectures {
+	preserve
+	import delimited "`prefecture'", clear
+	tempfile temp
+	save `temp'
+	restore 
+	append using `temp'
+}
+
+save data_mlit, replace
+```
+
+### Importing the data
+
+I go back using R here. The data take a lot of time to load.
+
+```{r}
+#| label: package-wrangling
+#| code-fold: true
+#| code-summary: "Show code to load packages"
+#| echo: true
+#| message: false
+#| warning: false
+
+library(haven)
+library(tidyverse)
+library(kableExtra)
+```
+
+```{r}
+#| cache: true
+#| eval: false
+data_mlit_raw <- read_dta("/Users/anthony/Desktop/master_thesis/data/raw/mlit/data_mlit.dta")
+data_mlit <- data_mlit_raw
+```
+
+Since loading the data requires a lot of time, I generate also a sample in case, 10% of the initial *data_mlit*.
+
+```{r}
+#| eval: false
+data_mlit_sample <- data_mlit |>
+  slice_sample(prop = 0.1)
+```
+
+Let's clean this database!
+
+## Data cleaning
+
+More coding samples will be available soon.
+
+First, I take a look at the data. There are several things that need to be fixed:
+
+-   many cells are missing, whereas there should be NA.
+
+-   totaltransactionvalue should appear clearly as a numerical
+
+-   neareststationdistance is a string
+
+-   etc.
+
+```{r}
+data_mlit
+```
+
+```{r}
+data_mlit |>
+  distinct(prefecture)
+# We need to retreive "Prefecture" from prefecture
+```
+
+Let's first deal with the **missing values**.
+
+```{r}
+# Let's first replace empty cells (string and numerical) by NA
+data_mlit <- data_mlit |>
+  mutate_if(is.character, list(~na_if(.,"")))
+
+# Let's count how many rows contain at least one NA
+data_mlit_na <- data_mlit |>
+  filter(if_any(everything(), is.na))
+```
+
+```{r}
+# Example plot
+library(ggplot2)
+ggplot(mtcars, aes(x = wt, y = mpg)) +
+  geom_point() +
+  theme_minimal() +
+  labs(title = "Car Weight vs MPG")
+```
+
+## Analysis
+
+```{r}
+library(ggplot2)
+```
+
+Look forward for the results!
+
+------------------------------------------------------------------------
+
+[Back to Home](index.html)

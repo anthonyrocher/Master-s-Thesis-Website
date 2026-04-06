@@ -1,0 +1,26 @@
+project:
+  type: website
+  output-dir: docs
+
+website:
+  site-url: https://anthonyrocher.github.io/master_thesis
+  title: "Master's Thesis"
+  navbar:
+    right:
+      - text: "Home"
+        href: index.html
+      - text: "Workflow"
+        href: workflow.html
+  search: false
+  announcement:
+    icon: info-circle
+    dismissable: true
+    content: "**Alert** - Page under construction."
+    type: primary
+    position: below-navbar
+
+format:
+  html:
+    theme: cosmo
+    css: styles.css
+    toc: true
