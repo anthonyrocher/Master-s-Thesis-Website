@@ -11,7 +11,9 @@ This website shows my master’s thesis in progress and will be updated frequent
 
 My master's thesis investigates the social costs of being exposed to seismic risk. I decide to focus on the impacts of risk mapping on housing prices in exposed areas. The basic ideal goes as it follows:
 
-## ![](images/pshm_2016_within_simplified.png)Motivation
+![](images/pshm_2016_within_simplified_arrows.png)
+
+## Motivation
 
 What should we care?
 
