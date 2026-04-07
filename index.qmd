@@ -11,38 +11,7 @@ This website shows my master’s thesis in progress and will be updated frequent
 
 My master's thesis investigates the social costs of being exposed to seismic risk. I decide to focus on the impacts of risk mapping on housing prices in exposed areas. The basic ideal goes as it follows:
 
-```{r}
-#| echo: false
-#| warning: false
-#| error: false
-library(ggplot2)
-library(sf)
-library(rnaturalearth)
-library(ggforce)
-
-japan <- ne_countries(scale = "medium", country = "japan", returnclass = "sf")
-japan_simple <- st_simplify(japan, dTolerance = 0.5)
-
-ovales_violets <- data.frame(
-  x0 = c(139.7, 131.0, 144.5), # Longitude
-  y0 = c(35.7, 32.8, 43.3),    # Latitude
-  a = c(1.2, 0.8, 1.5),        # Rayon horizontal
-  b = c(0.8, 0.7, 0.6),        # Rayon vertical
-  angle = c(pi/4, 0, 0)        # Rotation
-)
-
-# 2. Ajout à votre carte (en supposant que japan_simple existe déjà)
-ggplot() +
-  geom_sf(data = japan_simple, fill = "white", color = "black", size = 1) +
-  # Dessin des ovales violets
-  geom_ellipse(data = ovales_violets, 
-               aes(x0 = x0, y0 = y0, a = a, b = b, angle = angle),
-               fill = "purple", alpha = 0.6, color = NA) +
-  theme_void() +
-  coord_sf(datum = NA)
-```
-
-## Motivation
+## ![](images/pshm_2016_within_simplified.png)Motivation
 
 What should we care?
 
