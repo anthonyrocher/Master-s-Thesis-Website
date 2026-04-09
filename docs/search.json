@@ -79,9 +79,9 @@
   {
     "objectID": "data.html",
     "href": "data.html",
-    "title": "Data",
+    "title": "Data used in this work",
     "section": "",
-    "text": "Data used in this work:"
+    "text": "LIFFULL HOMES Listings\n\nLIFFUL’HOMES is one of the major real estate companies in Japan. The dataset includes housing listings with extremely high quality details.\n\nWebsite: https://lifull.com/en/\n70GB\n\n\n\n\nMLIT Land Prices\n\n\nWebsite: https://www.mlit.go.jp/en/\n?GB\n\n\n\n\n\n\n\n\n\n\nJMA Earthquake Records\n\nJapan Meteorological Agency.\n\nWebsite: https://www.jma.go.jp/jma/indexe.html\n\n\n\n\nJ-SHIS Hazard Maps\n\nJapan Seismic Hazard Information Station\n\nWebsite: https://www.j-shis.bosai.go.jp/en/\n\n\n\n\n\n\n\n\nKSPS Panel Data\n\nLarge Panel from Keio University from 2004.\n\nWebsite: https://www.pdrc.keio.ac.jp/en/paneldata/datasets/jhpskhps/\n\n\n\n\nGEES Data on earthquakes\n\nPanel after the 2011 earthquake about what Japanese people think about earthquakes.\n\nWebsite: https://www.pdrc.keio.ac.jp/en/paneldata/datasets/gees/\n\n\n\n\n\n\n\n\n\n\nE-Stat\n\nUnemployment data, everything else that could have an impact on prices."
   },
   {
     "objectID": "paper.html",
@@ -173,5 +173,68 @@
     "title": "Seismic Hazard Mapping In Japan: effects on land and real estate prices",
     "section": "Test",
     "text": "Test\n\n\n\n\nIf there is an earthquake here,\n\nhow does it impact those areas?"
+  },
+  {
+    "objectID": "data.html#column-1",
+    "href": "data.html#column-1",
+    "title": "Data used in this work",
+    "section": "",
+    "text": "Content for the first column."
+  },
+  {
+    "objectID": "data.html#column-2",
+    "href": "data.html#column-2",
+    "title": "Data used in this work",
+    "section": "",
+    "text": "Content for the second column."
+  },
+  {
+    "objectID": "data.html#column-3",
+    "href": "data.html#column-3",
+    "title": "Data used in this work",
+    "section": "",
+    "text": "Content for the third column."
+  },
+  {
+    "objectID": "index.html#what-should-we-care",
+    "href": "index.html#what-should-we-care",
+    "title": "Seismic Hazard Mapping In Japan: effects on land and real estate prices",
+    "section": "What should we care?",
+    "text": "What should we care?\nTaking a step back, this work addresses the following questions: what is the risk premium people have to pay to live in safer places? Are people willing to stay in areas under the threat of natural disasters? Are housing spatial inequalities being reshaped by risk mapping to some extent? Are they even aware of such threats, despite the sensitization policies?\nAs for Japan, this is a particularly burning issue. The country frequently experience earthquakes, and it is likely to be struck by what is called a mega-earthquake in the next 30 years (Nankai Through), experts say. On a global scale, The so-called “The big One” mega-earthquake is believed to strike Asia as well as along Western North America. The important thing with earthquakes is that one cannot tell when they occur, so that it threatens everywhere every time.\nThe same logic may apply to climate change. As other types of natural disasters are increasing (such as floods, droughts and typhoons among others), investors as well as policy makers may be interested in the real cost of investing in this type of areas."
+  },
+  {
+    "objectID": "data.html#real-estate-data",
+    "href": "data.html#real-estate-data",
+    "title": "Data used in this work",
+    "section": "",
+    "text": "LIFFULL HOMES Listings\n\nLIFFUL’HOMES is one of the major real estate companies in Japan. The dataset includes housing listings with extremely high quality details.\n\nWebsite: https://lifull.com/en/\n70GB\n\n\n\n\nMLIT Land Prices\n\n\nWebsite: https://www.mlit.go.jp/en/\n?GB"
+  },
+  {
+    "objectID": "data.html#risk-mapping-data",
+    "href": "data.html#risk-mapping-data",
+    "title": "Data used in this work",
+    "section": "",
+    "text": "JMA Earthquake Records\n\nJapan Meteorological Agency.\n\nWebsite: https://www.jma.go.jp/jma/indexe.html\n\n\n\n\nJ-SHIS Hazard Maps\n\nJapan Seismic Hazard Information Station\n\nWebsite: https://www.j-shis.bosai.go.jp/en/"
+  },
+  {
+    "objectID": "data.html#panel-data",
+    "href": "data.html#panel-data",
+    "title": "Data used in this work",
+    "section": "",
+    "text": "KSPS Panel Data\n\nLarge Panel from Keio University from 2004.\n\nWebsite: https://www.pdrc.keio.ac.jp/en/paneldata/datasets/jhpskhps/\n\n\n\n\nGEES Data on earthquakes\n\nPanel after the 2011 earthquake about what Japanese people think about earthquakes.\n\nWebsite: https://www.pdrc.keio.ac.jp/en/paneldata/datasets/gees/"
+  },
+  {
+    "objectID": "data.html#panel-data-1",
+    "href": "data.html#panel-data-1",
+    "title": "Data used in this work",
+    "section": "",
+    "text": "Content for the third column."
+  },
+  {
+    "objectID": "data.html#other-useful-data",
+    "href": "data.html#other-useful-data",
+    "title": "Data used in this work",
+    "section": "",
+    "text": "E-Stat\n\nUnemployment data, everything else that could have an impact on prices."
   }
 ]

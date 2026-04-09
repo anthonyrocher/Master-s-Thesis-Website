@@ -13,15 +13,13 @@ My master's thesis investigates the social costs of being exposed to seismic ris
 
 ![](images/pshm_2016_within_simplified_arrows.png){fig-align="center"}
 
-## Motivation
+## What should we care?
 
-What should we care?
+Taking a step back, this work addresses the following questions: what is the risk premium people have to pay to live in safer places? Are people willing to stay in areas under the threat of natural disasters? Are housing spatial inequalities being reshaped by risk mapping to some extent? Are they even aware of such threats, despite the sensitization policies?
 
-Taking a step back, this work addresses the following questions: are people willing to leave in more risk exposed areas? Are they even aware where are the more likely threats, despite the sensitization policies? Are people's responses different when such a natural disaster occurs?
+As for Japan, this is a particularly burning issue. The country frequently experience earthquakes, and it is likely to be struck by what is called a mega-earthquake in the next 30 years (Nankai Through), experts say. On a global scale, The so-called "The big One" mega-earthquake is believed to strike Asia as well as along Western North America. The important thing with earthquakes is that one cannot tell when they occur, so that it threatens everywhere every time.
 
-Japan is likely to experience a big earthquake in the next 30 years, namely the Nankai Through. However, seismic risk more broadly threatens other places, such as The Big One megatrust eathquake, which is anticipated along Western North America.
-
-Finally, the same logic may apply to climate change. There might be a similar logic for other types of natural disasters, such as floods, droughts, typhoons, etc. If that is the case, then investors, and even more interestingly the policy makers, might want to know where to invest in the near futur taking into account the risk factor. 
+The same logic may apply to climate change. As other types of natural disasters are increasing (such as floods, droughts and typhoons among others), investors as well as policy makers may be interested in the real cost of investing in this type of areas.
 
 ## Contribution
 
@@ -30,5 +28,3 @@ This work relies on many papers that have studied the impact of earthquakes, and
 -   It investigates the housing market, including the rental market, thanks to the use of a new data set not used in previous studies.
 
 -   It includes a panel survey and bridges a gap between objective risk impact and subjective perception.
-
-## Data

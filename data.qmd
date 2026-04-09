@@ -1,57 +1,100 @@
 ---
-title: "Data"
+title: "Data used in this work"
 editor: visual
 ---
 
-Data used in this work:
+:::::::::: column-page
+::::::::: columns
+::: {.column width="49%"}
+## Real Estate Data
 
-```{r}
-#| echo: false
-#| warning: false
-#| error: false
-library(plotly)
+<details>
 
-labels <- c(
-  "Data",
-  "Risk mapping", "Real estate",
-  "JMA", "J-SHIS", "MLIT", "LIFULL",
-  "Earthquakes", "Coordinates/Magnitude",
-  "Hazard maps", "Time evolution",
-  "Property details",
-  "Housing data", "Limitations"
-)
+<summary><strong style="font-size: 1.25em;">LIFFULL HOMES Listings</strong></summary>
 
-parents <- c(
-  "",
-  "Data", "Data",
-  "Risk mapping", "Risk mapping", "Real estate", "Real estate",
-  "JMA", "JMA",
-  "J-SHIS", "J-SHIS",
-  "MLIT",
-  "LIFULL", "LIFULL"
-)
+LIFFUL'HOMES is one of the major real estate companies in Japan. The dataset includes housing listings with extremely high quality details.
 
-# 👉 valeurs cohérentes (parents > enfants)
-values <- c(
-  20,
-  10, 10,
-  5, 5, 5, 5,
-  2, 3,
-  2, 3,
-  5,
-  3, 2
-)
+-   Website: https://lifull.com/en/
+-   70GB
 
-fig <- plot_ly(
-  labels = labels,
-  parents = parents,
-  values = values,
-  type = "sunburst",
-  branchvalues = "total",
-  maxdepth = 3
-)
+</details>
 
-fig
-```
+<details>
 
+<summary><strong style="font-size: 1.25em;">MLIT Land Prices</strong></summary>
 
+-   Website: https://www.mlit.go.jp/en/
+-   ?GB
+
+</details>
+:::
+
+::: {.column width="2%"}
+:::
+
+::: {.column width="49%"}
+## Risk Mapping Data
+
+<details>
+
+<summary><strong style="font-size: 1.25em;">JMA Earthquake Records</strong></summary>
+
+Japan Meteorological Agency.
+
+- Website: https://www.jma.go.jp/jma/indexe.html
+
+</details>
+
+<details>
+
+<summary><strong style="font-size: 1.25em;">J-SHIS Hazard Maps</strong></summary>
+
+Japan Seismic Hazard Information Station
+
+-   Website: https://www.j-shis.bosai.go.jp/en/
+
+</details>
+:::
+
+::: {.column width="49%"}
+## Panel Data
+
+<details>
+
+<summary><strong style="font-size: 1.25em;">KSPS Panel Data</strong></summary>
+
+Large Panel from Keio University from 2004.
+
+- Website: https://www.pdrc.keio.ac.jp/en/paneldata/datasets/jhpskhps/
+
+</details>
+
+<details>
+
+<summary><strong style="font-size: 1.25em;">GEES Data on earthquakes</strong></summary>
+
+Panel after the 2011 earthquake about what Japanese people think about earthquakes.
+
+- Website: https://www.pdrc.keio.ac.jp/en/paneldata/datasets/gees/
+
+</details>
+:::
+
+::: {.column width="2%"}
+:::
+
+::: {.column width="49%"}
+## Other Useful Data
+
+<details>
+
+<summary><strong style="font-size: 1.25em;">E-Stat</strong></summary>
+
+Unemployment data, everything else that could have an impact on prices.
+
+</details>
+:::
+:::::::::
+::::::::::
+
+![](images/data.png)

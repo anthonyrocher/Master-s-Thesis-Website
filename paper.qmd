@@ -6,18 +6,12 @@ editor: visual
 
 You may find the paper slides. Frequently updated.
 
-<iframe src="slides.html"
-        width="100%"
-        height="500px"
-        style="border:2px solid blue;">
+<iframe src="slides.html" width="100%" height="500px" style="border:2px solid blue;">
+
 </iframe>
 
 # Paper
 
 Here is the associated paper. Still at an early stage.
 
-![](images/paper.pdf){width="100%"
-                      height="500px"
-                      style="border:2px solid blue;"}
-
-
+![](images/paper.pdf){width="100%" height="500px" style="border:2px solid blue;"}
