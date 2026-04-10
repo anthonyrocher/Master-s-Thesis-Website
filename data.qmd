@@ -41,7 +41,7 @@ LIFFUL'HOMES is one of the major real estate companies in Japan. The dataset inc
 
 Japan Meteorological Agency.
 
-- Website: https://www.jma.go.jp/jma/indexe.html
+-   Website: https://www.jma.go.jp/jma/indexe.html
 
 </details>
 
@@ -49,9 +49,9 @@ Japan Meteorological Agency.
 
 <summary><strong style="font-size: 1.25em;">J-SHIS Hazard Maps</strong></summary>
 
-Japan Seismic Hazard Information Station
+*Japan Seismic Hazard Information Station* (https://www.j-shis.bosai.go.jp/en/).
 
--   Website: https://www.j-shis.bosai.go.jp/en/
+Many maps are available, easy to access and well described. I decide to fo for the so-called "Seismic hazard map." From there, I select "All", meaning I include earthquakes of all categories from I to III. I finally choose the "Average Case" as Probability Case. See download page for more information : <https://www.j-shis.bosai.go.jp/map/JSHIS2/download.html?lang=en>.
 
 </details>
 :::
@@ -65,7 +65,7 @@ Japan Seismic Hazard Information Station
 
 Large Panel from Keio University from 2004.
 
-- Website: https://www.pdrc.keio.ac.jp/en/paneldata/datasets/jhpskhps/
+-   Website: https://www.pdrc.keio.ac.jp/en/paneldata/datasets/jhpskhps/
 
 </details>
 
@@ -75,7 +75,7 @@ Large Panel from Keio University from 2004.
 
 Panel after the 2011 earthquake about what Japanese people think about earthquakes.
 
-- Website: https://www.pdrc.keio.ac.jp/en/paneldata/datasets/gees/
+-   Website: https://www.pdrc.keio.ac.jp/en/paneldata/datasets/gees/
 
 </details>
 :::

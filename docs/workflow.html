@@ -87,6 +87,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-label": "Search"
   }
 }</script>
+<script src="site_libs/kePrint-0.0.1/kePrint.js"></script>
+<link href="site_libs/lightable-0.0.1/lightable.css" rel="stylesheet">
 
 
 <link rel="stylesheet" href="styles.css">
@@ -144,12 +146,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#data-wrangling" id="toc-data-wrangling" class="nav-link active" data-scroll-target="#data-wrangling">Data wrangling</a>
+  <li><a href="#cleaning-and-visualizing" id="toc-cleaning-and-visualizing" class="nav-link active" data-scroll-target="#cleaning-and-visualizing">Cleaning and visualizing</a>
   <ul class="collapse">
-  <li><a href="#the-mlit-dataset" id="toc-the-mlit-dataset" class="nav-link" data-scroll-target="#the-mlit-dataset">The MLIT Dataset</a></li>
-  <li><a href="#wrangling-the-data" id="toc-wrangling-the-data" class="nav-link" data-scroll-target="#wrangling-the-data">Wrangling the data</a></li>
-  <li><a href="#importing-the-data" id="toc-importing-the-data" class="nav-link" data-scroll-target="#importing-the-data">Importing the data</a></li>
+  <li><a href="#risk-maps" id="toc-risk-maps" class="nav-link" data-scroll-target="#risk-maps">Risk maps</a></li>
+  <li><a href="#real-estate-data" id="toc-real-estate-data" class="nav-link" data-scroll-target="#real-estate-data">Real Estate Data</a></li>
+  <li><a href="#panel-data" id="toc-panel-data" class="nav-link" data-scroll-target="#panel-data">Panel Data</a></li>
   </ul></li>
+  <li><a href="#combining-the-data" id="toc-combining-the-data" class="nav-link" data-scroll-target="#combining-the-data">Combining the data</a></li>
+  <li><a href="#visualization-results" id="toc-visualization-results" class="nav-link" data-scroll-target="#visualization-results">Visualization &amp; Results</a></li>
   </ul>
 </nav>
     </div>
@@ -175,60 +179,362 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<section id="data-wrangling" class="level2">
-<h2 class="anchored" data-anchor-id="data-wrangling">Data wrangling</h2>
-<section id="the-mlit-dataset" class="level3">
-<h3 class="anchored" data-anchor-id="the-mlit-dataset">The MLIT Dataset</h3>
-<p>The data used in this analysis comes from the <a href="https://www.reinfolib.mlit.go.jp/realEstatePrices/">MLIT Dataset</a>, which contains records of real estate price transactions across Japan since 2003.</p>
-<p>You can select the prefectures you want to download. I chose to download all of them and ended up with 47 datasets, corresponding to the 47 prefectures of Japan.</p>
+<p>This page describes the data management of this work, from the pre-processing steps to the results. The goal is to write step by step a replication package. However, note that some data are not public and should be required to their owners (namely the LIFFULL HOMES dataset the panel dataset from Keio University).</p>
+<section id="cleaning-and-visualizing" class="level2">
+<h2 class="anchored" data-anchor-id="cleaning-and-visualizing">Cleaning and visualizing</h2>
+<p>Most of the data are already really clean. This section provides examples of my code pre-processing the data. Due to file weights, I decide to code in <code>Python</code>, mainly using <code>geopandas</code>.</p>
+<section id="risk-maps" class="level3">
+<h3 class="anchored" data-anchor-id="risk-maps">Risk maps</h3>
+<section id="jma-records" class="level4">
+<h4 class="anchored" data-anchor-id="jma-records">JMA Records</h4>
+<p>Let’s visualize the JMA variables:</p>
+<div class="cell">
+<div class="cell-output-display">
+<div style="border: 1px solid #ddd; padding: 0px; overflow-y: scroll; height:200px; overflow-x: scroll; width:100%; ">
+<table class="caption-top table table-sm table-striped small">
+<caption>Variables of JMA records</caption>
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th" style="text-align: left; position: sticky; top: 0; background-color: #FFFFFF;"></th>
+<th data-quarto-table-cell-role="th" style="text-align: left; position: sticky; top: 0; background-color: #FFFFFF;"></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">record_type</td>
+<td style="text-align: left;">J</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">year</td>
+<td style="text-align: left;">2015</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">month</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">day</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">hour</td>
+<td style="text-align: left;">0</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">minute</td>
+<td style="text-align: left;">2</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">second</td>
+<td style="text-align: left;">4266</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">origin_time_error</td>
+<td style="text-align: left;">17</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">latitude_deg</td>
+<td style="text-align: left;">37</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">lat</td>
+<td style="text-align: left;">3836</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">latitude_error</td>
+<td style="text-align: left;">37</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">longitude_deg</td>
+<td style="text-align: left;">142</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">lon</td>
+<td style="text-align: left;">36</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">longitude_error</td>
+<td style="text-align: left;">82</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">depth_km</td>
+<td style="text-align: left;">3050</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">depth_error</td>
+<td style="text-align: left;">279</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">magnitude1</td>
+<td style="text-align: left;">27</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">magnitude1_type</td>
+<td style="text-align: left;">V</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">magnitude2</td>
+<td style="text-align: left;">NA</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">magnitude2_type</td>
+<td style="text-align: left;">NA</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">travel_time_table</td>
+<td style="text-align: left;">5</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">hypocenter_precision</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">subsidiary_info</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">max_intensity</td>
+<td style="text-align: left;">NA</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">damage_class</td>
+<td style="text-align: left;">NA</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">tsunami_class</td>
+<td style="text-align: left;">NA</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">district_number</td>
+<td style="text-align: left;">2</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">region_number</td>
+<td style="text-align: left;">68</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">region_name</td>
+<td style="text-align: left;">SE OFF MIYAGI PREF</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">num_stations</td>
+<td style="text-align: left;">34</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">identifier</td>
+<td style="text-align: left;">K</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<p>JMA records include all seismic activity observations. They are to be converted to csv first, ensuring that they are well encoded.</p>
+<p>Records include of course latitude and longitude in DMS format. Then the following code convert those variables in the CRS WGS84 (epsg:4326) format:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Convert latitude_deg / lat and longitude_deg / lon in DMS to WGS84 (epsg:4326)</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> dms_to_decimals(latlon_deg: <span class="bu">int</span> <span class="op">=</span> <span class="dv">31</span>, latlon: <span class="bu">int</span> <span class="op">=</span> <span class="dv">1176</span>):</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>    minute <span class="op">=</span> latlon <span class="op">//</span> <span class="dv">100</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>    second <span class="op">=</span> latlon <span class="op">%</span> <span class="dv">100</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> latlon_deg <span class="op">+</span> minute <span class="op">/</span> <span class="dv">60</span> <span class="op">+</span> second <span class="op">/</span> <span class="dv">3600</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>jma_damage[<span class="st">"latitude"</span>] <span class="op">=</span> jma_damage.<span class="bu">apply</span>(</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>    <span class="kw">lambda</span> row : dms_to_decimals(row[<span class="st">"latitude_deg"</span>], row[<span class="st">"lat"</span>]),</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>    axis <span class="op">=</span> <span class="dv">1</span>)</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>jma_damage[<span class="st">"longitude"</span>] <span class="op">=</span> jma_damage.<span class="bu">apply</span>(</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>    <span class="kw">lambda</span> row : dms_to_decimals(row[<span class="st">"longitude_deg"</span>], row[<span class="st">"lon"</span>]),</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>    axis <span class="op">=</span> <span class="dv">1</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>The records include a “damage _class” variable where damages are recorded.</p>
+<p><img src="images/jma_damage_2015_2017.png" class="img-fluid"></p>
 </section>
-<section id="wrangling-the-data" class="level3">
-<h3 class="anchored" data-anchor-id="wrangling-the-data">Wrangling the data</h3>
-<p>I use Stata to combine the 47 datasets and save the big one file as <code>data_mlit</code>, since Stata is more convenient for handling encoding issues. Note that it might take some time.</p>
+<section id="j-shis-hazard-maps" class="level4">
+<h4 class="anchored" data-anchor-id="j-shis-hazard-maps">J-SHIS Hazard Maps</h4>
+<p>Many parameters are available, and have an impact on what the hazard maps look like. I decide to focus on columns 02 and 04 since there are presented as the most common for public hazard map information to the public:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode stata code-with-copy"><code class="sourceCode stata"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>cd <span class="st">"/Users/anthony/Desktop/master_thesis/data/raw/mlit"</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="kw">local</span> prefectures : <span class="ot">dir</span> <span class="st">"."</span> files <span class="st">"*.csv"</span></span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="kw">clear</span></span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="kw">foreach</span> prefecture <span class="kw">of</span> <span class="kw">local</span> prefectures {</span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>    <span class="kw">preserve</span></span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>    import delimited <span class="st">"`prefecture'"</span>, <span class="kw">clear</span></span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>    <span class="kw">tempfile</span> temp</span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>    <span class="kw">save</span> <span class="ot">`temp'</span></span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>    <span class="kw">restore</span> </span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>    <span class="kw">append</span> <span class="kw">using</span> <span class="ot">`temp'</span></span>
-<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="kw">save</span> data_mlit, <span class="kw">replace</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div style="border: 1px solid #ddd; padding: 0px; overflow-y: scroll; height:170px; overflow-x: scroll; width:100%; ">
+<table class="caption-top table table-sm table-striped small">
+<caption>Variables of the J-SHIS shapefy file</caption>
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th" style="text-align: left; position: sticky; top: 0; background-color: #FFFFFF;">Column</th>
+<th data-quarto-table-cell-role="th" style="text-align: left; position: sticky; top: 0; background-color: #FFFFFF;">Header</th>
+<th data-quarto-table-cell-role="th" style="text-align: left; position: sticky; top: 0; background-color: #FFFFFF;">Format</th>
+<th data-quarto-table-cell-role="th" style="text-align: left; position: sticky; top: 0; background-color: #FFFFFF;">Explanation</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">01</td>
+<td style="text-align: left;">CODE</td>
+<td style="text-align: left;">%10-11c</td>
+<td style="text-align: left;">250m mesh code</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">02</td>
+<td style="text-align: left;">T30_I45_PS</td>
+<td style="text-align: left;">%9.6e</td>
+<td style="text-align: left;">Probability of exceedance [IJMA &gt;=5-Lower] within 30 years</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">03</td>
+<td style="text-align: left;">T30_I50_PS</td>
+<td style="text-align: left;">%9.6e</td>
+<td style="text-align: left;">Probability of exceedance [IJMA &gt;=5-Upper] within 30 years</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">04</td>
+<td style="text-align: left;">T30_I55_PS</td>
+<td style="text-align: left;">%9.6e</td>
+<td style="text-align: left;">Probability of exceedance [IJMA &gt;=6-Lower] within 30 years</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">05</td>
+<td style="text-align: left;">T30_I60_PS</td>
+<td style="text-align: left;">%9.6e</td>
+<td style="text-align: left;">Probability of exceedance [IJMA &gt;=6-Upper] within 30 years</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">06</td>
+<td style="text-align: left;">T30_P03_SI</td>
+<td style="text-align: left;">%3.1f</td>
+<td style="text-align: left;">IJMA for a 3% probability of exceedance within 30 years</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">07</td>
+<td style="text-align: left;">T30_P03_BV</td>
+<td style="text-align: left;">%9.6e</td>
+<td style="text-align: left;">PBV for a 3% probability of exceedance within 30 years (cm/s)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">08</td>
+<td style="text-align: left;">T30_P03_SV</td>
+<td style="text-align: left;">%9.6e</td>
+<td style="text-align: left;">PGV for a 3% probability of exceedance within 30 years (cm/s)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">09</td>
+<td style="text-align: left;">T30_P06_SI</td>
+<td style="text-align: left;">%3.1f</td>
+<td style="text-align: left;">IJMA for a 6% probability of exceedance within 30 years</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">10</td>
+<td style="text-align: left;">T30_P06_BV</td>
+<td style="text-align: left;">%9.6e</td>
+<td style="text-align: left;">PBV for a 6% probability of exceedance within 30 years (cm/s)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">11</td>
+<td style="text-align: left;">T30_P06_SV</td>
+<td style="text-align: left;">%9.6e</td>
+<td style="text-align: left;">PGV for a 6% probability of exceedance within 30 years (cm/s)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">12</td>
+<td style="text-align: left;">T50_P02_SI</td>
+<td style="text-align: left;">%3.1f</td>
+<td style="text-align: left;">IJMA for a 2% probability of exceedance within 50 years</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">13</td>
+<td style="text-align: left;">T50_P02_BV</td>
+<td style="text-align: left;">%9.6e</td>
+<td style="text-align: left;">PBV for a 2% probability of exceedance within 50 years (cm/s)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">14</td>
+<td style="text-align: left;">T50_P02_SV</td>
+<td style="text-align: left;">%9.6e</td>
+<td style="text-align: left;">PGV for a 2% probability of exceedance within 50 years (cm/s)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">15</td>
+<td style="text-align: left;">T50_P05_SI</td>
+<td style="text-align: left;">%3.1f</td>
+<td style="text-align: left;">IJMA for a 5% probability of exceedance within 50 years</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">16</td>
+<td style="text-align: left;">T50_P05_BV</td>
+<td style="text-align: left;">%9.6e</td>
+<td style="text-align: left;">PBV for a 5% probability of exceedance within 50 years (cm/s)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">17</td>
+<td style="text-align: left;">T50_P05_SV</td>
+<td style="text-align: left;">%9.6e</td>
+<td style="text-align: left;">PGV for a 5% probability of exceedance within 50 years (cm/s)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">18</td>
+<td style="text-align: left;">T50_P10_SI</td>
+<td style="text-align: left;">%3.1f</td>
+<td style="text-align: left;">IJMA for a 10% probability of exceedance within 50 years</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">19</td>
+<td style="text-align: left;">T50_P10_BV</td>
+<td style="text-align: left;">%9.6e</td>
+<td style="text-align: left;">PBV for a 10% probability of exceedance within 50 years (cm/s)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">20</td>
+<td style="text-align: left;">T50_P10_SV</td>
+<td style="text-align: left;">%9.6e</td>
+<td style="text-align: left;">PGV for a 10% probability of exceedance within 50 years (cm/s)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">21</td>
+<td style="text-align: left;">T50_P39_SI</td>
+<td style="text-align: left;">%3.1f</td>
+<td style="text-align: left;">IJMA for a 39% probability of exceedance within 50 years</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">22</td>
+<td style="text-align: left;">T50_P39_BV</td>
+<td style="text-align: left;">%9.6e</td>
+<td style="text-align: left;">PBV for a 39% probability of exceedance within 50 years (cm/s)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">23</td>
+<td style="text-align: left;">T50_P39_SV</td>
+<td style="text-align: left;">%9.6e</td>
+<td style="text-align: left;">PGV for a 39% probability of exceedance within 50 years (cm/s)</td>
+</tr>
+</tbody>
+</table>
 </div>
+</div>
+</div>
+<p>This is what it looks like:</p>
+<p><img src="images/shm_2016.png" class="img-fluid"></p>
 </section>
-<section id="importing-the-data" class="level3">
-<h3 class="anchored" data-anchor-id="importing-the-data">Importing the data</h3>
-<p>I go back using R here. The data take a lot of time to load.</p>
-<div class="cell">
-<details class="code-fold">
-<summary>Show code to load packages</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(haven)</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(kableExtra)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</details>
-</div>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>data_mlit_raw <span class="ot">&lt;-</span> <span class="fu">read_dta</span>(<span class="st">"/Users/anthony/Desktop/master_thesis/data/raw/mlit/data_mlit.dta"</span>)</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>data_mlit <span class="ot">&lt;-</span> data_mlit_raw</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-<p>Since loading the data requires a lot of time, I generate also a sample in case, 10% of the initial <em>data_mlit</em>.</p>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>data_mlit_sample <span class="ot">&lt;-</span> data_mlit <span class="sc">|&gt;</span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slice_sample</span>(<span class="at">prop =</span> <span class="fl">0.1</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-<p>Let’s clean this database!</p>
+</section>
+<section id="real-estate-data" class="level3">
+<h3 class="anchored" data-anchor-id="real-estate-data">Real Estate Data</h3>
+<section id="lifull-homes-dataset" class="level4">
+<h4 class="anchored" data-anchor-id="lifull-homes-dataset">LIFULL HOMES Dataset</h4>
+</section>
+<section id="mlit-dataset" class="level4">
+<h4 class="anchored" data-anchor-id="mlit-dataset">MLIT Dataset</h4>
+</section>
+</section>
+<section id="panel-data" class="level3">
+<h3 class="anchored" data-anchor-id="panel-data">Panel Data</h3>
+</section>
+</section>
+<section id="combining-the-data" class="level2">
+<h2 class="anchored" data-anchor-id="combining-the-data">Combining the data</h2>
+</section>
+<section id="visualization-results" class="level2">
+<h2 class="anchored" data-anchor-id="visualization-results">Visualization &amp; Results</h2>
 <hr>
 <p><a href="index.html">Back to Home</a></p>
 
 
-</section>
 </section>
 
 </main> <!-- /main -->
