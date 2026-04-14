@@ -3,7 +3,6 @@ title: "Data used in this work"
 editor: visual
 ---
 
-:::::::::: column-page
 ::::::::: columns
 ::: {.column width="49%"}
 ## Real Estate Data
@@ -95,6 +94,45 @@ Unemployment data, everything else that could have an impact on prices.
 </details>
 :::
 :::::::::
-::::::::::
+
+::: {style="margin-top: 40px;"}
+:::
+
+![](images/shm_2020_style.png)
+
+## Data availability
+
+```{r}
+#| echo: false
+#| warning: false
+#| error: false
+#| eval: false
+library(ggplot2)
+library(dplyr)
+
+data <- data.frame(
+  categorie = c("Risk Mapping", "Panel", "Housing Prices", "Land Prices", "Earthquakes"),
+  debut = as.Date(c("2008-01-01", "2004-01-01", "2015-01-01", "2003-01-01", "2000-01-01")),
+  fin   = as.Date(c("2025-01-01", "2024-01-01", "2017-01-01", "2026-01-01", "2026-01-01"))
+)
+
+data$categorie <- factor(data$categorie, levels = rev(data$categorie))
+
+ggplot(data) +
+  geom_segment(aes(x = debut, xend = fin,
+                   y = categorie, yend = categorie),
+               size = 4, color = "steelblue") +
+  
+  scale_x_date(date_breaks = "5 years", date_labels = "%Y") +
+  
+  theme_minimal() +
+  labs(x = NULL,
+       y = NULL) +
+  
+  theme(
+    panel.grid.major.y = element_blank(),
+    panel.grid.minor = element_blank()
+  )
+```
 
 ![](images/data.png)

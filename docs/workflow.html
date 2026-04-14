@@ -182,7 +182,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>This page describes the data management of this work, from the pre-processing steps to the results. The goal is to write step by step a replication package. However, note that some data are not public and should be required to their owners (namely the LIFFULL HOMES dataset the panel dataset from Keio University).</p>
 <section id="cleaning-and-visualizing" class="level2">
 <h2 class="anchored" data-anchor-id="cleaning-and-visualizing">Cleaning and visualizing</h2>
-<p>Most of the data are already really clean. This section provides examples of my code pre-processing the data. Due to file weights, I decide to code in <code>Python</code>, mainly using <code>geopandas</code>.</p>
+<p>Most of the data are already really clean. This section provides examples of my code pre-processing the data. Code used in this section: <code>Python</code>, with <code>pandas</code>, <code>geopandas</code> and <code>duckdb</code>, and <code>SQL</code>.</p>
 <section id="risk-maps" class="level3">
 <h3 class="anchored" data-anchor-id="risk-maps">Risk maps</h3>
 <section id="jma-records" class="level4">
@@ -510,7 +510,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <p>This is what it looks like:</p>
-<p><img src="images/shm_2016.png" class="img-fluid"></p>
+<p><img src="images/shm_2016_final.png" class="img-fluid"></p>
 </section>
 </section>
 <section id="real-estate-data" class="level3">

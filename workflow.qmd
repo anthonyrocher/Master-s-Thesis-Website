@@ -15,7 +15,7 @@ This page describes the data management of this work, from the pre-processing st
 
 ## Cleaning and visualizing
 
-Most of the data are already really clean. This section provides examples of my code pre-processing the data. Due to file weights, I decide to code in `Python`, mainly using `geopandas`.
+Most of the data are already really clean. This section provides examples of my code pre-processing the data. Code used in this section: `Python`, with `pandas`, `geopandas` and `duckdb`, and `SQL`.
 
 ### Risk maps
 
@@ -127,7 +127,7 @@ df |>
 
 This is what it looks like:
 
-![](images/shm_2016.png)
+![](images/shm_2016_final.png)
 
 ### Real Estate Data
 
