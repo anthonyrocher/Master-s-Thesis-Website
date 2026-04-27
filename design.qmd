@@ -1,4 +1,59 @@
 ---
 title: "Design"
 editor: visual
+bibliography: references.bib
 ---
+
+## Setup
+
+My economic outcomes are sales and rentals. Secondary outcomes may include earthquake insurance subscription and municipality expenses for earthquake prevention. The variable of interest is any earthquake over magnitude 6 occurring in Japan. One unit of observation is one property to be sell or to be rent. Those are available throughout the country, providing a great source of variation.
+
+To put it clearly:
+
+-   **Treatment**: earthquake over magnitude 6 ocuring in the whole country
+-   **Main Outcomes**: Sales and rentals
+-   **Units**: properties to be sell or rented
+-   **Source of variation**:
+    -   all over Japan
+    -   for many types of buildings
+    -   with different structures
+-   **Comparison group**: exposed and not exposed areas.
+
+## First approach: Hedonic price model
+
+Most of the papers set risk as a property attribute, and the use hedonic price approach as introduced by @rosen1974. This approach uses DiD terminology:
+
+\begin{equation}
+\ln P_{it} = \alpha_0 + \sum_{j=1}^{J} \alpha_j Z_{ij} + \beta r_i + \gamma Seismic_i + \delta Earthquake_{it} + \theta_t (Earthquake_{it} \times FPD_i) + \varepsilon_{it}
+\end{equation}
+
+\- $\ln P_{it}$: log property price for unit $i$ at time $t$
+
+\- $Z_{ij}$: vector of property and location controls
+
+\- $r_i$: location fixed effects (prefectures)
+
+\- $Seismic_i$: baseline seismic risk exposure (over $p = 0.3$)
+
+\- $Earthquake_{it}$: earthquake occurrence/intensity at time $t$
+
+\- $Earthquake_{it} \times Seismic_i$: interaction capturing heterogeneous effects
+
+In practice, this is my first attempt:
+
+``` stata
+regress log_price ///
+    sqft age ///
+    parking_y ///
+    walk_distance1 super_distance hospital_distance park_distance ///
+    pop_total_linear ///
+    employement_linear_rate ///
+    net_migration ///
+    foreigners_linear_share ///
+    c.earthquake##c.seismic ///
+    i.prefecture, robust
+```
+
+## Second approach: Synthetic Control Method
+
+## References

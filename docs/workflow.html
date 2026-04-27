@@ -148,12 +148,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <ul>
   <li><a href="#cleaning-and-visualizing" id="toc-cleaning-and-visualizing" class="nav-link active" data-scroll-target="#cleaning-and-visualizing">Cleaning and visualizing</a>
   <ul class="collapse">
-  <li><a href="#risk-maps" id="toc-risk-maps" class="nav-link" data-scroll-target="#risk-maps">Risk maps</a></li>
-  <li><a href="#real-estate-data" id="toc-real-estate-data" class="nav-link" data-scroll-target="#real-estate-data">Real Estate Data</a></li>
   <li><a href="#panel-data" id="toc-panel-data" class="nav-link" data-scroll-target="#panel-data">Panel Data</a></li>
   </ul></li>
   <li><a href="#combining-the-data" id="toc-combining-the-data" class="nav-link" data-scroll-target="#combining-the-data">Combining the data</a></li>
-  <li><a href="#visualization-results" id="toc-visualization-results" class="nav-link" data-scroll-target="#visualization-results">Visualization &amp; Results</a></li>
   </ul>
 </nav>
     </div>
@@ -183,8 +180,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="cleaning-and-visualizing" class="level2">
 <h2 class="anchored" data-anchor-id="cleaning-and-visualizing">Cleaning and visualizing</h2>
 <p>Most of the data are already really clean. This section provides examples of my code pre-processing the data. Code used in this section: <code>Python</code>, with <code>pandas</code>, <code>geopandas</code> and <code>duckdb</code>, and <code>SQL</code>.</p>
-<section id="risk-maps" class="level3">
-<h3 class="anchored" data-anchor-id="risk-maps">Risk maps</h3>
 <section id="jma-records" class="level4">
 <h4 class="anchored" data-anchor-id="jma-records">JMA Records</h4>
 <p>Let’s visualize the JMA variables:</p>
@@ -195,133 +190,71 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <caption>Variables of JMA records</caption>
 <thead>
 <tr class="header">
-<th data-quarto-table-cell-role="th" style="text-align: left; position: sticky; top: 0; background-color: #FFFFFF;"></th>
-<th data-quarto-table-cell-role="th" style="text-align: left; position: sticky; top: 0; background-color: #FFFFFF;"></th>
+<th data-quarto-table-cell-role="th" style="text-align: left; position: sticky; top: 0; background-color: #FFFFFF;">record_type</th>
+<th data-quarto-table-cell-role="th" style="text-align: right; position: sticky; top: 0; background-color: #FFFFFF;">year</th>
+<th data-quarto-table-cell-role="th" style="text-align: right; position: sticky; top: 0; background-color: #FFFFFF;">month</th>
+<th data-quarto-table-cell-role="th" style="text-align: right; position: sticky; top: 0; background-color: #FFFFFF;">day</th>
+<th data-quarto-table-cell-role="th" style="text-align: right; position: sticky; top: 0; background-color: #FFFFFF;">hour</th>
+<th data-quarto-table-cell-role="th" style="text-align: right; position: sticky; top: 0; background-color: #FFFFFF;">minute</th>
+<th data-quarto-table-cell-role="th" style="text-align: right; position: sticky; top: 0; background-color: #FFFFFF;">second</th>
+<th data-quarto-table-cell-role="th" style="text-align: right; position: sticky; top: 0; background-color: #FFFFFF;">origin_time_error</th>
+<th data-quarto-table-cell-role="th" style="text-align: right; position: sticky; top: 0; background-color: #FFFFFF;">latitude_deg</th>
+<th data-quarto-table-cell-role="th" style="text-align: right; position: sticky; top: 0; background-color: #FFFFFF;">lat</th>
+<th data-quarto-table-cell-role="th" style="text-align: right; position: sticky; top: 0; background-color: #FFFFFF;">latitude_error</th>
+<th data-quarto-table-cell-role="th" style="text-align: right; position: sticky; top: 0; background-color: #FFFFFF;">longitude_deg</th>
+<th data-quarto-table-cell-role="th" style="text-align: right; position: sticky; top: 0; background-color: #FFFFFF;">lon</th>
+<th data-quarto-table-cell-role="th" style="text-align: right; position: sticky; top: 0; background-color: #FFFFFF;">longitude_error</th>
+<th data-quarto-table-cell-role="th" style="text-align: right; position: sticky; top: 0; background-color: #FFFFFF;">depth_km</th>
+<th data-quarto-table-cell-role="th" style="text-align: right; position: sticky; top: 0; background-color: #FFFFFF;">depth_error</th>
+<th data-quarto-table-cell-role="th" style="text-align: right; position: sticky; top: 0; background-color: #FFFFFF;">magnitude1</th>
+<th data-quarto-table-cell-role="th" style="text-align: left; position: sticky; top: 0; background-color: #FFFFFF;">magnitude1_type</th>
+<th data-quarto-table-cell-role="th" style="text-align: left; position: sticky; top: 0; background-color: #FFFFFF;">magnitude2</th>
+<th data-quarto-table-cell-role="th" style="text-align: left; position: sticky; top: 0; background-color: #FFFFFF;">magnitude2_type</th>
+<th data-quarto-table-cell-role="th" style="text-align: right; position: sticky; top: 0; background-color: #FFFFFF;">travel_time_table</th>
+<th data-quarto-table-cell-role="th" style="text-align: right; position: sticky; top: 0; background-color: #FFFFFF;">hypocenter_precision</th>
+<th data-quarto-table-cell-role="th" style="text-align: right; position: sticky; top: 0; background-color: #FFFFFF;">subsidiary_info</th>
+<th data-quarto-table-cell-role="th" style="text-align: left; position: sticky; top: 0; background-color: #FFFFFF;">max_intensity</th>
+<th data-quarto-table-cell-role="th" style="text-align: left; position: sticky; top: 0; background-color: #FFFFFF;">damage_class</th>
+<th data-quarto-table-cell-role="th" style="text-align: left; position: sticky; top: 0; background-color: #FFFFFF;">tsunami_class</th>
+<th data-quarto-table-cell-role="th" style="text-align: right; position: sticky; top: 0; background-color: #FFFFFF;">district_number</th>
+<th data-quarto-table-cell-role="th" style="text-align: right; position: sticky; top: 0; background-color: #FFFFFF;">region_number</th>
+<th data-quarto-table-cell-role="th" style="text-align: left; position: sticky; top: 0; background-color: #FFFFFF;">region_name</th>
+<th data-quarto-table-cell-role="th" style="text-align: right; position: sticky; top: 0; background-color: #FFFFFF;">num_stations</th>
+<th data-quarto-table-cell-role="th" style="text-align: left; position: sticky; top: 0; background-color: #FFFFFF;">identifier</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: left;">record_type</td>
 <td style="text-align: left;">J</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">year</td>
-<td style="text-align: left;">2015</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">month</td>
-<td style="text-align: left;">1</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">day</td>
-<td style="text-align: left;">1</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">hour</td>
-<td style="text-align: left;">0</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">minute</td>
-<td style="text-align: left;">2</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">second</td>
-<td style="text-align: left;">4266</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">origin_time_error</td>
-<td style="text-align: left;">17</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">latitude_deg</td>
-<td style="text-align: left;">37</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">lat</td>
-<td style="text-align: left;">3836</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">latitude_error</td>
-<td style="text-align: left;">37</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">longitude_deg</td>
-<td style="text-align: left;">142</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">lon</td>
-<td style="text-align: left;">36</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">longitude_error</td>
-<td style="text-align: left;">82</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">depth_km</td>
-<td style="text-align: left;">3050</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">depth_error</td>
-<td style="text-align: left;">279</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">magnitude1</td>
-<td style="text-align: left;">27</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">magnitude1_type</td>
+<td style="text-align: right;">2015</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">4266</td>
+<td style="text-align: right;">17</td>
+<td style="text-align: right;">37</td>
+<td style="text-align: right;">3836</td>
+<td style="text-align: right;">37</td>
+<td style="text-align: right;">142</td>
+<td style="text-align: right;">36</td>
+<td style="text-align: right;">82</td>
+<td style="text-align: right;">3050</td>
+<td style="text-align: right;">279</td>
+<td style="text-align: right;">27</td>
 <td style="text-align: left;">V</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">magnitude2</td>
 <td style="text-align: left;">NA</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">magnitude2_type</td>
 <td style="text-align: left;">NA</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">travel_time_table</td>
-<td style="text-align: left;">5</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">hypocenter_precision</td>
-<td style="text-align: left;">1</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">subsidiary_info</td>
-<td style="text-align: left;">1</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">max_intensity</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
 <td style="text-align: left;">NA</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">damage_class</td>
 <td style="text-align: left;">NA</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">tsunami_class</td>
 <td style="text-align: left;">NA</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">district_number</td>
-<td style="text-align: left;">2</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">region_number</td>
-<td style="text-align: left;">68</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">region_name</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">68</td>
 <td style="text-align: left;">SE OFF MIYAGI PREF</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">num_stations</td>
-<td style="text-align: left;">34</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">identifier</td>
+<td style="text-align: right;">34</td>
 <td style="text-align: left;">K</td>
 </tr>
 </tbody>
@@ -510,17 +443,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <p>This is what it looks like:</p>
-<p><img src="images/shm_2016_final.png" class="img-fluid"></p>
+<p><img src="images/shm_2016_final.png" class="img-fluid" width="789"></p>
 </section>
-</section>
-<section id="real-estate-data" class="level3">
-<h3 class="anchored" data-anchor-id="real-estate-data">Real Estate Data</h3>
 <section id="lifull-homes-dataset" class="level4">
 <h4 class="anchored" data-anchor-id="lifull-homes-dataset">LIFULL HOMES Dataset</h4>
 </section>
 <section id="mlit-dataset" class="level4">
 <h4 class="anchored" data-anchor-id="mlit-dataset">MLIT Dataset</h4>
-</section>
 </section>
 <section id="panel-data" class="level3">
 <h3 class="anchored" data-anchor-id="panel-data">Panel Data</h3>
@@ -528,9 +457,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="combining-the-data" class="level2">
 <h2 class="anchored" data-anchor-id="combining-the-data">Combining the data</h2>
-</section>
-<section id="visualization-results" class="level2">
-<h2 class="anchored" data-anchor-id="visualization-results">Visualization &amp; Results</h2>
 <hr>
 <p><a href="index.html">Back to Home</a></p>
 

@@ -17,16 +17,13 @@ This page describes the data management of this work, from the pre-processing st
 
 Most of the data are already really clean. This section provides examples of my code pre-processing the data. Code used in this section: `Python`, with `pandas`, `geopandas` and `duckdb`, and `SQL`.
 
-### Risk maps
-
 #### JMA Records
 
 Let's visualize the JMA variables:
 
 ```{r}
 #| echo: false
-jma_head <- read.csv("/Users/anthony/Documents/master_thesis/data/raw/jma/jma_combined.csv", nrows = 1) |>
-  t()
+jma_head <- read.csv("/Users/anthony/Documents/master_thesis/data/raw/jma/jma_combined.csv", nrows = 1)
 
 jma_head |>
   kable(caption = "Variables of JMA records") |>
@@ -127,9 +124,7 @@ df |>
 
 This is what it looks like:
 
-![](images/shm_2016_final.png)
-
-### Real Estate Data
+![](images/shm_2016_final.png){width="789"}
 
 #### LIFULL HOMES Dataset
 
@@ -138,8 +133,6 @@ This is what it looks like:
 ### Panel Data
 
 ## Combining the data
-
-## Visualization & Results
 
 ------------------------------------------------------------------------
 
