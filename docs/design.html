@@ -243,7 +243,7 @@ window.Quarto = {
 <h2 class="anchored" data-anchor-id="first-approach-hedonic-price-model">First approach: Hedonic price model</h2>
 <p>Most of the papers set risk as a property attribute, and the use hedonic price approach as introduced by <span class="citation" data-cites="rosen1974">Rosen (<a href="#ref-rosen1974" role="doc-biblioref">1974</a>)</span>. This approach uses DiD terminology:</p>
 <p><span class="math display">\[\begin{equation}
-\ln P_{it} = \alpha_0 + \sum_{j=1}^{J} \alpha_j Z_{ij} + \beta r_i + \gamma Seismic_i + \delta Earthquake_{it} + \theta_t (Earthquake_{it} \times FPD_i) + \varepsilon_{it}
+\ln P_{it} = \alpha_0 + \sum_{j=1}^{J} \alpha_j Z_{ij} + \beta r_i + \gamma Seismic_i + \delta Post_{it} + \theta_t (Post_{it} \times Seismic_i) + \varepsilon_{it}
 \end{equation}\]</span></p>
 <p>- <span class="math inline">\(\ln P_{it}\)</span>: log property price for unit <span class="math inline">\(i\)</span> at time <span class="math inline">\(t\)</span></p>
 <p>- <span class="math inline">\(Z_{ij}\)</span>: vector of property and location controls</p>

@@ -116,7 +116,7 @@
     "href": "slides.html#data-1",
     "title": "Master’s Thesis Seminar",
     "section": "Data (1)",
-    "text": "Data (1)\n\n\n\n\n\nRisk mapping data\n\n\n\nJapan Meteorological Agency Records (JMA)\nall earthquakes records\ncoordinates / magnitude\nJapan Seismic Hazard Information Station (J-SHIS)\nrisk hazard maps\nchange over time\n\n\n\n\n\n\n\n\nReal estate data\n\n\n\nMinistry of Land, Infrastructure, Transport and Tourism (MLIT)\naccurate description of the properties (nearest station, type of use, etc.)\nLIFULL HOMES\n70GB of housing information\nincluding rentals\ntwo limitations: estimation only,, from 2015 to 2016 only\n\n\n\n\n\nPossible extension: Panel Data from Keio University."
+    "text": "Data (1)\n\n\n\n\n\nRisk mapping data\n\n\n\nJapan Meteorological Agency Records (JMA)\nall earthquakes records\ncoordinates / magnitude\nJapan Seismic Hazard Information Station (J-SHIS)\nrisk hazard maps\nchange over time\n\n\n\n\n\n\n\n\nReal estate data\n\n\n\nMinistry of Land, Infrastructure, Transport and Tourism (MLIT)\naccurate description of the properties (nearest station, type of use, etc.)\nLIFULL HOMES\nincluding rentals\ntwo limitations: estimation only,, from 2015 to 2016 only"
   },
   {
     "objectID": "slides.html#data-2",
@@ -130,14 +130,14 @@
     "href": "slides.html#data-3",
     "title": "Master’s Thesis Seminar",
     "section": "Data (3)",
-    "text": "Data (3)"
+    "text": "Data (3)\nMa base de données actuelle :\n\n\n\n\n\n\nTip\n\n\nLIFFULL HOMES + CARTES DE RISQUE + VARIABLES AGRÉGÉES\n\n\n\n\nLes séismes restent à intégrer\nSi j’ai le temps, j’intégrerai aussi les données du MLIT (land prices)"
   },
   {
     "objectID": "slides.html#empirical-strategy",
     "href": "slides.html#empirical-strategy",
     "title": "Master’s Thesis Seminar",
     "section": "Empirical Strategy",
-    "text": "Empirical Strategy\nWhat about the counterfactual?\n\nEvent Study\nSynthetic Control Method (SCM)\n\n\n\nThank you for your attention!"
+    "text": "Empirical Strategy\n\\[\n\\begin{aligned}\n\\ln P_{it} = \\alpha_0 &+ \\sum_{j=1}^{J} \\alpha_j Z_{ij} + \\beta r_i + \\gamma Seismic_i + \\delta Earthquake_{it} \\\\\n&+ \\theta_t (Earthquake_{it} \\times Seismic_i) + \\varepsilon_{it}\n\\end{aligned}\n\\]\n\n\\(Z_{ij}\\): vector of property and location controls\n\\(r_i\\): location fixed effects (prefectures)\n\\(Seismic_i\\): baseline seismic risk exposure (over \\(p = 0.3\\))\n\\(Earthquake_{it}\\): earthquake occurrence/intensity at time \\(t\\)\n\\(Earthquake_{it} \\times Seismic_i\\): interaction capturing heterogeneous effects"
   },
   {
     "objectID": "slides.html#references",
@@ -298,7 +298,7 @@
     "href": "design.html#first-approach-hedonic-price-model",
     "title": "Design",
     "section": "First approach: Hedonic price model",
-    "text": "First approach: Hedonic price model\nMost of the papers set risk as a property attribute, and the use hedonic price approach as introduced by Rosen (1974). This approach uses DiD terminology:\n\\[\\begin{equation}\n\\ln P_{it} = \\alpha_0 + \\sum_{j=1}^{J} \\alpha_j Z_{ij} + \\beta r_i + \\gamma Seismic_i + \\delta Earthquake_{it} + \\theta_t (Earthquake_{it} \\times FPD_i) + \\varepsilon_{it}\n\\end{equation}\\]\n- \\(\\ln P_{it}\\): log property price for unit \\(i\\) at time \\(t\\)\n- \\(Z_{ij}\\): vector of property and location controls\n- \\(r_i\\): location fixed effects (prefectures)\n- \\(Seismic_i\\): baseline seismic risk exposure (over \\(p = 0.3\\))\n- \\(Earthquake_{it}\\): earthquake occurrence/intensity at time \\(t\\)\n- \\(Earthquake_{it} \\times Seismic_i\\): interaction capturing heterogeneous effects\nIn practice, this is my first attempt:\nregress log_price ///\n    sqft age ///\n    parking_y ///\n    walk_distance1 super_distance hospital_distance park_distance ///\n    pop_total_linear ///\n    employement_linear_rate ///\n    net_migration ///\n    foreigners_linear_share ///\n    c.earthquake##c.seismic ///\n    i.prefecture, robust"
+    "text": "First approach: Hedonic price model\nMost of the papers set risk as a property attribute, and the use hedonic price approach as introduced by Rosen (1974). This approach uses DiD terminology:\n\\[\\begin{equation}\n\\ln P_{it} = \\alpha_0 + \\sum_{j=1}^{J} \\alpha_j Z_{ij} + \\beta r_i + \\gamma Seismic_i + \\delta Post_{it} + \\theta_t (Post_{it} \\times Seismic_i) + \\varepsilon_{it}\n\\end{equation}\\]\n- \\(\\ln P_{it}\\): log property price for unit \\(i\\) at time \\(t\\)\n- \\(Z_{ij}\\): vector of property and location controls\n- \\(r_i\\): location fixed effects (prefectures)\n- \\(Seismic_i\\): baseline seismic risk exposure (over \\(p = 0.3\\))\n- \\(Earthquake_{it}\\): earthquake occurrence/intensity at time \\(t\\)\n- \\(Earthquake_{it} \\times Seismic_i\\): interaction capturing heterogeneous effects\nIn practice, this is my first attempt:\nregress log_price ///\n    sqft age ///\n    parking_y ///\n    walk_distance1 super_distance hospital_distance park_distance ///\n    pop_total_linear ///\n    employement_linear_rate ///\n    net_migration ///\n    foreigners_linear_share ///\n    c.earthquake##c.seismic ///\n    i.prefecture, robust"
   },
   {
     "objectID": "images/table1.html",
@@ -313,5 +313,19 @@
     "title": "Design",
     "section": "",
     "text": "My economic outcomes are sales and rentals. Secondary outcomes may include earthquake insurance subscription and municipality expenses for earthquake prevention. The variable of interest is any earthquake over magnitude 6 occurring in Japan. One unit of observation is one property to be sell or to be rent. Those are available throughout the country, providing a great source of variation.\nTo put it clearly:\n\nTreatment: earthquake over magnitude 6 ocuring in the whole country\nMain Outcomes: Sales and rentals\nUnits: properties to be sell or rented\nSource of variation:\n\nall over Japan\nfor many types of buildings\nwith different structures\n\nComparison group: exposed and not exposed areas."
+  },
+  {
+    "objectID": "slides.html#empirical-strategy-1",
+    "href": "slides.html#empirical-strategy-1",
+    "title": "Master’s Thesis Seminar",
+    "section": "Empirical Strategy (1)",
+    "text": "Empirical Strategy (1)\nGroupe test :\n\nles bâtiments qui se situent dans les zones sismiques dont la probabilité d’occurence au cours des 30 prochaines années est supérieure à 0.26.\n\nGroupe de contrôle :\n\nles bâtiments situés dans les zones inférieures à ce seuil\npeut-être ceux qui sont situés dans les zones plus sûres"
+  },
+  {
+    "objectID": "slides.html#empirical-strategy-2",
+    "href": "slides.html#empirical-strategy-2",
+    "title": "Master’s Thesis Seminar",
+    "section": "Empirical Strategy (2)",
+    "text": "Empirical Strategy (2)\n\n\n\n\n\n\n\nIn progress\n\n\n\n\\[\n\\begin{aligned}\n\\ln P_{it} = \\alpha_0 &+ \\sum_{j=1}^{J} \\alpha_j Z_{ij} + \\beta r_i + \\gamma Seismic_i + \\delta Earthquake_{it} \\\\\n&+ \\theta_t (Earthquake_{it} \\times Seismic_i) + \\varepsilon_{it}\n\\end{aligned}\n\\]\n\n\n\n\n\n\n\n\\(Z_{ij}\\): vector of property and location controls\n\\(r_i\\): location fixed effects (prefectures)\n\\(Seismic_i\\): baseline seismic risk exposure (over \\(p = 0.3\\))\n\\(Earthquake_{it}\\): earthquake occurrence/intensity at time \\(t\\)\n\\(Earthquake_{it} \\times Seismic_i\\): interaction capturing heterogeneous effects\n\n\\(Z_{ij}\\) includes aggregated data such as population, net migration, employment rate, facilities (e.g. number of hospitals, shcools, a municipality financial index), and some macro variables (GDP, business index)"
   }
 ]

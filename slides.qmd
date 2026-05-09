@@ -62,44 +62,68 @@ My work heavily relies on @ikefuji2022.
 -   **Ministry of Land, Infrastructure, Transport and Tourism (MLIT)**
 -   accurate description of the properties (nearest station, type of use, etc.)
 -   **LIFULL HOMES**
--   70GB of housing information
 -   including rentals
 -   two limitations: estimation only,, from 2015 to 2016 only
 :::
 ::::
 :::::::
 
-**Possible extension**: Panel Data from Keio University.
-
 ## Data (2)
 
 ::::: columns
 ::: {.column width="50%"}
-![](images/jma_damage_2015_2017.png)
+![](images/shm_2020_style.png)
 :::
 
 ::: {.column width="50%"}
-![](risk_map.png)
+![](images/shm_2016_final.png)
 :::
 :::::
 
 ## Data (3)
 
-![](data.png)
+Ma base de données actuelle :
 
-## Empirical Strategy
-
-### What about the counterfactual?
-
-::: incremental
--   Event Study
--   Synthetic Control Method (SCM)
+::: callout-tip
+LIFFULL HOMES + CARTES DE RISQUE + VARIABLES AGRÉGÉES
 :::
 
-:::: fragment
-::: {style="text-align: center;"}
-*Thank you for your attention!*
+-   Les séismes restent à intégrer
+
+-   Si j'ai le temps, j'intégrerai aussi les données du MLIT (land prices)
+
+## Empirical Strategy (1)
+
+**Groupe test** :
+
+-   les bâtiments qui se situent dans les zones sismiques dont la probabilité d'occurence au cours des 30 prochaines années est supérieure à 0.26.
+
+**Groupe de contrôle** :
+
+-   les bâtiments situés dans les zones inférieures à ce seuil
+-   peut-être ceux qui sont situés dans les zones plus sûres
+
+## Empirical Strategy (2)
+
+:::: {.callout-warning title="In progress"}
+::: {style="font-size: 0.8em; text-align: center;"}
+$$
+\begin{aligned}
+\ln P_{it} = \alpha_0 &+ \sum_{j=1}^{J} \alpha_j Z_{ij} + \beta r_i + \gamma Seismic_i + \delta Earthquake_{it} \\
+&+ \theta_t (Earthquake_{it} \times Seismic_i) + \varepsilon_{it}
+\end{aligned}
+$$
 :::
 ::::
+
+::: {style="font-size: 0.6em; line-height: 1.2;"}
+-   $Z_{ij}$: vector of property and location controls
+-   $r_i$: location fixed effects (prefectures)
+-   $Seismic_i$: baseline seismic risk exposure (over $p = 0.3$)
+-   $Earthquake_{it}$: earthquake occurrence/intensity at time $t$
+-   $Earthquake_{it} \times Seismic_i$: interaction capturing heterogeneous effects
+
+$Z_{ij}$ includes aggregated data such as population, net migration, employment rate, facilities (e.g. number of hospitals, shcools, a municipality financial index), and some macro variables (GDP, business index)
+:::
 
 ## References

@@ -24,7 +24,7 @@ To put it clearly:
 Most of the papers set risk as a property attribute, and the use hedonic price approach as introduced by @rosen1974. This approach uses DiD terminology:
 
 \begin{equation}
-\ln P_{it} = \alpha_0 + \sum_{j=1}^{J} \alpha_j Z_{ij} + \beta r_i + \gamma Seismic_i + \delta Earthquake_{it} + \theta_t (Earthquake_{it} \times FPD_i) + \varepsilon_{it}
+\ln P_{it} = \alpha_0 + \sum_{j=1}^{J} \alpha_j Z_{ij} + \beta r_i + \gamma Seismic_i + \delta Post_{it} + \theta_t (Post_{it} \times Seismic_i) + \varepsilon_{it}
 \end{equation}
 
 \- $\ln P_{it}$: log property price for unit $i$ at time $t$

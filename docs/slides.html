@@ -225,7 +225,6 @@ Anthony Rocher – ENS Lyon
 <li><strong>Ministry of Land, Infrastructure, Transport and Tourism (MLIT)</strong></li>
 <li>accurate description of the properties (nearest station, type of use, etc.)</li>
 <li><strong>LIFULL HOMES</strong></li>
-<li>70GB of housing information</li>
 <li>including rentals</li>
 <li>two limitations: estimation only,, from 2015 to 2016 only</li>
 </ul>
@@ -233,32 +232,82 @@ Anthony Rocher – ENS Lyon
 </div>
 </div>
 </div></div>
-<p><strong>Possible extension</strong>: Panel Data from Keio University.</p>
 </section>
 <section id="data-2" class="slide level2">
 <h2>Data (2)</h2>
 <div class="columns">
 <div class="column" style="width:50%;">
-<p><img data-src="images/jma_damage_2015_2017.png"></p>
+<p><img data-src="images/shm_2020_style.png"></p>
 </div><div class="column" style="width:50%;">
-<p><img data-src="risk_map.png"></p>
+<p><img data-src="images/shm_2016_final.png"></p>
 </div></div>
 </section>
 <section id="data-3" class="slide level2">
 <h2>Data (3)</h2>
-
-<img data-src="data.png" class="r-stretch"></section>
-<section id="empirical-strategy" class="slide level2">
-<h2>Empirical Strategy</h2>
-<h3 id="what-about-the-counterfactual">What about the counterfactual?</h3>
-<ul>
-<li class="fragment">Event Study</li>
-<li class="fragment">Synthetic Control Method (SCM)</li>
-</ul>
-<div class="fragment">
-<div style="text-align: center;">
-<p><em>Thank you for your attention!</em></p>
+<p>Ma base de données actuelle :</p>
+<div class="callout callout-tip callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
 </div>
+<p><strong>Tip</strong></p>
+</div>
+<div class="callout-content">
+<p>LIFFULL HOMES + CARTES DE RISQUE + VARIABLES AGRÉGÉES</p>
+</div>
+</div>
+</div>
+<ul>
+<li><p>Les séismes restent à intégrer</p></li>
+<li><p>Si j’ai le temps, j’intégrerai aussi les données du MLIT (land prices)</p></li>
+</ul>
+</section>
+<section id="empirical-strategy-1" class="slide level2">
+<h2>Empirical Strategy (1)</h2>
+<p><strong>Groupe test</strong> :</p>
+<ul>
+<li>les bâtiments qui se situent dans les zones sismiques dont la probabilité d’occurence au cours des 30 prochaines années est supérieure à 0.26.</li>
+</ul>
+<p><strong>Groupe de contrôle</strong> :</p>
+<ul>
+<li>les bâtiments situés dans les zones inférieures à ce seuil</li>
+<li>peut-être ceux qui sont situés dans les zones plus sûres</li>
+</ul>
+</section>
+<section id="empirical-strategy-2" class="slide level2">
+<h2>Empirical Strategy (2)</h2>
+<div title="In progress">
+<div class="callout callout-warning callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>In progress</strong></p>
+</div>
+<div class="callout-content">
+<div style="font-size: 0.8em; text-align: center;">
+<p><span class="math display">\[
+\begin{aligned}
+\ln P_{it} = \alpha_0 &amp;+ \sum_{j=1}^{J} \alpha_j Z_{ij} + \beta r_i + \gamma Seismic_i + \delta Earthquake_{it} \\
+&amp;+ \theta_t (Earthquake_{it} \times Seismic_i) + \varepsilon_{it}
+\end{aligned}
+\]</span></p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div style="font-size: 0.6em; line-height: 1.2;">
+<ul>
+<li><span class="math inline">\(Z_{ij}\)</span>: vector of property and location controls</li>
+<li><span class="math inline">\(r_i\)</span>: location fixed effects (prefectures)</li>
+<li><span class="math inline">\(Seismic_i\)</span>: baseline seismic risk exposure (over <span class="math inline">\(p = 0.3\)</span>)</li>
+<li><span class="math inline">\(Earthquake_{it}\)</span>: earthquake occurrence/intensity at time <span class="math inline">\(t\)</span></li>
+<li><span class="math inline">\(Earthquake_{it} \times Seismic_i\)</span>: interaction capturing heterogeneous effects</li>
+</ul>
+<p><span class="math inline">\(Z_{ij}\)</span> includes aggregated data such as population, net migration, employment rate, facilities (e.g.&nbsp;number of hospitals, shcools, a municipality financial index), and some macro variables (GDP, business index)</p>
 </div>
 </section>
 <section id="references" class="slide level2 smaller scrollable">
