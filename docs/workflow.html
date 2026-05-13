@@ -146,11 +146,26 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#cleaning-and-visualizing" id="toc-cleaning-and-visualizing" class="nav-link active" data-scroll-target="#cleaning-and-visualizing">Cleaning and visualizing</a>
+  <li><a href="#cleaning" id="toc-cleaning" class="nav-link active" data-scroll-target="#cleaning">CLEANING</a>
   <ul class="collapse">
-  <li><a href="#panel-data" id="toc-panel-data" class="nav-link" data-scroll-target="#panel-data">Panel Data</a></li>
+  <li><a href="#lets-clean-the-liffull-homes-dataset" id="toc-lets-clean-the-liffull-homes-dataset" class="nav-link" data-scroll-target="#lets-clean-the-liffull-homes-dataset">Let’s clean the Liffull Homes dataset</a></li>
+  <li><a href="#then-lets-clean-the-earthquakes-records-from-the-jma" id="toc-then-lets-clean-the-earthquakes-records-from-the-jma" class="nav-link" data-scroll-target="#then-lets-clean-the-earthquakes-records-from-the-jma">Then, let’s clean the earthquakes records from the JMA</a></li>
+  <li><a href="#finally-lets-clean-data-from-e-stat-and-macroeconomic-variables" id="toc-finally-lets-clean-data-from-e-stat-and-macroeconomic-variables" class="nav-link" data-scroll-target="#finally-lets-clean-data-from-e-stat-and-macroeconomic-variables">Finally, let’s clean data from e-stat and macroeconomic variables</a></li>
   </ul></li>
-  <li><a href="#combining-the-data" id="toc-combining-the-data" class="nav-link" data-scroll-target="#combining-the-data">Combining the data</a></li>
+  <li><a href="#merging" id="toc-merging" class="nav-link" data-scroll-target="#merging">MERGING</a>
+  <ul class="collapse">
+  <li><a href="#first-lets-merge-the-housing-data-with-the-shmaps" id="toc-first-lets-merge-the-housing-data-with-the-shmaps" class="nav-link" data-scroll-target="#first-lets-merge-the-housing-data-with-the-shmaps">First, let’s merge the housing data with the SHMaps</a></li>
+  <li><a href="#second-lets-merge-the-other-aggregated-variables" id="toc-second-lets-merge-the-other-aggregated-variables" class="nav-link" data-scroll-target="#second-lets-merge-the-other-aggregated-variables">Second, let’s merge the other aggregated variables</a></li>
+  <li><a href="#lets-eventullay-clean-the-final-dataset" id="toc-lets-eventullay-clean-the-final-dataset" class="nav-link" data-scroll-target="#lets-eventullay-clean-the-final-dataset">Let’s eventullay clean the final dataset</a></li>
+  </ul></li>
+  <li><a href="#visualisation" id="toc-visualisation" class="nav-link" data-scroll-target="#visualisation">VISUALISATION</a>
+  <ul class="collapse">
+  <li><a href="#basic-visuals" id="toc-basic-visuals" class="nav-link" data-scroll-target="#basic-visuals">Basic visuals</a></li>
+  <li><a href="#descritptive-statistics" id="toc-descritptive-statistics" class="nav-link" data-scroll-target="#descritptive-statistics">Descritptive statistics</a></li>
+  <li><a href="#pre-analysis-visualization" id="toc-pre-analysis-visualization" class="nav-link" data-scroll-target="#pre-analysis-visualization">Pre-analysis visualization</a></li>
+  </ul></li>
+  <li><a href="#analysis" id="toc-analysis" class="nav-link" data-scroll-target="#analysis">ANALYSIS</a></li>
+  <li><a href="#old" id="toc-old" class="nav-link" data-scroll-target="#old">OLD</a></li>
   </ul>
 </nav>
     </div>
@@ -177,12 +192,102 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 
 <p>This page describes the data management of this work, from the pre-processing steps to the results. The goal is to write step by step a replication package. However, note that some data are not public and should be required to their owners (namely the LIFFULL HOMES dataset the panel dataset from Keio University).</p>
-<section id="cleaning-and-visualizing" class="level2">
-<h2 class="anchored" data-anchor-id="cleaning-and-visualizing">Cleaning and visualizing</h2>
-<p>Most of the data are already really clean. This section provides examples of my code pre-processing the data. Code used in this section: <code>Python</code>, with <code>pandas</code>, <code>geopandas</code> and <code>duckdb</code>, and <code>SQL</code>.</p>
-<section id="jma-records" class="level4">
-<h4 class="anchored" data-anchor-id="jma-records">JMA Records</h4>
-<p>Let’s visualize the JMA variables:</p>
+<p>Code used in this section: <code>Python</code>, with <code>pandas</code>, <code>geopandas</code> and <code>duckdb</code>, and <code>SQL</code>.</p>
+<section id="cleaning" class="level2">
+<h2 class="anchored" data-anchor-id="cleaning">CLEANING</h2>
+<section id="lets-clean-the-liffull-homes-dataset" class="level3">
+<h3 class="anchored" data-anchor-id="lets-clean-the-liffull-homes-dataset">Let’s clean the Liffull Homes dataset</h3>
+<dl>
+<dt>Sample selection</dt>
+<dd>
+<p>I decide to make a number of restrictions. * I keep only properties where people live day by day, thus excluding parking sells or hotel accomodations. * I decide to focus on the private market and by that I exclude public housing, which is might be less responsive to the market shocks.</p>
+</dd>
+</dl>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode stata code-with-copy"><code class="sourceCode stata"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">/*</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="co">From the codebook:</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="co">1101 Land for Sale</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co">1102 Transfer of Leasehold Rights</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="co">1103 Transfer of Underlying Land Rights</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="co">1201 Newly Built Detached House</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="co">1202 Used Detached House</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="co">1203 Newly Built Terrace House</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="co">1204 Used Terrace House</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="co">1301 Newly Built Apartment</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="co">1302 Used Apartment</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="co">1303 Newly Built Public Housing</span></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="co">1304 Used Public Housing</span></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="co">1305 Newly Built Public Housing</span></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="co">1306 Used Public Housing</span></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a><span class="co">1307 Newly Built Townhouse</span></span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a><span class="co">1308 Used Townhouse</span></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a><span class="co">1309 Resort Apartment</span></span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a><span class="co">1401 Shop</span></span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a><span class="co">1403 Shop with Residence</span></span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a><span class="co">1404 Residence with Shop</span></span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a><span class="co">1405 Office</span></span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a><span class="co">1406 Shop/Office</span></span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a><span class="co">1407 Building</span></span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a><span class="co">1408 Factory</span></span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a><span class="co">1409 Apartment</span></span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a><span class="co">1410 Warehouse</span></span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a><span class="co">1411 Apartment</span></span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a><span class="co">1412 Dormitory</span></span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a><span class="co">1413 Inn</span></span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a><span class="co">1414 Hotel</span></span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a><span class="co">1415 Vacation home</span></span>
+<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a><span class="co">1416 Resort Mansion</span></span>
+<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a><span class="co">1420 Company housing</span></span>
+<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a><span class="co">1499 Other</span></span>
+<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a><span class="co">1502 Shop</span></span>
+<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a><span class="co">1505 Office</span></span>
+<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a><span class="co">1506 Shop/Office</span></span>
+<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a><span class="co">1507 Building</span></span>
+<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a><span class="co">1509 Condominium</span></span>
+<span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a><span class="co">1599 Other</span></span>
+<span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a><span class="co">3101 Condominium</span></span>
+<span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a><span class="co">3102 Apartment</span></span>
+<span id="cb1-44"><a href="#cb1-44" aria-hidden="true" tabindex="-1"></a><span class="co">3103 Detached house</span></span>
+<span id="cb1-45"><a href="#cb1-45" aria-hidden="true" tabindex="-1"></a><span class="co">3104 Terrace house</span></span>
+<span id="cb1-46"><a href="#cb1-46" aria-hidden="true" tabindex="-1"></a><span class="co">3105 Townhouse</span></span>
+<span id="cb1-47"><a href="#cb1-47" aria-hidden="true" tabindex="-1"></a><span class="co">3106 Room rental</span></span>
+<span id="cb1-48"><a href="#cb1-48" aria-hidden="true" tabindex="-1"></a><span class="co">3110 Dormitory/Boarding house</span></span>
+<span id="cb1-49"><a href="#cb1-49" aria-hidden="true" tabindex="-1"></a><span class="co">3201 Shop (entire building)</span></span>
+<span id="cb1-50"><a href="#cb1-50" aria-hidden="true" tabindex="-1"></a><span class="co">3202 Shop (part of building)</span></span>
+<span id="cb1-51"><a href="#cb1-51" aria-hidden="true" tabindex="-1"></a><span class="co">3203 Office</span></span>
+<span id="cb1-52"><a href="#cb1-52" aria-hidden="true" tabindex="-1"></a><span class="co">3204 Shop/Office</span></span>
+<span id="cb1-53"><a href="#cb1-53" aria-hidden="true" tabindex="-1"></a><span class="co">3205 Factory</span></span>
+<span id="cb1-54"><a href="#cb1-54" aria-hidden="true" tabindex="-1"></a><span class="co">3206 Warehouse</span></span>
+<span id="cb1-55"><a href="#cb1-55" aria-hidden="true" tabindex="-1"></a><span class="co">3207 Detached house</span></span>
+<span id="cb1-56"><a href="#cb1-56" aria-hidden="true" tabindex="-1"></a><span class="co">3208 Condominium</span></span>
+<span id="cb1-57"><a href="#cb1-57" aria-hidden="true" tabindex="-1"></a><span class="co">3209 Inn</span></span>
+<span id="cb1-58"><a href="#cb1-58" aria-hidden="true" tabindex="-1"></a><span class="co">3210 Dormitory</span></span>
+<span id="cb1-59"><a href="#cb1-59" aria-hidden="true" tabindex="-1"></a><span class="co">3211 Vacation home</span></span>
+<span id="cb1-60"><a href="#cb1-60" aria-hidden="true" tabindex="-1"></a><span class="co">3212 Land</span></span>
+<span id="cb1-61"><a href="#cb1-61" aria-hidden="true" tabindex="-1"></a><span class="co">3213 Building</span></span>
+<span id="cb1-62"><a href="#cb1-62" aria-hidden="true" tabindex="-1"></a><span class="co">3214 Shop with residence (detached house)</span></span>
+<span id="cb1-63"><a href="#cb1-63" aria-hidden="true" tabindex="-1"></a><span class="co">3215 Residential property with commercial space (part of the building)</span></span>
+<span id="cb1-64"><a href="#cb1-64" aria-hidden="true" tabindex="-1"></a><span class="co">3231 Store</span></span>
+<span id="cb1-65"><a href="#cb1-65" aria-hidden="true" tabindex="-1"></a><span class="co">3282 Parking lot</span></span>
+<span id="cb1-66"><a href="#cb1-66" aria-hidden="true" tabindex="-1"></a><span class="co">3299 Other</span></span>
+<span id="cb1-67"><a href="#cb1-67" aria-hidden="true" tabindex="-1"></a><span class="co">*/</span></span>
+<span id="cb1-68"><a href="#cb1-68" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-69"><a href="#cb1-69" aria-hidden="true" tabindex="-1"></a>* Select house / appartment / condomium</span>
+<span id="cb1-70"><a href="#cb1-70" aria-hidden="true" tabindex="-1"></a><span class="kw">keep</span> <span class="kw">if</span> <span class="fu">inlist</span>(bukken_type, <span class="co">///</span></span>
+<span id="cb1-71"><a href="#cb1-71" aria-hidden="true" tabindex="-1"></a>    1201, 1202, 1203, 1204, <span class="co">///</span></span>
+<span id="cb1-72"><a href="#cb1-72" aria-hidden="true" tabindex="-1"></a>    1301, 1302, <span class="co">///</span></span>
+<span id="cb1-73"><a href="#cb1-73" aria-hidden="true" tabindex="-1"></a>    1307, 1308, 1309, <span class="co">///</span></span>
+<span id="cb1-74"><a href="#cb1-74" aria-hidden="true" tabindex="-1"></a>    1415, <span class="co">///</span></span>
+<span id="cb1-75"><a href="#cb1-75" aria-hidden="true" tabindex="-1"></a>    1409, 1411, <span class="co">///</span></span>
+<span id="cb1-76"><a href="#cb1-76" aria-hidden="true" tabindex="-1"></a>    1509, <span class="co">///</span></span>
+<span id="cb1-77"><a href="#cb1-77" aria-hidden="true" tabindex="-1"></a>    3101, 3102, 3103, 3104, 3105)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+</section>
+<section id="then-lets-clean-the-earthquakes-records-from-the-jma" class="level3">
+<h3 class="anchored" data-anchor-id="then-lets-clean-the-earthquakes-records-from-the-jma">Then, let’s clean the earthquakes records from the JMA</h3>
 <div class="cell">
 <div class="cell-output-display">
 <div style="border: 1px solid #ddd; padding: 0px; overflow-y: scroll; height:200px; overflow-x: scroll; width:100%; ">
@@ -265,23 +370,141 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>JMA records include all seismic activity observations. They are to be converted to csv first, ensuring that they are well encoded.</p>
 <p>Records include of course latitude and longitude in DMS format. Then the following code convert those variables in the CRS WGS84 (epsg:4326) format:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Convert latitude_deg / lat and longitude_deg / lon in DMS to WGS84 (epsg:4326)</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> dms_to_decimals(latlon_deg: <span class="bu">int</span> <span class="op">=</span> <span class="dv">31</span>, latlon: <span class="bu">int</span> <span class="op">=</span> <span class="dv">1176</span>):</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>    minute <span class="op">=</span> latlon <span class="op">//</span> <span class="dv">100</span></span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>    second <span class="op">=</span> latlon <span class="op">%</span> <span class="dv">100</span></span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> latlon_deg <span class="op">+</span> minute <span class="op">/</span> <span class="dv">60</span> <span class="op">+</span> second <span class="op">/</span> <span class="dv">3600</span></span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>jma_damage[<span class="st">"latitude"</span>] <span class="op">=</span> jma_damage.<span class="bu">apply</span>(</span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>    <span class="kw">lambda</span> row : dms_to_decimals(row[<span class="st">"latitude_deg"</span>], row[<span class="st">"lat"</span>]),</span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>    axis <span class="op">=</span> <span class="dv">1</span>)</span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>jma_damage[<span class="st">"longitude"</span>] <span class="op">=</span> jma_damage.<span class="bu">apply</span>(</span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>    <span class="kw">lambda</span> row : dms_to_decimals(row[<span class="st">"longitude_deg"</span>], row[<span class="st">"lon"</span>]),</span>
-<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>    axis <span class="op">=</span> <span class="dv">1</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Convert latitude_deg / lat and longitude_deg / lon in DMS to WGS84 (epsg:4326)</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> dms_to_decimals(latlon_deg: <span class="bu">int</span> <span class="op">=</span> <span class="dv">31</span>, latlon: <span class="bu">int</span> <span class="op">=</span> <span class="dv">1176</span>):</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    minute <span class="op">=</span> latlon <span class="op">//</span> <span class="dv">100</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>    second <span class="op">=</span> latlon <span class="op">%</span> <span class="dv">100</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> latlon_deg <span class="op">+</span> minute <span class="op">/</span> <span class="dv">60</span> <span class="op">+</span> second <span class="op">/</span> <span class="dv">3600</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>jma_damage[<span class="st">"latitude"</span>] <span class="op">=</span> jma_damage.<span class="bu">apply</span>(</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>    <span class="kw">lambda</span> row : dms_to_decimals(row[<span class="st">"latitude_deg"</span>], row[<span class="st">"lat"</span>]),</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>    axis <span class="op">=</span> <span class="dv">1</span>)</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>jma_damage[<span class="st">"longitude"</span>] <span class="op">=</span> jma_damage.<span class="bu">apply</span>(</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>    <span class="kw">lambda</span> row : dms_to_decimals(row[<span class="st">"longitude_deg"</span>], row[<span class="st">"lon"</span>]),</span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>    axis <span class="op">=</span> <span class="dv">1</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>The records include a “damage _class” variable where damages are recorded.</p>
-<p><img src="images/jma_damage_2015_2017.png" class="img-fluid"></p>
 </section>
+<section id="finally-lets-clean-data-from-e-stat-and-macroeconomic-variables" class="level3">
+<h3 class="anchored" data-anchor-id="finally-lets-clean-data-from-e-stat-and-macroeconomic-variables">Finally, let’s clean data from e-stat and macroeconomic variables</h3>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode stata code-with-copy"><code class="sourceCode stata"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>********************************************************************************</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>* FILLING IN MISSING VALUES</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>* Linear interpolation</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>* Those <span class="kw">for</span> which 2015 and 2020 are available</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="kw">foreach</span> <span class="kw">var</span> <span class="kw">of</span> <span class="kw">varlist</span> pop_total median_age lifeexp_male lifeexp_female pop_u15 pop_o65 did_pop foreigners households pop_total2 employed unemployed labor_force skilled_workers selfemp_with selfemp_without commute_in commute_out {</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>    * Create base</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>    <span class="kw">gen</span> <span class="ot">`var'</span>_base = .</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>    <span class="kw">bysort</span> areacode (<span class="fu">year</span>): <span class="kw">replace</span> <span class="ot">`var'</span>_base = <span class="ot">`var'</span>[1]</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>    * Linear interpolation coefficients</span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>    <span class="kw">gen</span> <span class="ot">`var'</span>_delta = .</span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>    <span class="kw">bysort</span> areacode (<span class="fu">year</span>): <span class="kw">replace</span> <span class="ot">`var'</span>_delta = (<span class="ot">`var'</span>[6] / <span class="ot">`var'</span>[1]) ^ (1/5)</span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>    * Interpolation computation</span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>    <span class="kw">gen</span> <span class="ot">`var'</span>_linear = .</span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>    <span class="kw">forvalues</span> <span class="fu">y</span> = 2015/2023 {</span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>        <span class="kw">local</span> t = <span class="ot">`y'</span> - 2015</span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a>        <span class="kw">replace</span> <span class="ot">`var'</span>_linear = <span class="ot">`var'</span>_base * (<span class="ot">`var'</span>_delta ^ <span class="ot">`t'</span>) <span class="kw">if</span> <span class="fu">year</span> == <span class="ot">`y'</span></span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a>    * Drop temporary <span class="kw">var</span></span>
+<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a>    <span class="kw">drop</span> <span class="ot">`var'</span>_delta</span>
+<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a>    <span class="kw">drop</span> <span class="ot">`var'</span>_base</span>
+<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a>* Regression</span>
+<span id="cb3-29"><a href="#cb3-29" aria-hidden="true" tabindex="-1"></a><span class="kw">gen</span> inmigrants_reg = inmigrants</span>
+<span id="cb3-30"><a href="#cb3-30" aria-hidden="true" tabindex="-1"></a><span class="kw">gen</span> outmigrants_reg = outmigrants</span>
+<span id="cb3-31"><a href="#cb3-31" aria-hidden="true" tabindex="-1"></a><span class="kw">foreach</span> <span class="kw">var</span> <span class="kw">in</span> inmigrants outmigrants {</span>
+<span id="cb3-32"><a href="#cb3-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-33"><a href="#cb3-33" aria-hidden="true" tabindex="-1"></a>    <span class="kw">gen</span> yhat = .</span>
+<span id="cb3-34"><a href="#cb3-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-35"><a href="#cb3-35" aria-hidden="true" tabindex="-1"></a>    <span class="kw">levelsof</span> areacode, <span class="kw">local</span>(areas)</span>
+<span id="cb3-36"><a href="#cb3-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-37"><a href="#cb3-37" aria-hidden="true" tabindex="-1"></a>    <span class="kw">foreach</span> a <span class="kw">of</span> <span class="kw">local</span> areas {</span>
+<span id="cb3-38"><a href="#cb3-38" aria-hidden="true" tabindex="-1"></a>        <span class="fu">count</span> <span class="kw">if</span> areacode == <span class="ot">`a'</span> &amp; !<span class="fu">missing</span>(<span class="fu">year</span>, <span class="ot">`var'</span>)</span>
+<span id="cb3-39"><a href="#cb3-39" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb3-40"><a href="#cb3-40" aria-hidden="true" tabindex="-1"></a>        <span class="kw">if</span> <span class="fu">r</span>(<span class="kw">N</span>) &gt;= 2 {</span>
+<span id="cb3-41"><a href="#cb3-41" aria-hidden="true" tabindex="-1"></a>            <span class="kw">regress</span> <span class="ot">`var'</span> <span class="fu">year</span> <span class="kw">if</span> areacode == <span class="ot">`a'</span></span>
+<span id="cb3-42"><a href="#cb3-42" aria-hidden="true" tabindex="-1"></a>            <span class="kw">predict</span> temp <span class="kw">if</span> areacode == <span class="ot">`a'</span></span>
+<span id="cb3-43"><a href="#cb3-43" aria-hidden="true" tabindex="-1"></a>            </span>
+<span id="cb3-44"><a href="#cb3-44" aria-hidden="true" tabindex="-1"></a>            <span class="kw">replace</span> yhat = <span class="fu">round</span>(temp) <span class="kw">if</span> areacode == <span class="ot">`a'</span></span>
+<span id="cb3-45"><a href="#cb3-45" aria-hidden="true" tabindex="-1"></a>            <span class="kw">drop</span> temp</span>
+<span id="cb3-46"><a href="#cb3-46" aria-hidden="true" tabindex="-1"></a>        }</span>
+<span id="cb3-47"><a href="#cb3-47" aria-hidden="true" tabindex="-1"></a>        <span class="kw">else</span> {</span>
+<span id="cb3-48"><a href="#cb3-48" aria-hidden="true" tabindex="-1"></a>            <span class="kw">display</span> <span class="st">"Skipping areacode `a' for `var' (not enough data)"</span></span>
+<span id="cb3-49"><a href="#cb3-49" aria-hidden="true" tabindex="-1"></a>        }</span>
+<span id="cb3-50"><a href="#cb3-50" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb3-51"><a href="#cb3-51" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-52"><a href="#cb3-52" aria-hidden="true" tabindex="-1"></a>    <span class="kw">replace</span> <span class="ot">`var'</span>_reg = yhat <span class="kw">if</span> <span class="fu">missing</span>(<span class="ot">`var'</span>)</span>
+<span id="cb3-53"><a href="#cb3-53" aria-hidden="true" tabindex="-1"></a>    <span class="kw">drop</span> yhat</span>
+<span id="cb3-54"><a href="#cb3-54" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb3-55"><a href="#cb3-55" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-56"><a href="#cb3-56" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-57"><a href="#cb3-57" aria-hidden="true" tabindex="-1"></a>* Take the nearest <span class="ot">value</span></span>
+<span id="cb3-58"><a href="#cb3-58" aria-hidden="true" tabindex="-1"></a><span class="kw">foreach</span> <span class="kw">var</span> <span class="kw">of</span> <span class="kw">varlist</span> comm_centers libraries hospitals physicians dentists  {</span>
+<span id="cb3-59"><a href="#cb3-59" aria-hidden="true" tabindex="-1"></a>    <span class="kw">gen</span> <span class="ot">`var'</span>_near = <span class="ot">`var'</span></span>
+<span id="cb3-60"><a href="#cb3-60" aria-hidden="true" tabindex="-1"></a>    <span class="kw">bysort</span> areacode (<span class="fu">year</span>): <span class="kw">replace</span> <span class="ot">`var'</span>_near = <span class="ot">`var'</span>_near[<span class="dt">_n</span>+1] <span class="kw">if</span> <span class="fu">missing</span>(<span class="ot">`var'</span>_near[1])</span>
+<span id="cb3-61"><a href="#cb3-61" aria-hidden="true" tabindex="-1"></a>    <span class="kw">bysort</span> areacode (<span class="fu">year</span>): <span class="kw">replace</span> <span class="ot">`var'</span>_near = <span class="ot">`var'</span>_near[<span class="dt">_n</span>-1] <span class="kw">if</span> <span class="fu">missing</span>(<span class="ot">`var'</span>_near) </span>
+<span id="cb3-62"><a href="#cb3-62" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb3-63"><a href="#cb3-63" aria-hidden="true" tabindex="-1"></a>* Simple <span class="kw">mean</span> computation</span>
+<span id="cb3-64"><a href="#cb3-64" aria-hidden="true" tabindex="-1"></a><span class="kw">foreach</span> <span class="kw">var</span> <span class="kw">of</span> <span class="kw">varlist</span> fin_power {</span>
+<span id="cb3-65"><a href="#cb3-65" aria-hidden="true" tabindex="-1"></a>    <span class="kw">bysort</span> areacode (<span class="fu">year</span>): <span class="kw">egen</span> <span class="ot">`var'</span>_mean = <span class="kw">mean</span>(<span class="ot">`var'</span>)</span>
+<span id="cb3-66"><a href="#cb3-66" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+</section>
+</section>
+<section id="merging" class="level2">
+<h2 class="anchored" data-anchor-id="merging">MERGING</h2>
+<p>Now the data are pro-processed, they can be merged easily together.</p>
+<section id="first-lets-merge-the-housing-data-with-the-shmaps" class="level3">
+<h3 class="anchored" data-anchor-id="first-lets-merge-the-housing-data-with-the-shmaps">First, let’s merge the housing data with the SHMaps</h3>
+</section>
+<section id="second-lets-merge-the-other-aggregated-variables" class="level3">
+<h3 class="anchored" data-anchor-id="second-lets-merge-the-other-aggregated-variables">Second, let’s merge the other aggregated variables</h3>
+</section>
+<section id="lets-eventullay-clean-the-final-dataset" class="level3">
+<h3 class="anchored" data-anchor-id="lets-eventullay-clean-the-final-dataset">Let’s eventullay clean the final dataset</h3>
+</section>
+</section>
+<section id="visualisation" class="level2">
+<h2 class="anchored" data-anchor-id="visualisation">VISUALISATION</h2>
+<section id="basic-visuals" class="level3">
+<h3 class="anchored" data-anchor-id="basic-visuals">Basic visuals</h3>
+<p>Let’s first visualize the different datasets seperately. To get a better intuition of the following study, let’s visualize risk maps:</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="https://www.j-shis.bosai.go.jp/map/?lang=en"><img src="images/shm_2020_style.png" class="img-fluid figure-img" alt="Blue"></a></p>
+<figcaption>2020 SHM from J-SHIS website</figcaption>
+</figure>
+</div>
+</section>
+<section id="descritptive-statistics" class="level3">
+<h3 class="anchored" data-anchor-id="descritptive-statistics">Descritptive statistics</h3>
+</section>
+<section id="pre-analysis-visualization" class="level3">
+<h3 class="anchored" data-anchor-id="pre-analysis-visualization">Pre-analysis visualization</h3>
+<p>Here I take a step forward to analysis by taking a look at correlation.</p>
+</section>
+</section>
+<section id="analysis" class="level2">
+<h2 class="anchored" data-anchor-id="analysis">ANALYSIS</h2>
+<section id="treatment-definition" class="level4">
+<h4 class="anchored" data-anchor-id="treatment-definition">Treatment definition</h4>
+</section>
+<section id="regression-tables" class="level4">
+<h4 class="anchored" data-anchor-id="regression-tables">Regression tables</h4>
+</section>
+</section>
+<section id="old" class="level2">
+<h2 class="anchored" data-anchor-id="old">OLD</h2>
 <section id="j-shis-hazard-maps" class="level4">
 <h4 class="anchored" data-anchor-id="j-shis-hazard-maps">J-SHIS Hazard Maps</h4>
 <p>Many parameters are available, and have an impact on what the hazard maps look like. I decide to focus on columns 02 and 04 since there are presented as the most common for public hazard map information to the public:</p>
@@ -444,23 +667,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <p>This is what it looks like:</p>
 <p><img src="images/shm_2016_final.png" class="img-fluid" width="789"></p>
-</section>
-<section id="lifull-homes-dataset" class="level4">
-<h4 class="anchored" data-anchor-id="lifull-homes-dataset">LIFULL HOMES Dataset</h4>
-</section>
-<section id="mlit-dataset" class="level4">
-<h4 class="anchored" data-anchor-id="mlit-dataset">MLIT Dataset</h4>
-</section>
-<section id="panel-data" class="level3">
-<h3 class="anchored" data-anchor-id="panel-data">Panel Data</h3>
-</section>
-</section>
-<section id="combining-the-data" class="level2">
-<h2 class="anchored" data-anchor-id="combining-the-data">Combining the data</h2>
 <hr>
 <p><a href="index.html">Back to Home</a></p>
 
 
+</section>
 </section>
 
 </main> <!-- /main -->

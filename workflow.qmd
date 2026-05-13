@@ -13,13 +13,104 @@ library(kableExtra)
 
 This page describes the data management of this work, from the pre-processing steps to the results. The goal is to write step by step a replication package. However, note that some data are not public and should be required to their owners (namely the LIFFULL HOMES dataset the panel dataset from Keio University).
 
-## Cleaning and visualizing
+Code used in this section: `Python`, with `pandas`, `geopandas` and `duckdb`, and `SQL`.
 
-Most of the data are already really clean. This section provides examples of my code pre-processing the data. Code used in this section: `Python`, with `pandas`, `geopandas` and `duckdb`, and `SQL`.
+## CLEANING
 
-#### JMA Records
+### Let's clean the Liffull Homes dataset
 
-Let's visualize the JMA variables:
+Sample selection
+
+:   I decide to make a number of restrictions.
+
+* I keep only properties where people live day by day, thus excluding parking sells or hotel accomodations.
+
+* I decide to focus on the private market and by that I exclude public housing, which is might be less responsive to the market shocks.
+
+```{stata}
+#| eval: false
+#| code-fold: true
+/*
+From the codebook:
+1101 Land for Sale
+1102 Transfer of Leasehold Rights
+1103 Transfer of Underlying Land Rights
+1201 Newly Built Detached House
+1202 Used Detached House
+1203 Newly Built Terrace House
+1204 Used Terrace House
+1301 Newly Built Apartment
+1302 Used Apartment
+1303 Newly Built Public Housing
+1304 Used Public Housing
+1305 Newly Built Public Housing
+1306 Used Public Housing
+1307 Newly Built Townhouse
+1308 Used Townhouse
+1309 Resort Apartment
+1401 Shop
+1403 Shop with Residence
+1404 Residence with Shop
+1405 Office
+1406 Shop/Office
+1407 Building
+1408 Factory
+1409 Apartment
+1410 Warehouse
+1411 Apartment
+1412 Dormitory
+1413 Inn
+1414 Hotel
+1415 Vacation home
+1416 Resort Mansion
+1420 Company housing
+1499 Other
+1502 Shop
+1505 Office
+1506 Shop/Office
+1507 Building
+1509 Condominium
+1599 Other
+3101 Condominium
+3102 Apartment
+3103 Detached house
+3104 Terrace house
+3105 Townhouse
+3106 Room rental
+3110 Dormitory/Boarding house
+3201 Shop (entire building)
+3202 Shop (part of building)
+3203 Office
+3204 Shop/Office
+3205 Factory
+3206 Warehouse
+3207 Detached house
+3208 Condominium
+3209 Inn
+3210 Dormitory
+3211 Vacation home
+3212 Land
+3213 Building
+3214 Shop with residence (detached house)
+3215 Residential property with commercial space (part of the building)
+3231 Store
+3282 Parking lot
+3299 Other
+*/
+
+* Select house / appartment / condomium
+keep if inlist(bukken_type, ///
+    1201, 1202, 1203, 1204, ///
+    1301, 1302, ///
+    1307, 1308, 1309, ///
+    1415, ///
+    1409, 1411, ///
+    1509, ///
+    3101, 3102, 3103, 3104, 3105)
+```
+
+
+### Then, let's clean the earthquakes records from the JMA
 
 ```{r}
 #| echo: false
@@ -54,7 +145,110 @@ jma_damage["longitude"] = jma_damage.apply(
 
 The records include a "damage \_class" variable where damages are recorded.
 
-![](images/jma_damage_2015_2017.png)
+### Finally, let's clean data from e-stat and macroeconomic variables
+
+```{stata}
+#| eval: false
+#| code-fold: true
+********************************************************************************
+* FILLING IN MISSING VALUES
+
+* Linear interpolation
+* Those for which 2015 and 2020 are available
+foreach var of varlist pop_total median_age lifeexp_male lifeexp_female pop_u15 pop_o65 did_pop foreigners households pop_total2 employed unemployed labor_force skilled_workers selfemp_with selfemp_without commute_in commute_out {
+
+	* Create base
+	gen `var'_base = .
+	bysort areacode (year): replace `var'_base = `var'[1]
+
+	* Linear interpolation coefficients
+	gen `var'_delta = .
+	bysort areacode (year): replace `var'_delta = (`var'[6] / `var'[1]) ^ (1/5)
+
+	* Interpolation computation
+	gen `var'_linear = .
+	forvalues y = 2015/2023 {
+		local t = `y' - 2015
+		replace `var'_linear = `var'_base * (`var'_delta ^ `t') if year == `y'
+	}
+
+	* Drop temporary var
+	drop `var'_delta
+	drop `var'_base
+}
+
+* Regression
+gen inmigrants_reg = inmigrants
+gen outmigrants_reg = outmigrants
+foreach var in inmigrants outmigrants {
+
+    gen yhat = .
+
+    levelsof areacode, local(areas)
+
+    foreach a of local areas {
+        count if areacode == `a' & !missing(year, `var')
+        
+        if r(N) >= 2 {
+            regress `var' year if areacode == `a'
+            predict temp if areacode == `a'
+            
+            replace yhat = round(temp) if areacode == `a'
+            drop temp
+        }
+        else {
+            display "Skipping areacode `a' for `var' (not enough data)"
+        }
+    }
+
+    replace `var'_reg = yhat if missing(`var')
+    drop yhat
+}
+
+
+* Take the nearest value
+foreach var of varlist comm_centers libraries hospitals physicians dentists  {
+	gen `var'_near = `var'
+	bysort areacode (year): replace `var'_near = `var'_near[_n+1] if missing(`var'_near[1])
+	bysort areacode (year): replace `var'_near = `var'_near[_n-1] if missing(`var'_near) 
+}
+* Simple mean computation
+foreach var of varlist fin_power {
+	bysort areacode (year): egen `var'_mean = mean(`var')
+}
+```
+
+## MERGING
+
+Now the data are pro-processed, they can be merged easily together.
+
+### First, let's merge the housing data with the SHMaps
+
+### Second, let's merge the other aggregated variables
+
+### Let's eventullay clean the final dataset
+
+## VISUALISATION
+
+### Basic visuals
+
+Let's first visualize the different datasets seperately. To get a better intuition of the following study, let's visualize risk maps:
+
+[![2020 SHM from J-SHIS website](images/shm_2020_style.png){fig-alt="Blue"}](https://www.j-shis.bosai.go.jp/map/?lang=en)
+
+### Descritptive statistics
+
+### Pre-analysis visualization
+
+Here I take a step forward to analysis by taking a look at correlation.
+
+## ANALYSIS
+
+#### Treatment definition
+
+#### Regression tables
+
+## OLD
 
 #### J-SHIS Hazard Maps
 
@@ -125,14 +319,6 @@ df |>
 This is what it looks like:
 
 ![](images/shm_2016_final.png){width="789"}
-
-#### LIFULL HOMES Dataset
-
-#### MLIT Dataset
-
-### Panel Data
-
-## Combining the data
 
 ------------------------------------------------------------------------
 

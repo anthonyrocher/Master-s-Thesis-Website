@@ -159,10 +159,14 @@ Anthony Rocher – ENS Lyon
 </div>
 
 </section>
+<section id="intuition" class="slide level2">
+<h2>Intuition</h2>
+
+<img data-src="images/pshm_2016_within_simplified_arrows.png" class="r-stretch quarto-figure-center"><p class="caption">Description of my research</p></section>
 <section id="research-question-motivation" class="slide level2">
 <h2>Research Question &amp; Motivation</h2>
 <div title="Research Question">
-<div class="callout callout-note callout-titled callout-style-default">
+<div class="callout callout-tip callout-titled callout-style-default">
 <div class="callout-body">
 <div class="callout-title">
 <div class="callout-icon-container">
@@ -177,20 +181,40 @@ Anthony Rocher – ENS Lyon
 </div>
 </div>
 <p><strong>Why does it matter?</strong></p>
-<p>Intensifying disasters with climate change.</p>
-<p>Disasters: floods, hurricanes, wildfires, and droughts.</p>
-<p>In Japan: earthquakes, tsunamis.</p>
-<p><strong>The setting</strong>: Hazard risk mapping in Japan and its consequences on real estate prices.</p>
+<p><strong>People’s awareness</strong> and behavior <strong>about such threats</strong></p>
+<p><strong>Investments</strong> and maybe <strong>inequalities</strong> in the long run</p>
+<p><strong>Intensifying disasters</strong>: floods, hurricanes, wildfires, and droughts.</p>
+<p>My research may apply to other type of risks</p>
 </section>
-<section id="literature-review" class="slide level2">
-<h2>Literature review</h2>
+<section id="theoretical-part" class="slide level2">
+<h2>Theoretical Part</h2>
+<div class="callout callout-caution callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Still in progress</strong></p>
+</div>
+<div class="callout-content">
+<p>Let <span class="math inline">\(p\)</span> be the subjective probability of a earthquake to happen. <span class="math inline">\(p\)</span> depends on <span class="math inline">\(i\)</span>, the information set available, and <span class="math inline">\(r\)</span>, the objective attributes that make such an event more likely. Then the HPF is:</p>
+<p><span class="math inline">\(P = P(Z, r, p(i, r))\)</span></p>
+<p>Expected utility becomes:</p>
+<p><span class="math inline">\(EU = p(i, r) \cdot U^E[Z, r, Q] + (1 - p(i, r)) \cdot U^{NE}[Z, r, Q]\)</span></p>
+<p>Given the budget constraint <span class="math inline">\(M = P(Z, r, p(i, r)) + Q\)</span> (with <span class="math inline">\(Q\)</span> being a composite commodity), the maximization of utility is given by:</p>
+<p><span class="math inline">\(\frac{\partial P}{\partial p}=\frac{U^{E} - U^{NE}}{p(i,r)\frac{\partial U^{E}}{\partial Q}+\left(1 - p(i,r)\right)\frac{\partial U^{NE}}{\partial Q}}\)</span></p>
+</div>
+</div>
+</div>
+</section>
+<section id="empirical-analysis-a-literature-review" class="slide level2">
+<h2>Empirical Analysis: A Literature Review</h2>
 <p>Many papers on natural disasters and their consequences on housing prices (<span class="citation" data-cites="brookshire_test_1985">Brookshire et al. (<a href="#/references" role="doc-biblioref" onclick="">1985</a>)</span>, <span class="citation" data-cites="hidano_effect_2015">Hidano, Hoshino, and Sugiura (<a href="#/references" role="doc-biblioref" onclick="">2015</a>)</span>, <span class="citation" data-cites="balboni_harms_2025">Balboni (<a href="#/references" role="doc-biblioref" onclick="">2025</a>)</span> among many others).</p>
 <p>My work heavily relies on <span class="citation" data-cites="ikefuji2022">Ikefuji et al. (<a href="#/references" role="doc-biblioref" onclick="">2022</a>)</span>.</p>
-<p><strong>My main contributions:</strong></p>
+<p><strong>My main contribution:</strong></p>
 <ul>
-<li><p>What about the unaffected areas but still at risk?</p></li>
 <li><p>Extending the analysis to the housing market</p></li>
-<li><p>Controling for other type of risk (not done by the authors)</p></li>
+<li><p>Time extension (recent years)</p></li>
 </ul>
 </section>
 <section id="data-1" class="slide level2">
@@ -209,7 +233,7 @@ Anthony Rocher – ENS Lyon
 <li>coordinates / magnitude</li>
 <li><strong>Japan Seismic Hazard Information Station (J-SHIS)</strong></li>
 <li>risk hazard maps</li>
-<li>change over time</li>
+<li>uploaded every year</li>
 </ul>
 </div>
 </div>
@@ -222,61 +246,393 @@ Anthony Rocher – ENS Lyon
 </div>
 <div class="callout-content">
 <ul>
-<li><strong>Ministry of Land, Infrastructure, Transport and Tourism (MLIT)</strong></li>
-<li>accurate description of the properties (nearest station, type of use, etc.)</li>
 <li><strong>LIFULL HOMES</strong></li>
-<li>including rentals</li>
-<li>two limitations: estimation only,, from 2015 to 2016 only</li>
+<li>rentals and sales across Japan from 2015 to 2023</li>
 </ul>
 </div>
 </div>
 </div>
-</div></div>
+<div class="callout callout-note no-icon callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<p><strong>Other data</strong></p>
+</div>
+<div class="callout-content">
+<ul>
+<li><p><strong>E-STAT &amp; OTHERS</strong></p></li>
+<li><p>aggregated variables &amp; macroeconomic variables</p></li>
+</ul>
+</div>
+</div>
+</div>
+</div><p>Main argument of my research: <strong>matching</strong> <strong>them</strong></p>
+</div>
 </section>
 <section id="data-2" class="slide level2">
 <h2>Data (2)</h2>
-<div class="columns">
-<div class="column" style="width:50%;">
+<div class="column" style="width:100%;">
+<div class="quarto-figure quarto-figure-left">
+<figure>
 <p><img data-src="images/shm_2020_style.png"></p>
-</div><div class="column" style="width:50%;">
-<p><img data-src="images/shm_2016_final.png"></p>
-</div></div>
-</section>
+<figcaption>2020 Seismic Hazard Map from the J-SHIS</figcaption>
+</figure>
+</div>
+</div></section>
+<section id="data-2-1" class="slide level2">
+<h2>Data (2)</h2>
+<div class="column" style="width:50%;">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="images/shm_2016_final.png" class="quarto-figure quarto-figure-center" style="border: 1px solid black;" height="520"></p>
+</figure>
+</div>
+</div><div class="column" style="width:3%;">
+
+</div><div class="column" style="width:47%;">
+<p>Many measures of seismic risk. In this study, I choose PSHMS : <br><br> <span style="color: grey;">Probability that a earthquake of magnitude 6 or more will happen in the next 30 years. <br><br> Let denote this probability <span class="math inline">\(p\)</span>.</span></p>
+</div></section>
 <section id="data-3" class="slide level2">
 <h2>Data (3)</h2>
-<p>Ma base de données actuelle :</p>
-<div class="callout callout-tip callout-titled callout-style-default">
-<div class="callout-body">
-<div class="callout-title">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<p><strong>Tip</strong></p>
-</div>
-<div class="callout-content">
-<p>LIFFULL HOMES + CARTES DE RISQUE + VARIABLES AGRÉGÉES</p>
-</div>
-</div>
+<h3 id="the-liffull-homes-dataset">The Liffull Homes dataset:</h3>
+<div style="
+border: 1.5px solid #666;
+padding: 14px 18px;
+display: inline-block;
+font-family: monospace;
+font-size: 0.92rem;
+line-height: 1.6;
+max-width: 100%;
+overflow-x: auto;
+">
+<table style="border-collapse: collapse;">
+<tbody><tr>
+<td style="padding: 2px 14px; color: orange;">
+pub_start_date
+</td>
+<td style="padding: 2px 14px; color: orange;">
+pub_end_date
+</td>
+<td style="padding: 2px 14px;">
+building_id
+</td>
+<td style="padding: 2px 14px;">
+unit_id
+</td>
+<td style="padding: 2px 14px;">
+status
+</td>
+</tr>
+<tr>
+<td style="padding: 2px 14px; color: red;">
+bukken_type
+</td>
+<td style="padding: 2px 14px;">
+all_number
+</td>
+<td style="padding: 2px 14px;">
+empty_number
+</td>
+<td style="padding: 2px 14px; color: red;">
+addr1_1_name
+</td>
+<td style="padding: 2px 14px; color: red;">
+addr1_2_name
+</td>
+</tr>
+<tr>
+<td style="padding: 2px 14px;">
+addr2_name
+</td>
+<td style="padding: 2px 14px;">
+rosen1_name
+</td>
+<td style="padding: 2px 14px;">
+eki1_name
+</td>
+<td style="padding: 2px 14px; color: red;">
+walk_distance1
+</td>
+<td style="padding: 2px 14px;">
+rosen2_name
+</td>
+</tr>
+<tr>
+<td style="padding: 2px 14px;">
+eki2_name
+</td>
+<td style="padding: 2px 14px;">
+walk_distance2
+</td>
+<td style="padding: 2px 14px;">
+land_youto
+</td>
+<td style="padding: 2px 14px;">
+land_toshi
+</td>
+<td style="padding: 2px 14px; color: red;">
+land_area
+</td>
+</tr>
+<tr>
+<td style="padding: 2px 14px; color: green;">
+latitude
+</td>
+<td style="padding: 2px 14px; color: green;">
+longitude
+</td>
+<td style="padding: 2px 14px;">
+land_right_label
+</td>
+<td style="padding: 2px 14px;">
+house_kouzou_label
+</td>
+<td style="padding: 2px 14px; color: red;">
+sqft
+</td>
+</tr>
+<tr>
+<td style="padding: 2px 14px;">
+house_kaisuu
+</td>
+<td style="padding: 2px 14px;">
+house_kaisuu_chika
+</td>
+<td style="padding: 2px 14px;">
+kenchiku_date
+</td>
+<td style="padding: 2px 14px;">
+flg_new
+</td>
+<td style="padding: 2px 14px;">
+room_kaisuu
+</td>
+</tr>
+<tr>
+<td style="padding: 2px 14px;">
+balcony_area
+</td>
+<td style="padding: 2px 14px;">
+window_angle_label
+</td>
+<td style="padding: 2px 14px;">
+madori_kind_all_label
+</td>
+<td style="padding: 2px 14px; color: violet;">
+price
+</td>
+<td style="padding: 2px 14px;">
+money_tsubo
+</td>
+</tr>
+<tr>
+<td style="padding: 2px 14px;">
+money_kyoueki
+</td>
+<td style="padding: 2px 14px;">
+money_reikin_amount
+</td>
+<td style="padding: 2px 14px;">
+money_shikikin_amount
+</td>
+<td style="padding: 2px 14px;">
+parking_money
+</td>
+<td style="padding: 2px 14px;">
+usable_status_label
+</td>
+</tr>
+<tr>
+<td style="padding: 2px 14px; color: red;">
+school_ele_distance
+</td>
+<td style="padding: 2px 14px; color: red;">
+convenience_distance
+</td>
+<td style="padding: 2px 14px;">
+super_distance
+</td>
+<td style="padding: 2px 14px;">
+hospital_distance
+</td>
+<td style="padding: 2px 14px;">
+park_distance
+</td>
+</tr>
+</tbody></table>
 </div>
 <ul>
-<li><p>Les séismes restent à intégrer</p></li>
-<li><p>Si j’ai le temps, j’intégrerai aussi les données du MLIT (land prices)</p></li>
+<li>Many variables, billions of observations</li>
+<li>Outcomes: <span style="color: violet;">price</span> &amp; <span style="color: orange;">time-on-the-market</span></li>
 </ul>
+</section>
+<section id="data-4" class="slide level2">
+<h2>Data (4)</h2>
+<h5 id="capturing-the-attractivness-city-level">Capturing the attractivness (city level)</h5>
+<div style="
+border: 1.5px solid #666;
+padding: 14px 18px;
+display: block;
+width: 100%;
+font-family: monospace;
+font-size: 0.88rem;
+line-height: 1.55;
+overflow-x: auto;
+">
+<table style="
+border-collapse: collapse;
+table-layout: fixed;
+width: 100%;
+">
+<tbody><tr>
+<td style="padding: 2px 12px;">
+yearcode
+</td>
+<td style="padding: 2px 12px;">
+areacode
+</td>
+<td style="padding: 2px 12px;">
+area
+</td>
+<td style="padding: 2px 12px;">
+comm_centers
+</td>
+</tr>
+<tr>
+<td style="padding: 2px 12px;">
+libraries
+</td>
+<td style="padding: 2px 12px;">
+lifeexp_male
+</td>
+<td style="padding: 2px 12px; color: orange;">
+hospitals
+</td>
+<td style="padding: 2px 12px;">
+physicians
+</td>
+</tr>
+<tr>
+<td style="padding: 2px 12px;">
+dentists
+</td>
+<td style="padding: 2px 12px; color: red;">
+new_dwellings
+</td>
+<td style="padding: 2px 12px;">
+dwellings_serv
+</td>
+<td style="padding: 2px 12px;">
+large_retail
+</td>
+</tr>
+<tr>
+<td style="padding: 2px 12px;">
+kindergartens
+</td>
+<td style="padding: 2px 12px;">
+elem_schools
+</td>
+<td style="padding: 2px 12px;">
+elem_teachers
+</td>
+<td style="padding: 2px 12px;">
+elem_students
+</td>
+</tr>
+<tr>
+<td style="padding: 2px 12px;">
+upper_sec_sch
+</td>
+<td style="padding: 2px 12px;">
+pop_total2
+</td>
+<td style="padding: 2px 12px; color: red;">
+employed
+</td>
+<td style="padding: 2px 12px;">
+labor_force
+</td>
+</tr>
+<tr>
+<td style="padding: 2px 12px; color: orange;">
+skilled_workers
+</td>
+<td style="padding: 2px 12px;">
+selfemp_with
+</td>
+<td style="padding: 2px 12px;">
+commute_out
+</td>
+<td style="padding: 2px 12px;">
+commute_in
+</td>
+</tr>
+<tr>
+<td style="padding: 2px 12px; color: orange;">
+fin_power
+</td>
+<td style="padding: 2px 12px;">
+invest_exp
+</td>
+<td style="padding: 2px 12px;">
+disaster_exp
+</td>
+<td style="padding: 2px 12px;">
+edu_exp_elem
+</td>
+</tr>
+<tr>
+<td style="padding: 2px 12px;">
+edu_exp_lower
+</td>
+<td style="padding: 2px 12px;">
+edu_exp_upper
+</td>
+<td style="padding: 2px 12px;">
+pop_total
+</td>
+<td style="padding: 2px 12px;">
+median_age
+</td>
+</tr>
+<tr>
+<td style="padding: 2px 12px;">
+pop_o65
+</td>
+<td style="padding: 2px 12px; color: orange;">
+foreigners
+</td>
+<td style="padding: 2px 12px;">
+did_pop
+</td>
+<td style="padding: 2px 12px; color: red;">
+inmigrants
+</td>
+</tr>
+<tr>
+<td style="padding: 2px 12px; color: red;">
+outmigrants
+</td>
+<td style="padding: 2px 12px;">
+households
+</td>
+<td style="padding: 2px 12px;">
+pop_total_linear
+</td>
+<td style="padding: 2px 12px;">
+lifeexp_male_linear
+</td>
+</tr>
+</tbody></table>
+</div>
+<div style="height: 12px;">
+
+</div>
+<h5 id="and-the-macroeconomic-conditions">and the macroeconomic conditions</h5>
+<p>Such as the interst rate, Indexes of Business Conditions (Cabinet office).</p>
 </section>
 <section id="empirical-strategy-1" class="slide level2">
 <h2>Empirical Strategy (1)</h2>
-<p><strong>Groupe test</strong> :</p>
-<ul>
-<li>les bâtiments qui se situent dans les zones sismiques dont la probabilité d’occurence au cours des 30 prochaines années est supérieure à 0.26.</li>
-</ul>
-<p><strong>Groupe de contrôle</strong> :</p>
-<ul>
-<li>les bâtiments situés dans les zones inférieures à ce seuil</li>
-<li>peut-être ceux qui sont situés dans les zones plus sûres</li>
-</ul>
-</section>
-<section id="empirical-strategy-2" class="slide level2">
-<h2>Empirical Strategy (2)</h2>
 <div title="In progress">
 <div class="callout callout-warning callout-titled callout-style-default">
 <div class="callout-body">
@@ -290,8 +646,8 @@ Anthony Rocher – ENS Lyon
 <div style="font-size: 0.8em; text-align: center;">
 <p><span class="math display">\[
 \begin{aligned}
-\ln P_{it} = \alpha_0 &amp;+ \sum_{j=1}^{J} \alpha_j Z_{ij} + \beta r_i + \gamma Seismic_i + \delta Earthquake_{it} \\
-&amp;+ \theta_t (Earthquake_{it} \times Seismic_i) + \varepsilon_{it}
+\ln P_{it} = \alpha_0 &amp;+ \sum_{j=1}^{J} \alpha_j Z_{ij} + \beta r_i + \gamma Exposed_i + \delta Post_{it} \\
+&amp;+ \theta_t (Post_{it} \times Exposed_i) + \varepsilon_{it}
 \end{aligned}
 \]</span></p>
 </div>
@@ -302,12 +658,114 @@ Anthony Rocher – ENS Lyon
 <div style="font-size: 0.6em; line-height: 1.2;">
 <ul>
 <li><span class="math inline">\(Z_{ij}\)</span>: vector of property and location controls</li>
-<li><span class="math inline">\(r_i\)</span>: location fixed effects (prefectures)</li>
-<li><span class="math inline">\(Seismic_i\)</span>: baseline seismic risk exposure (over <span class="math inline">\(p = 0.3\)</span>)</li>
-<li><span class="math inline">\(Earthquake_{it}\)</span>: earthquake occurrence/intensity at time <span class="math inline">\(t\)</span></li>
-<li><span class="math inline">\(Earthquake_{it} \times Seismic_i\)</span>: interaction capturing heterogeneous effects</li>
+<li><span class="math inline">\(r_i\)</span>: location fixed effects (prefectures) interacting with year fixed effects</li>
+<li><span class="math inline">\(Exposed_i\)</span>: baseline seismic risk exposure (<span class="math inline">\(p &gt; 0.3\)</span>)</li>
+<li><span class="math inline">\(Post_{it}\)</span>: <span class="math inline">\(i\)</span> is published within one month after a big earthquake (over magnitude 6)</li>
+<li><span class="math inline">\(Post_{it} \times Exposed_i\)</span>: interaction capturing heterogeneous effects</li>
 </ul>
-<p><span class="math inline">\(Z_{ij}\)</span> includes aggregated data such as population, net migration, employment rate, facilities (e.g.&nbsp;number of hospitals, shcools, a municipality financial index), and some macro variables (GDP, business index)</p>
+<p>Controls include aggregated data such as population, net migration, employment rate, facilities (e.g.&nbsp;number of hospitals, shcools, a municipality financial index), and some macro variables (GDP, business index)</p>
+</div>
+</section>
+<section id="now" class="slide level2">
+<h2>Now</h2>
+<p>Trying to figure out huge data files</p>
+<p>Generating descriptive statistics</p>
+<p>Working on the empirical equation:</p>
+<ul>
+<li>how long the effects last after a big earthquake</li>
+<li>should I opt for a continuous treatment?</li>
+</ul>
+</section>
+<section id="questions-1" class="slide level2">
+<h2>Questions (1)</h2>
+<p>Quelles sont les variables à garder / à jeter ?</p>
+<div style="max-height: 450px; overflow-y: auto; font-size: 0.72em;">
+<table class="caption-top">
+<colgroup>
+<col style="width: 35%">
+<col style="width: 64%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Catégorie</th>
+<th style="text-align: left;">Types de biens</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Terrains &amp; droits fonciers</td>
+<td style="text-align: left;">Land for Sale<br>
+Land<br>
+Transfer of Leasehold Rights<br>
+Transfer of Underlying Land Rights</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Résidentiel — maisons</td>
+<td style="text-align: left;">Newly Built Detached House<br>
+Used Detached House<br>
+Detached house<br>
+Newly Built Terrace House<br>
+Used Terrace House<br>
+Terrace house<br>
+Newly Built Townhouse<br>
+Used Townhouse<br>
+Townhouse<br>
+Vacation home<br>
+Company housing</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Résidentiel — appartements</td>
+<td style="text-align: left;">Newly Built Apartment<br>
+Used Apartment<br>
+Apartment<br>
+Condominium</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Résidentiel — logements collectifs</td>
+<td style="text-align: left;">Newly Built Public Housing<br>
+Used Public Housing<br>
+Room rental<br>
+Dormitory<br>
+Dormitory/Boarding house</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Commercial &amp; bureaux</td>
+<td style="text-align: left;">Shop<br>
+Store<br>
+Shop with Residence<br>
+Residence with Shop<br>
+Shop/Office<br>
+Office<br>
+Shop (entire building)<br>
+Shop (part of building)<br>
+Residential property with commercial space (part of the building)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Industriel &amp; logistique</td>
+<td style="text-align: left;">Factory<br>
+Warehouse</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Immeubles &amp; bâtiments</td>
+<td style="text-align: left;">Building</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Hébergement &amp; tourisme</td>
+<td style="text-align: left;">Inn<br>
+Hotel<br>
+Resort Apartment<br>
+Resort Mansion</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Stationnement</td>
+<td style="text-align: left;">Parking lot</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Autres</td>
+<td style="text-align: left;">Other</td>
+</tr>
+</tbody>
+</table>
 </div>
 </section>
 <section id="references" class="slide level2 smaller scrollable">

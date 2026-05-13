@@ -18,7 +18,7 @@
     "href": "workflow.html",
     "title": "Workflow",
     "section": "",
-    "text": "This page describes the data management of this work, from the pre-processing steps to the results. The goal is to write step by step a replication package. However, note that some data are not public and should be required to their owners (namely the LIFFULL HOMES dataset the panel dataset from Keio University)."
+    "text": "This page describes the data management of this work, from the pre-processing steps to the results. The goal is to write step by step a replication package. However, note that some data are not public and should be required to their owners (namely the LIFFULL HOMES dataset the panel dataset from Keio University).\nCode used in this section: Python, with pandas, geopandas and duckdb, and SQL."
   },
   {
     "objectID": "workflow.html#my-workflow",
@@ -45,8 +45,8 @@
     "objectID": "workflow.html#analysis",
     "href": "workflow.html#analysis",
     "title": "Workflow",
-    "section": "Analysis",
-    "text": "Analysis\n\nlibrary(ggplot2)\n\nLook forward for the results!\n\nBack to Home"
+    "section": "ANALYSIS",
+    "text": "ANALYSIS\n\nTreatment definition\n\n\nRegression tables"
   },
   {
     "objectID": "index.html",
@@ -102,35 +102,35 @@
     "href": "slides.html#research-question-motivation",
     "title": "Master’s Thesis Seminar",
     "section": "Research Question & Motivation",
-    "text": "Research Question & Motivation\n\n\n\n\n\n\n\nResearch Question\n\n\nHow costly it is to be exposed to natural disasters?\n\n\n\n\nWhy does it matter?\nIntensifying disasters with climate change.\nDisasters: floods, hurricanes, wildfires, and droughts.\nIn Japan: earthquakes, tsunamis.\nThe setting: Hazard risk mapping in Japan and its consequences on real estate prices."
+    "text": "Research Question & Motivation\n\n\n\n\n\n\n\nResearch Question\n\n\nHow costly it is to be exposed to natural disasters?\n\n\n\n\nWhy does it matter?\nPeople’s awareness and behavior about such threats\nInvestments and maybe inequalities in the long run\nIntensifying disasters: floods, hurricanes, wildfires, and droughts.\nMy research may apply to other type of risks"
   },
   {
     "objectID": "slides.html#literature-review",
     "href": "slides.html#literature-review",
     "title": "Master’s Thesis Seminar",
     "section": "Literature review",
-    "text": "Literature review\nMany papers on natural disasters and their consequences on housing prices (Brookshire et al. (1985), Hidano, Hoshino, and Sugiura (2015), Balboni (2025) among many others).\nMy work heavily relies on Ikefuji et al. (2022).\nMy main contributions:\n\nWhat about the unaffected areas but still at risk?\nExtending the analysis to the housing market\nControling for other type of risk (not done by the authors)"
+    "text": "Literature review\nMany papers on natural disasters and their consequences on housing prices (Brookshire et al. (1985), Hidano, Hoshino, and Sugiura (2015), Balboni (2025) among many others).\nMy work heavily relies on Ikefuji et al. (2022).\nMy main contribution:\n\nExtending the analysis to the housing market\nTime extension (recent years)"
   },
   {
     "objectID": "slides.html#data-1",
     "href": "slides.html#data-1",
     "title": "Master’s Thesis Seminar",
     "section": "Data (1)",
-    "text": "Data (1)\n\n\n\n\n\nRisk mapping data\n\n\n\nJapan Meteorological Agency Records (JMA)\nall earthquakes records\ncoordinates / magnitude\nJapan Seismic Hazard Information Station (J-SHIS)\nrisk hazard maps\nchange over time\n\n\n\n\n\n\n\n\nReal estate data\n\n\n\nMinistry of Land, Infrastructure, Transport and Tourism (MLIT)\naccurate description of the properties (nearest station, type of use, etc.)\nLIFULL HOMES\nincluding rentals\ntwo limitations: estimation only,, from 2015 to 2016 only"
+    "text": "Data (1)\n\n\n\n\n\nRisk mapping data\n\n\n\nJapan Meteorological Agency Records (JMA)\nall earthquakes records\ncoordinates / magnitude\nJapan Seismic Hazard Information Station (J-SHIS)\nrisk hazard maps\nuploaded every year\n\n\n\n\n\n\n\n\nReal estate data\n\n\n\nLIFULL HOMES\nrentals and sales across Japan from 2015 to 2023\n\n\n\n\n\n\n\nOther data\n\n\n\nE-STAT & OTHERS\naggregated variables & macroeconomic variables\n\n\n\n\nMain argument of my research: matching them"
   },
   {
     "objectID": "slides.html#data-2",
     "href": "slides.html#data-2",
     "title": "Master’s Thesis Seminar",
     "section": "Data (2)",
-    "text": "Data (2)"
+    "text": "Data (2)\n\n\n\n\n2020 Seismic Hazard Map from the J-SHIS"
   },
   {
     "objectID": "slides.html#data-3",
     "href": "slides.html#data-3",
     "title": "Master’s Thesis Seminar",
     "section": "Data (3)",
-    "text": "Data (3)\nMa base de données actuelle :\n\n\n\n\n\n\nTip\n\n\nLIFFULL HOMES + CARTES DE RISQUE + VARIABLES AGRÉGÉES\n\n\n\n\nLes séismes restent à intégrer\nSi j’ai le temps, j’intégrerai aussi les données du MLIT (land prices)"
+    "text": "Data (3)\nThe Liffull Homes dataset:\n\n\n\n\npub_start_date\n\n\npub_end_date\n\n\nbuilding_id\n\n\nunit_id\n\n\nstatus\n\n\n\n\nbukken_type\n\n\nall_number\n\n\nempty_number\n\n\naddr1_1_name\n\n\naddr1_2_name\n\n\n\n\naddr2_name\n\n\nrosen1_name\n\n\neki1_name\n\n\nwalk_distance1\n\n\nrosen2_name\n\n\n\n\neki2_name\n\n\nwalk_distance2\n\n\nland_youto\n\n\nland_toshi\n\n\nland_area\n\n\n\n\nlatitude\n\n\nlongitude\n\n\nland_right_label\n\n\nhouse_kouzou_label\n\n\nsqft\n\n\n\n\nhouse_kaisuu\n\n\nhouse_kaisuu_chika\n\n\nkenchiku_date\n\n\nflg_new\n\n\nroom_kaisuu\n\n\n\n\nbalcony_area\n\n\nwindow_angle_label\n\n\nmadori_kind_all_label\n\n\nprice\n\n\nmoney_tsubo\n\n\n\n\nmoney_kyoueki\n\n\nmoney_reikin_amount\n\n\nmoney_shikikin_amount\n\n\nparking_money\n\n\nusable_status_label\n\n\n\n\nschool_ele_distance\n\n\nconvenience_distance\n\n\nsuper_distance\n\n\nhospital_distance\n\n\npark_distance\n\n\n\n\n\nMany variables, billions of observations\nOutcomes: price & time-on-the-market"
   },
   {
     "objectID": "slides.html#empirical-strategy",
@@ -249,7 +249,7 @@
     "href": "workflow.html#combining-the-data",
     "title": "Workflow",
     "section": "Combining the data",
-    "text": "Combining the data\n\nBack to Home"
+    "text": "Combining the data\n\nOLD\n\nBack to Home"
   },
   {
     "objectID": "workflow.html#visualization-results",
@@ -319,7 +319,7 @@
     "href": "slides.html#empirical-strategy-1",
     "title": "Master’s Thesis Seminar",
     "section": "Empirical Strategy (1)",
-    "text": "Empirical Strategy (1)\nGroupe test :\n\nles bâtiments qui se situent dans les zones sismiques dont la probabilité d’occurence au cours des 30 prochaines années est supérieure à 0.26.\n\nGroupe de contrôle :\n\nles bâtiments situés dans les zones inférieures à ce seuil\npeut-être ceux qui sont situés dans les zones plus sûres"
+    "text": "Empirical Strategy (1)\n\n\n\n\n\n\n\nIn progress\n\n\n\n\\[\n\\begin{aligned}\n\\ln P_{it} = \\alpha_0 &+ \\sum_{j=1}^{J} \\alpha_j Z_{ij} + \\beta r_i + \\gamma Exposed_i + \\delta Post_{it} \\\\\n&+ \\theta_t (Post_{it} \\times Exposed_i) + \\varepsilon_{it}\n\\end{aligned}\n\\]\n\n\n\n\n\n\n\n\\(Z_{ij}\\): vector of property and location controls\n\\(r_i\\): location fixed effects (prefectures) interacting with year fixed effects\n\\(Exposed_i\\): baseline seismic risk exposure (\\(p &gt; 0.3\\))\n\\(Post_{it}\\): \\(i\\) is published within one month after a big earthquake (over magnitude 6)\n\\(Post_{it} \\times Exposed_i\\): interaction capturing heterogeneous effects\n\nControls include aggregated data such as population, net migration, employment rate, facilities (e.g. number of hospitals, shcools, a municipality financial index), and some macro variables (GDP, business index)"
   },
   {
     "objectID": "slides.html#empirical-strategy-2",
@@ -327,5 +327,96 @@
     "title": "Master’s Thesis Seminar",
     "section": "Empirical Strategy (2)",
     "text": "Empirical Strategy (2)\n\n\n\n\n\n\n\nIn progress\n\n\n\n\\[\n\\begin{aligned}\n\\ln P_{it} = \\alpha_0 &+ \\sum_{j=1}^{J} \\alpha_j Z_{ij} + \\beta r_i + \\gamma Seismic_i + \\delta Earthquake_{it} \\\\\n&+ \\theta_t (Earthquake_{it} \\times Seismic_i) + \\varepsilon_{it}\n\\end{aligned}\n\\]\n\n\n\n\n\n\n\n\\(Z_{ij}\\): vector of property and location controls\n\\(r_i\\): location fixed effects (prefectures)\n\\(Seismic_i\\): baseline seismic risk exposure (over \\(p = 0.3\\))\n\\(Earthquake_{it}\\): earthquake occurrence/intensity at time \\(t\\)\n\\(Earthquake_{it} \\times Seismic_i\\): interaction capturing heterogeneous effects\n\n\\(Z_{ij}\\) includes aggregated data such as population, net migration, employment rate, facilities (e.g. number of hospitals, shcools, a municipality financial index), and some macro variables (GDP, business index)"
+  },
+  {
+    "objectID": "slides.html#questions-1",
+    "href": "slides.html#questions-1",
+    "title": "Master’s Thesis Seminar",
+    "section": "Questions (1)",
+    "text": "Questions (1)\nQuelles sont les variables à garder / à jeter ?\n\n\n\n\n\n\n\n\nCatégorie\nTypes de biens\n\n\n\n\nTerrains & droits fonciers\nLand for Sale\nLand\nTransfer of Leasehold Rights\nTransfer of Underlying Land Rights\n\n\nRésidentiel — maisons\nNewly Built Detached House\nUsed Detached House\nDetached house\nNewly Built Terrace House\nUsed Terrace House\nTerrace house\nNewly Built Townhouse\nUsed Townhouse\nTownhouse\nVacation home\nCompany housing\n\n\nRésidentiel — appartements\nNewly Built Apartment\nUsed Apartment\nApartment\nCondominium\n\n\nRésidentiel — logements collectifs\nNewly Built Public Housing\nUsed Public Housing\nRoom rental\nDormitory\nDormitory/Boarding house\n\n\nCommercial & bureaux\nShop\nStore\nShop with Residence\nResidence with Shop\nShop/Office\nOffice\nShop (entire building)\nShop (part of building)\nResidential property with commercial space (part of the building)\n\n\nIndustriel & logistique\nFactory\nWarehouse\n\n\nImmeubles & bâtiments\nBuilding\n\n\nHébergement & tourisme\nInn\nHotel\nResort Apartment\nResort Mansion\n\n\nStationnement\nParking lot\n\n\nAutres\nOther"
+  },
+  {
+    "objectID": "workflow.html#cleaning",
+    "href": "workflow.html#cleaning",
+    "title": "Workflow",
+    "section": "CLEANING",
+    "text": "CLEANING\n\nLet’s clean the Liffull Homes dataset\n\nSample selection\n\nI decide to make a number of restrictions. * I keep only properties where people live day by day, thus excluding parking sells or hotel accomodations. * I decide to focus on the private market and by that I exclude public housing, which is might be less responsive to the market shocks.\n\n\n\n\nCode\n/*\nFrom the codebook:\n1101 Land for Sale\n1102 Transfer of Leasehold Rights\n1103 Transfer of Underlying Land Rights\n1201 Newly Built Detached House\n1202 Used Detached House\n1203 Newly Built Terrace House\n1204 Used Terrace House\n1301 Newly Built Apartment\n1302 Used Apartment\n1303 Newly Built Public Housing\n1304 Used Public Housing\n1305 Newly Built Public Housing\n1306 Used Public Housing\n1307 Newly Built Townhouse\n1308 Used Townhouse\n1309 Resort Apartment\n1401 Shop\n1403 Shop with Residence\n1404 Residence with Shop\n1405 Office\n1406 Shop/Office\n1407 Building\n1408 Factory\n1409 Apartment\n1410 Warehouse\n1411 Apartment\n1412 Dormitory\n1413 Inn\n1414 Hotel\n1415 Vacation home\n1416 Resort Mansion\n1420 Company housing\n1499 Other\n1502 Shop\n1505 Office\n1506 Shop/Office\n1507 Building\n1509 Condominium\n1599 Other\n3101 Condominium\n3102 Apartment\n3103 Detached house\n3104 Terrace house\n3105 Townhouse\n3106 Room rental\n3110 Dormitory/Boarding house\n3201 Shop (entire building)\n3202 Shop (part of building)\n3203 Office\n3204 Shop/Office\n3205 Factory\n3206 Warehouse\n3207 Detached house\n3208 Condominium\n3209 Inn\n3210 Dormitory\n3211 Vacation home\n3212 Land\n3213 Building\n3214 Shop with residence (detached house)\n3215 Residential property with commercial space (part of the building)\n3231 Store\n3282 Parking lot\n3299 Other\n*/\n\n* Select house / appartment / condomium\nkeep if inlist(bukken_type, ///\n    1201, 1202, 1203, 1204, ///\n    1301, 1302, ///\n    1307, 1308, 1309, ///\n    1415, ///\n    1409, 1411, ///\n    1509, ///\n    3101, 3102, 3103, 3104, 3105)\n\n\n\n\nThen, let’s clean the earthquakes records from the JMA\n\n\n\n\nVariables of JMA records\n\n\nrecord_type\nyear\nmonth\nday\nhour\nminute\nsecond\norigin_time_error\nlatitude_deg\nlat\nlatitude_error\nlongitude_deg\nlon\nlongitude_error\ndepth_km\ndepth_error\nmagnitude1\nmagnitude1_type\nmagnitude2\nmagnitude2_type\ntravel_time_table\nhypocenter_precision\nsubsidiary_info\nmax_intensity\ndamage_class\ntsunami_class\ndistrict_number\nregion_number\nregion_name\nnum_stations\nidentifier\n\n\n\n\nJ\n2015\n1\n1\n0\n2\n4266\n17\n37\n3836\n37\n142\n36\n82\n3050\n279\n27\nV\nNA\nNA\n5\n1\n1\nNA\nNA\nNA\n2\n68\nSE OFF MIYAGI PREF\n34\nK\n\n\n\n\n\n\nJMA records include all seismic activity observations. They are to be converted to csv first, ensuring that they are well encoded.\nRecords include of course latitude and longitude in DMS format. Then the following code convert those variables in the CRS WGS84 (epsg:4326) format:\n\n# Convert latitude_deg / lat and longitude_deg / lon in DMS to WGS84 (epsg:4326)\ndef dms_to_decimals(latlon_deg: int = 31, latlon: int = 1176):\n    minute = latlon // 100\n    second = latlon % 100\n    return latlon_deg + minute / 60 + second / 3600\n  \njma_damage[\"latitude\"] = jma_damage.apply(\n    lambda row : dms_to_decimals(row[\"latitude_deg\"], row[\"lat\"]),\n    axis = 1)\n\njma_damage[\"longitude\"] = jma_damage.apply(\n    lambda row : dms_to_decimals(row[\"longitude_deg\"], row[\"lon\"]),\n    axis = 1)\n\nThe records include a “damage _class” variable where damages are recorded.\n\n\nFinally, let’s clean data from e-stat and macroeconomic variables\n\n\nCode\n********************************************************************************\n* FILLING IN MISSING VALUES\n\n* Linear interpolation\n* Those for which 2015 and 2020 are available\nforeach var of varlist pop_total median_age lifeexp_male lifeexp_female pop_u15 pop_o65 did_pop foreigners households pop_total2 employed unemployed labor_force skilled_workers selfemp_with selfemp_without commute_in commute_out {\n\n    * Create base\n    gen `var'_base = .\n    bysort areacode (year): replace `var'_base = `var'[1]\n\n    * Linear interpolation coefficients\n    gen `var'_delta = .\n    bysort areacode (year): replace `var'_delta = (`var'[6] / `var'[1]) ^ (1/5)\n\n    * Interpolation computation\n    gen `var'_linear = .\n    forvalues y = 2015/2023 {\n        local t = `y' - 2015\n        replace `var'_linear = `var'_base * (`var'_delta ^ `t') if year == `y'\n    }\n\n    * Drop temporary var\n    drop `var'_delta\n    drop `var'_base\n}\n\n* Regression\ngen inmigrants_reg = inmigrants\ngen outmigrants_reg = outmigrants\nforeach var in inmigrants outmigrants {\n\n    gen yhat = .\n\n    levelsof areacode, local(areas)\n\n    foreach a of local areas {\n        count if areacode == `a' & !missing(year, `var')\n        \n        if r(N) &gt;= 2 {\n            regress `var' year if areacode == `a'\n            predict temp if areacode == `a'\n            \n            replace yhat = round(temp) if areacode == `a'\n            drop temp\n        }\n        else {\n            display \"Skipping areacode `a' for `var' (not enough data)\"\n        }\n    }\n\n    replace `var'_reg = yhat if missing(`var')\n    drop yhat\n}\n\n\n* Take the nearest value\nforeach var of varlist comm_centers libraries hospitals physicians dentists  {\n    gen `var'_near = `var'\n    bysort areacode (year): replace `var'_near = `var'_near[_n+1] if missing(`var'_near[1])\n    bysort areacode (year): replace `var'_near = `var'_near[_n-1] if missing(`var'_near) \n}\n* Simple mean computation\nforeach var of varlist fin_power {\n    bysort areacode (year): egen `var'_mean = mean(`var')\n}"
+  },
+  {
+    "objectID": "workflow.html#merging",
+    "href": "workflow.html#merging",
+    "title": "Workflow",
+    "section": "MERGING",
+    "text": "MERGING\nNow the data are pro-processed, they can be merged easily together.\n\nFirst, let’s merge the housing data with the SHMaps\n\n\nSecond, let’s merge the other aggregated variables\n\n\nLet’s eventullay clean the final dataset"
+  },
+  {
+    "objectID": "workflow.html#visualisation",
+    "href": "workflow.html#visualisation",
+    "title": "Workflow",
+    "section": "VISUALISATION",
+    "text": "VISUALISATION\n\nBasic visuals\nLet’s first visualize the different datasets seperately. To get a better intuition of the following study, let’s visualize risk maps:\n\n\n\n2020 SHM from J-SHIS website\n\n\n\n\nDescritptive statistics\n\n\nPre-analysis visualization\nHere I take a step forward to analysis by taking a look at correlation."
+  },
+  {
+    "objectID": "workflow.html#old",
+    "href": "workflow.html#old",
+    "title": "Workflow",
+    "section": "OLD",
+    "text": "OLD\n\nJ-SHIS Hazard Maps\nMany parameters are available, and have an impact on what the hazard maps look like. I decide to focus on columns 02 and 04 since there are presented as the most common for public hazard map information to the public:\n\n\n\n\nVariables of the J-SHIS shapefy file\n\n\nColumn\nHeader\nFormat\nExplanation\n\n\n\n\n01\nCODE\n%10-11c\n250m mesh code\n\n\n02\nT30_I45_PS\n%9.6e\nProbability of exceedance [IJMA &gt;=5-Lower] within 30 years\n\n\n03\nT30_I50_PS\n%9.6e\nProbability of exceedance [IJMA &gt;=5-Upper] within 30 years\n\n\n04\nT30_I55_PS\n%9.6e\nProbability of exceedance [IJMA &gt;=6-Lower] within 30 years\n\n\n05\nT30_I60_PS\n%9.6e\nProbability of exceedance [IJMA &gt;=6-Upper] within 30 years\n\n\n06\nT30_P03_SI\n%3.1f\nIJMA for a 3% probability of exceedance within 30 years\n\n\n07\nT30_P03_BV\n%9.6e\nPBV for a 3% probability of exceedance within 30 years (cm/s)\n\n\n08\nT30_P03_SV\n%9.6e\nPGV for a 3% probability of exceedance within 30 years (cm/s)\n\n\n09\nT30_P06_SI\n%3.1f\nIJMA for a 6% probability of exceedance within 30 years\n\n\n10\nT30_P06_BV\n%9.6e\nPBV for a 6% probability of exceedance within 30 years (cm/s)\n\n\n11\nT30_P06_SV\n%9.6e\nPGV for a 6% probability of exceedance within 30 years (cm/s)\n\n\n12\nT50_P02_SI\n%3.1f\nIJMA for a 2% probability of exceedance within 50 years\n\n\n13\nT50_P02_BV\n%9.6e\nPBV for a 2% probability of exceedance within 50 years (cm/s)\n\n\n14\nT50_P02_SV\n%9.6e\nPGV for a 2% probability of exceedance within 50 years (cm/s)\n\n\n15\nT50_P05_SI\n%3.1f\nIJMA for a 5% probability of exceedance within 50 years\n\n\n16\nT50_P05_BV\n%9.6e\nPBV for a 5% probability of exceedance within 50 years (cm/s)\n\n\n17\nT50_P05_SV\n%9.6e\nPGV for a 5% probability of exceedance within 50 years (cm/s)\n\n\n18\nT50_P10_SI\n%3.1f\nIJMA for a 10% probability of exceedance within 50 years\n\n\n19\nT50_P10_BV\n%9.6e\nPBV for a 10% probability of exceedance within 50 years (cm/s)\n\n\n20\nT50_P10_SV\n%9.6e\nPGV for a 10% probability of exceedance within 50 years (cm/s)\n\n\n21\nT50_P39_SI\n%3.1f\nIJMA for a 39% probability of exceedance within 50 years\n\n\n22\nT50_P39_BV\n%9.6e\nPBV for a 39% probability of exceedance within 50 years (cm/s)\n\n\n23\nT50_P39_SV\n%9.6e\nPGV for a 39% probability of exceedance within 50 years (cm/s)\n\n\n\n\n\n\nThis is what it looks like:\n\n\nBack to Home"
+  },
+  {
+    "objectID": "slides.html#intuition",
+    "href": "slides.html#intuition",
+    "title": "Master’s Thesis Seminar",
+    "section": "Intuition",
+    "text": "Intuition\n\nDescription of my research"
+  },
+  {
+    "objectID": "slides.html#theoretical-part",
+    "href": "slides.html#theoretical-part",
+    "title": "Master’s Thesis Seminar",
+    "section": "Theoretical Part",
+    "text": "Theoretical Part\n\n\n\n\n\n\nStill in progress\n\n\nLet \\(p\\) be the subjective probability of a earthquake to happen. \\(p\\) depends on \\(i\\), the information set available, and \\(r\\), the objective attributes that make such an event more likely. Then the HPF is:\n\\(P = P(Z, r, p(i, r))\\)\nExpected utility becomes:\n\\(EU = p(i, r) \\cdot U^E[Z, r, Q] + (1 - p(i, r)) \\cdot U^{NE}[Z, r, Q]\\)\nGiven the budget constraint \\(M = P(Z, r, p(i, r)) + Q\\) (with \\(Q\\) being a composite commodity), the maximization of utility is given by:\n\\(\\frac{\\partial P}{\\partial p}=\\frac{U^{E} - U^{NE}}{p(i,r)\\frac{\\partial U^{E}}{\\partial Q}+\\left(1 - p(i,r)\\right)\\frac{\\partial U^{NE}}{\\partial Q}}\\)"
+  },
+  {
+    "objectID": "slides.html#empirical-analysis-a-literature-review",
+    "href": "slides.html#empirical-analysis-a-literature-review",
+    "title": "Master’s Thesis Seminar",
+    "section": "Empirical Analysis: A Literature Review",
+    "text": "Empirical Analysis: A Literature Review\nMany papers on natural disasters and their consequences on housing prices (Brookshire et al. (1985), Hidano, Hoshino, and Sugiura (2015), Balboni (2025) among many others).\nMy work heavily relies on Ikefuji et al. (2022).\nMy main contribution:\n\nExtending the analysis to the housing market\nTime extension (recent years)"
+  },
+  {
+    "objectID": "slides.html#test",
+    "href": "slides.html#test",
+    "title": "Master’s Thesis Seminar",
+    "section": "Test",
+    "text": "Test\n\n\n\n\n\n\nRisk mapping data\n\n\n…\n\n\n\n\n\n\n\n\n\nReal estate data\n\n\n…\n\n\n\n\n\n\n\n\nOther data\n\n\n…\n\n\n\n\n\nMain argument of my research: matching them"
+  },
+  {
+    "objectID": "slides.html#data-2-1",
+    "href": "slides.html#data-2-1",
+    "title": "Master’s Thesis Seminar",
+    "section": "Data (2)",
+    "text": "Data (2)\n\n\n\n\n\n\n\n\n\nMany measures of seismic risk. In this study, I choose PSHMS :  Probability that a earthquake of magnitude 6 or more will happen in the next 30 years.  Let denote this probability \\(p\\)."
+  },
+  {
+    "objectID": "slides.html#data-4-from-e-stat-and-some-other-macroeconomic-variables",
+    "href": "slides.html#data-4-from-e-stat-and-some-other-macroeconomic-variables",
+    "title": "Master’s Thesis Seminar",
+    "section": "Data (4), from e-stat and some other macroeconomic variables",
+    "text": "Data (4), from e-stat and some other macroeconomic variables\n\n\n\n\nyearcode\n\n\nareacode\n\n\narea\n\n\ncomm_centers\n\n\n\n\nlibraries\n\n\nlifeexp_male\n\n\nhospitals\n\n\nphysicians\n\n\n\n\ndentists\n\n\nnew_dwellings\n\n\ndwellings_serv\n\n\nlarge_retail\n\n\n\n\nkindergartens\n\n\nelem_schools\n\n\nelem_teachers\n\n\nelem_students\n\n\n\n\nupper_sec_sch\n\n\npop_total2\n\n\nemployed\n\n\nlabor_force\n\n\n\n\nskilled_workers\n\n\nselfemp_with\n\n\ncommute_out\n\n\ncommute_in\n\n\n\n\nfin_power\n\n\ninvest_exp\n\n\ndisaster_exp\n\n\nedu_exp_elem\n\n\n\n\nedu_exp_lower\n\n\nedu_exp_upper\n\n\npop_total\n\n\nmedian_age\n\n\n\n\npop_o65\n\n\nforeigners\n\n\ndid_pop\n\n\ninmigrants\n\n\n\n\noutmigrants\n\n\nhouseholds\n\n\npop_total_linear\n\n\nlifeexp_male_linear"
+  },
+  {
+    "objectID": "slides.html#data-4",
+    "href": "slides.html#data-4",
+    "title": "Master’s Thesis Seminar",
+    "section": "Data (4)",
+    "text": "Data (4)\nCapturing the attractivness (city level)\n\n\n\n\nyearcode\n\n\nareacode\n\n\narea\n\n\ncomm_centers\n\n\n\n\nlibraries\n\n\nlifeexp_male\n\n\nhospitals\n\n\nphysicians\n\n\n\n\ndentists\n\n\nnew_dwellings\n\n\ndwellings_serv\n\n\nlarge_retail\n\n\n\n\nkindergartens\n\n\nelem_schools\n\n\nelem_teachers\n\n\nelem_students\n\n\n\n\nupper_sec_sch\n\n\npop_total2\n\n\nemployed\n\n\nlabor_force\n\n\n\n\nskilled_workers\n\n\nselfemp_with\n\n\ncommute_out\n\n\ncommute_in\n\n\n\n\nfin_power\n\n\ninvest_exp\n\n\ndisaster_exp\n\n\nedu_exp_elem\n\n\n\n\nedu_exp_lower\n\n\nedu_exp_upper\n\n\npop_total\n\n\nmedian_age\n\n\n\n\npop_o65\n\n\nforeigners\n\n\ndid_pop\n\n\ninmigrants\n\n\n\n\noutmigrants\n\n\nhouseholds\n\n\npop_total_linear\n\n\nlifeexp_male_linear\n\n\n\n\n\n\n\nand the macroeconomic conditions\nSuch as the interst rate, Indexes of Business Conditions (Cabinet office)."
+  },
+  {
+    "objectID": "slides.html#now",
+    "href": "slides.html#now",
+    "title": "Master’s Thesis Seminar",
+    "section": "Now",
+    "text": "Now\nTrying to figure out huge data files\nGenerating descriptive statistics\nWorking on the empirical equation:\n\nhow long the effects last after a big earthquake\nshould I opt for a continuous treatment?"
   }
 ]

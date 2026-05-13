@@ -4,6 +4,8 @@ editor: visual
 bibliography: references.bib
 ---
 
+## Theory
+
 ## Setup
 
 My economic outcomes are sales and rentals. Secondary outcomes may include earthquake insurance subscription and municipality expenses for earthquake prevention. The variable of interest is any earthquake over magnitude 6 occurring in Japan. One unit of observation is one property to be sell or to be rent. Those are available throughout the country, providing a great source of variation.
