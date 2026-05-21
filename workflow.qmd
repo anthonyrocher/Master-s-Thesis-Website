@@ -13,19 +13,106 @@ library(kableExtra)
 
 This page describes the data management of this work, from the pre-processing steps to the results. The goal is to write step by step a replication package. However, note that some data are not public and should be required to their owners (namely the LIFFULL HOMES dataset the panel dataset from Keio University).
 
-Code used in this section: `Python`, with `pandas`, `geopandas` and `duckdb`, and `SQL`.
+Code used in this section: `Python`, `SQL` and `Stata`.
+
+```{python}
+#| eval: false
+import pandas as pd
+import duckdb
+```
+
 
 ## CLEANING
 
-### Let's clean the Liffull Homes dataset
+### Let's clean the Liffull Homes datasets
 
-Sample selection
+The Liffull Homes data consists of actually two types of datasets. The first one, that I will call "monthly", includes all the listings from July 2015 to June 2017. The second one, "period", includes all the listings from October 2018 to December 2014. Unfortunately, those two do not match perfectly well.
 
-:   I decide to make a number of restrictions.
+Let's begin with the "monthly". This one is provided as 24 .tsv files, for each year from July 2015 to June 2017. First, let's append them. Since they are huge files (around 70GB), I proceed using Python and the Duckdb library:
 
-* I keep only properties where people live day by day, thus excluding parking sells or hotel accomodations.
+```{python}
+#| eval: false
+# Get the new column names from the codebook
+names_codebook = pd.read_excel("/Users/anthony/Documents/master_thesis/data/raw/liffull_homes/data_spec_monthly_20181113.xlsx", 
+                               sheet_name=1, 
+                               skiprows=2)
+names_new = names_codebook["フィールド名"].tolist() # フィールド名 is the list of variable names in English
 
-* I decide to focus on the private market and by that I exclude public housing, which is might be less responsive to the market shocks.
+# Append
+duckdb.sql(f"""
+    COPY (
+        SELECT * FROM read_csv_auto(
+            '/Users/anthony/Documents/master_thesis/data/raw/liffull_homes/*.tsv',
+            sep='\t',
+            union_by_name=true,
+            names={names_new}
+        )
+    ) TO '/Users/anthony/Documents/master_thesis/data/raw/liffull_homes/rents1_combined.parquet'
+    (FORMAT PARQUET, COMPRESSION 'zstd')
+""")
+```
+
+Many of the columns which can be discarded and I create a lighter parquet file:
+
+```{python}
+#| eval: false
+con.execute("""
+COPY (
+    SELECT
+        bukken_id::VARCHAR AS id,
+        start_date::DATE,
+        end_date::DATE,
+        bukken_type::BIGINT AS type,
+        addr1_1::BIGINT AS prefecture,
+        addr1_2::BIGINT AS city_district,
+        eki1::BIGINT,
+        bus_time1::BIGINT AS bus1_time,
+        walk_distance1::BIGINT AS station1_distance,
+        bus_time2::BIGINT AS bus2_time,
+        walk_distance2::BIGINT AS station2_distance,
+        land_youto::BIGINT AS land_use_zone,
+        land_toshi::BIGINT AS urban_plannning,
+        land_chisei::BIGINT AS topography,
+        land_area::DOUBLE,
+        land_shidou::DOUBLE AS private_road_area,
+        land_setback_flg::BIGINT AS setback_y,
+        land_kenpei::BIGINT AS building_coverage_ratio,
+        land_youseki::BIGINT AS floor_area_ratio,
+        land_right::BIGINT,
+        land_kokudohou::BIGINT AS land_use_planning,
+        house_kouzou::BIGINT AS building_structure,
+        house_area::DOUBLE AS sqft,
+        house_kaisuu::BIGINT AS building_nb_of_floors,
+        house_kaisuu_chika::BIGINT,
+        kenchiku_date::BIGINT AS construction_date,
+        flg_new::BIGINT AS new_y,
+        room_kaisuu::BIGINT AS floor,
+        balcony_area::DOUBLE,
+        madori_number_all::BIGINT AS rooms,
+        madori_kind_all::BIGINT AS floor_plan_type,
+        money_room::BIGINT AS price1,
+        money_tsubo::BIGINT AS price_tsubo,
+        money_kyoueki::BIGINT AS common_area_fee,
+        money_combo::BIGINT AS price,
+        parking_kubun::BIGINT AS parking_y,
+        school_ele_distance::BIGINT,
+        school_jun_distance::BIGINT,
+        convenience_distance::BIGINT,
+        super_distance::BIGINT,
+        hospital_distance::BIGINT,
+        nl::DOUBLE AS lat,
+        el::DOUBLE AS lon
+    FROM read_parquet(
+        '/Users/anthony/Documents/master_thesis/data/raw/liffull_homes/rents1_combined.parquet'
+    )
+)
+TO '/Users/anthony/Documents/master_thesis/data/raw/liffull_homes/rents1_renamed.parquet'
+(FORMAT PARQUET);
+"""
+)
+```
+
+Now, to get a event lighter dataset, I drop where `money_room`and `house_aear`/ `land_area`are missing. Taking a step forward to the sample selection, I keep only land for sales, condomium or appartments.
 
 ```{stata}
 #| eval: false
@@ -97,32 +184,472 @@ From the codebook:
 3282 Parking lot
 3299 Other
 */
-
-* Select house / appartment / condomium
-keep if inlist(bukken_type, ///
-    1201, 1202, 1203, 1204, ///
-    1301, 1302, ///
-    1307, 1308, 1309, ///
-    1415, ///
-    1409, 1411, ///
-    1509, ///
-    3101, 3102, 3103, 3104, 3105)
 ```
 
+```{python}
+#| eval: false
+con.execute("""
+COPY (
+    SELECT *
+    FROM read_parquet(
+        '/Users/anthony/Documents/master_thesis/data/raw/liffull_homes/rents1_clean.parquet'
+    )
+    WHERE
+        price IS NOT NULL AND price != 0
+        AND house_area IS NOT NULL AND house_area != 0
+        AND land_area IS NOT NULL AND land_area != 0
+        AND bukken_type IN (1101, 1201, 1202, 1203, 1204, 3101, 3102, 3103, 3104, 3105, 3212)
+)
+TO '/Users/anthony/Documents/master_thesis/data/raw/liffull_homes/rents1_filtered.parquet'
+(FORMAT PARQUET);
+""")
+```
+
+It is now possible to merge this dataset with the J-SHIS hazard maps.Here they are:
+
+```{python}
+#| eval: false
+shapefile_map = {
+    2014: '/Users/anthony/Documents/master_thesis/data/maps/P-Y2014-MAP-AVR-TTL_MTTL-SHAPE/P-Y2014-MAP-AVR-TTL_MTTL-SHAPE.shp',
+    2015: '/Users/anthony/Documents/master_thesis/data/maps/P-Y2014-MAP-AVR-TTL_MTTL-SHAPE/P-Y2014-MAP-AVR-TTL_MTTL-SHAPE.shp',
+    2016: '/Users/anthony/Documents/master_thesis/data/maps/P-Y2016-MAP-AVR-TTL_MTTL-SHAPE/P-Y2016-MAP-AVR-TTL_MTTL-SHAPE.shp',
+    2017: '/Users/anthony/Documents/master_thesis/data/maps/P-Y2017-MAP-AVR-TTL_MTTL-SHAPE/P-Y2017-MAP-AVR-TTL_MTTL-SHAPE.shp',
+    2018: '/Users/anthony/Documents/master_thesis/data/maps/P-Y2018-MAP-AVR-TTL_MTTL-SHAPE/P-Y2018-MAP-AVR-TTL_MTTL-SHAPE.shp',
+    2019: '/Users/anthony/Documents/master_thesis/data/maps/P-Y2019-MAP-AVR-TTL_MTTL-SHAPE/P-Y2019-MAP-AVR-TTL_MTTL-SHAPE.shp',
+    2020: '/Users/anthony/Documents/master_thesis/data/maps/P-Y2020-MAP-AVR-TTL_MTTL-SHAPE/P-Y2020-MAP-AVR-TTL_MTTL-SHAPE.shp',
+    2021: '/Users/anthony/Documents/master_thesis/data/maps/P-Y2021-MAP-AVR-TTL_MTTL-SHAPE/P-Y2021-MAP-AVR-TTL_MTTL-SHAPE.shp',
+    2022: '/Users/anthony/Documents/master_thesis/data/maps/P-Y2022-MAP-AVR-TTL_MTTL-SHAPE/P-Y2022-MAP-AVR-TTL_MTTL-SHAPE.shp',
+    2023: '/Users/anthony/Documents/master_thesis/data/maps/P-Y2022-MAP-AVR-TTL_MTTL-SHAPE/P-Y2022-MAP-AVR-TTL_MTTL-SHAPE.shp',
+    2024: '/Users/anthony/Documents/master_thesis/data/maps/P-Y2022-MAP-AVR-TTL_MTTL-SHAPE/P-Y2022-MAP-AVR-TTL_MTTL-SHAPE.shp'
+}
+```
+
+You might notice that for years 2015, 2023 and 2024, the associated shapefiles covers some other years. The reason is that they do not exist. I decide to take the previous risk map for 2014 and the 2022 for 2013 and 2024, acknowledging that this is a lesser evil in my research design, but arguing that this should not be harmful since those maps, even though evolving year by year, are computed using a Poisson process over decades and do not move that much from one year to another.
+
+The important thing to pay attention to is to watch out for CRS issue. The coodebook says that the data are EPSG:4326 encoded. However, the maps are EPSG:4612. Those two differ only by a few meters but still let's convert during merging.
+
+To merge, I use once again `SQL`:
+
+```{python}
+#| eval: false
+con.execute("INSTALL spatial;")
+con.execute("LOAD spatial;")
+```
+
+To optimize performance, I load the data and proceed with subset for each year:
+
+```{python}
+#| eval: false
+# =========================================================
+# 1. LOAD RENTS1
+# =========================================================
+con.execute("""
+CREATE TABLE rents1 AS
+SELECT
+    *,
+    YEAR(start_date) AS year
+FROM read_parquet(
+    '/Users/anthony/Documents/master_thesis/data/raw/liffull_homes/rents1_filtered.parquet'
+)
+""")
+
+# =========================================================
+# 2. LOOP OVER YEARS
+# =========================================================
+years = range(2014, 2017)
+
+for year in years:
+
+    con.execute(f"""
+        CREATE TABLE rents1_{year} AS
+        SELECT *
+        FROM rents1
+        WHERE year = {year}
+          AND lat IS NOT NULL
+          AND lon IS NOT NULL
+    """)
+
+    con.execute(f"""
+        CREATE TABLE map_{year} AS
+        SELECT *
+        FROM ST_Read({shapefile_map})
+    """)
+
+    # SPATIAL MERGE
+    con.execute(f"""
+        CREATE TABLE rents1_{year}_geo AS
+        SELECT
+            r.*,
+            ST_Transform(
+                ST_Point(r.lon, r.lat),
+                'EPSG:4326',
+                'EPSG:4612'
+            ) AS point_geom,
+            s.CODE        AS mesh_code,
+            s.T30_I45_PS,
+            s.T30_I50_PS,
+            s.T30_I55_PS,
+            s.T30_I60_PS
+        FROM rents1_{year} r
+        LEFT JOIN map_{year} s
+            ON ST_Within(
+                ST_Transform(ST_Point(r.lon, r.lat), 'EPSG:4326', 'EPSG:4612'),
+                s.geom
+            )
+    """)
+
+    con.execute(f"DROP TABLE rents1_{year}")
+    con.execute(f"DROP TABLE map_{year}")
+```
+
+All the rents1_* remain to be appended:
+
+```{r}
+#| eval: false
+con.execute("""
+CREATE TABLE rents_geo AS
+    SELECT * FROM rents1_2014_geo
+    UNION ALL
+    SELECT * FROM rents1_2015_geo
+    UNION ALL
+    SELECT * FROM rents1_2016_geo
+    UNION ALL
+    SELECT * FROM rents1_2017_geo
+""")
+```
+
+Finally, let's save this in a `rents1.parquet`file.
+
+```{python}
+#| eval: false
+con.execute("""
+COPY rents_geo TO
+    '/Users/anthony/Documents/master_thesis/data/raw/liffull_homes/rents1.parquet'
+(FORMAT PARQUET)
+""")
+```
+
+Now I have processed with "monthly", let's clean the "period" data. Those ones cover the listings from October 2018 to November 2024. Two datasets are attached: the first one is called "bukken_rent_v1.0.1" and deals with rents, and the second one, "bukken_sale_v1.0.1", is about the sales.
+
+Two main differences: the names and the CRS. Let's easily rename the rents2 dataset as the rents1 dataset while selecting the associated columns.
+
+```{python}
+#| eval: false
+con.execute("""
+COPY (
+    SELECT
+        id,
+        pub_start_date::DATE AS start_date,
+        pub_end_date::DATE AS end_date,
+        bukken_type::BIGINT AS type,
+        addr1_1::BIGINT AS prefecture,
+        addr1_2::BIGINT AS city_district,
+        eki1::BIGINT AS train_code,
+        bus_time1::BIGINT AS bus1_time,
+        walk_distance1::BIGINT AS station1_distance,
+        bus_time2::BIGINT AS bus2_time,
+        walk_distance2::BIGINT AS station2_distance,
+        land_youto::BIGINT AS land_use_zone,
+        land_toshi::BIGINT AS urban_plannning,
+        land_chisei::BIGINT AS topography,
+        land_area::DOUBLE,
+        land_shidou::DOUBLE AS private_road_area,
+        land_setback_flg::BIGINT AS setback_y,
+        land_kenpei::BIGINT AS building_coverage_ratio,
+        land_youseki::BIGINT AS floor_area_ratio,
+        land_right::BIGINT,
+        land_kokudohou::BIGINT AS land_use_planning,
+        house_kouzou::BIGINT AS building_structure,
+        house_area::DOUBLE AS sqft,
+        house_kaisuu::BIGINT AS building_nb_of_floors,
+        house_kaisuu_chika::BIGINT,
+        kenchiku_date::BIGINT AS construction_date,
+        flg_new::BIGINT AS new_y,
+        room_kaisuu::BIGINT AS floor,
+        balcony_area::DOUBLE,
+        madori_number_all::BIGINT AS rooms,
+        madori_kind_all::BIGINT AS floor_plan_type,
+        money_room::BIGINT AS price1,
+        money_tsubo::BIGINT AS price_tsubo,
+        money_kyoueki::BIGINT AS common_area_fee,
+        money_combo::BIGINT AS price,
+        parking_kubun::BIGINT AS parking_y,
+        school_ele_distance::BIGINT,
+        school_jun_distance::BIGINT,
+        convenience_distance::BIGINT,
+        super_distance::BIGINT,
+        hospital_distance::BIGINT,
+        nl::DOUBLE AS lat,
+        el::DOUBLE AS lon
+    FROM read_csv_auto('/Users/anthony/Documents/master_thesis/data/raw/liffull_homes/rents_2024/bukken_rent_v1.0.1.tsv', delim='\t')
+)
+TO '/Users/anthony/Documents/master_thesis/data/raw/liffull_homes/rents2_renamed.parquet'
+(FORMAT PARQUET);
+""")
+```
+
+I apply the same sample selection as rents1
+
+```{python}
+#| eval: false
+#| echo: false
+con.execute("""
+COPY (
+    SELECT *
+    FROM read_parquet(
+        '/Users/anthony/Documents/master_thesis/data/raw/liffull_homes/rents2_renamed.parquet'
+    )
+    WHERE
+        price IS NOT NULL AND price != 0
+        AND house_area IS NOT NULL AND house_area != 0
+        AND land_area IS NOT NULL AND land_area != 0
+        AND bukken_type IN (1101, 1201, 1202, 1203, 1204, 3101, 3102, 3103, 3104, 3105, 3212)
+)
+TO '/Users/anthony/Documents/master_thesis/data/raw/liffull_homes/rents2_filtered.parquet'
+(FORMAT PARQUET);
+""")
+```
+
+Let's tackle the second issue: the CRS. This has been challenging but finally break down. `lon` and `lat` are encoded differently than in rents1. After some research, lat and lon are in  
+
+```{python}
+#| eval: false
+con.execute("""
+CREATE OR REPLACE TABLE rents2 AS
+SELECT
+    * EXCLUDE (lat, lon),
+    YEAR(start_date) AS year,
+    lat / 3600000.0 AS lat,
+    lon / 3600000.0 AS lon
+FROM '/Users/anthony/Documents/master_thesis/data/raw/liffull_homes/rents2_filtered.parquet';
+""")
+```
+
+Using the same loop as before, I merge rents2 with the years following:
+
+```{python}
+#| eval: false
+# =========================================================
+#  LOOP OVER YEARS
+# =========================================================
+years = range(2018, 2024)
+
+for year in years:
+
+    con.execute(f"""
+        CREATE TABLE rents2_{year} AS
+        SELECT *
+        FROM rents2
+        WHERE year = {year}
+          AND lat IS NOT NULL
+          AND lon IS NOT NULL
+    """)
+
+    con.execute(f"""
+        CREATE TABLE map_{year} AS
+        SELECT *
+        FROM ST_Read({shapefile_map})
+    """)
+
+    # SPATIAL MERGE
+    con.execute(f"""
+        CREATE TABLE rents2_{year}_geo AS
+        SELECT
+            r.*,
+            ST_Transform(
+                ST_Point(r.lon, r.lat),
+                'EPSG:4326',
+                'EPSG:4612'
+            ) AS point_geom,
+            s.CODE        AS mesh_code,
+            s.T30_I45_PS,
+            s.T30_I50_PS,
+            s.T30_I55_PS,
+            s.T30_I60_PS
+        FROM rents2_{year} r
+        LEFT JOIN map_{year} s
+            ON ST_Within(
+                ST_Transform(ST_Point(r.lon, r.lat), 'EPSG:4326', 'EPSG:4612'),
+                s.geom
+            )
+    """)
+
+    con.execute(f"DROP TABLE rents2_{year}")
+    con.execute(f"DROP TABLE map_{year}")
+    
+# =========================================================
+#  APPEND
+# =========================================================
+
+con.execute("""
+CREATE TABLE rents_geo AS
+    SELECT * FROM rents_2018_geo
+    UNION ALL
+    SELECT * FROM rents_2019_geo
+    UNION ALL
+    SELECT * FROM rents_2020_geo
+    UNION ALL
+    SELECT * FROM rents_2021_geo
+    UNION ALL
+    SELECT * FROM rents_2022_geo
+    UNION ALL
+    SELECT * FROM rents_2023_geo
+    UNION ALL
+    SELECT * FROM rents_2024_geo
+""")
+
+con.execute("""
+COPY rents_geo TO
+    '/Users/anthony/Documents/master_thesis/data/raw/liffull_homes/rents2.parquet'
+(FORMAT PARQUET)
+""")
+```
+
+With a few name exceptions, the last dataset ("bukken_sale_v1.0.1") follows the same logic and I end up with three datasets that I finally append.
+
+```{python}
+#| eval: false
+con.execute("""
+    CREATE TABLE data_all AS
+    SELECT * FROM read_parquet('/Users/anthony/Documents/master_thesis/data/raw/liffull_homes/rents1.parquet')
+    UNION ALL
+    SELECT * FROM read_parquet('/Users/anthony/Documents/master_thesis/data/raw/liffull_homes/rents2.parquet')
+    UNION ALL
+    SELECT * FROM read_parquet('/Users/anthony/Documents/master_thesis/data/raw/liffull_homes/sales.parquet')
+""")
+
+# This is intermediate step to discard potential duplicates
+con.execute("""
+    CREATE TABLE clean_data AS
+    SELECT DISTINCT * FROM data_all
+""")
+
+con.execute("""
+    COPY clean_data
+    TO ''/Users/anthony/Documents/master_thesis/data/raw/liffull_homes/liffull.parquet''
+    (FORMAT PARQUET)
+""")
+
+con.execute("DROP TABLE raw_data")
+con.execute("DROP TABLE clean_data")
+```
 
 ### Then, let's clean the earthquakes records from the JMA
 
-```{r}
-#| echo: false
-jma_head <- read.csv("/Users/anthony/Documents/master_thesis/data/raw/jma/jma_combined.csv", nrows = 1)
+Now, let's turn to the JMA files. They can be download for each year and contain every single earthquake records. I download them for years from 2015 to 2024 and I use first Python and second Stata to clean and select them.
 
-jma_head |>
-  kable(caption = "Variables of JMA records") |>
-  scroll_box(height = "200px",
-             width = "100%")
+```{python}
+#| eval: false
+import pandas as pd
+import glob
 ```
 
-JMA records include all seismic activity observations. They are to be converted to csv first, ensuring that they are well encoded.
+
+First, I append them.
+
+```{python}
+#| eval: false
+files = glob.glob("/Users/anthony/Documents/master_thesis/data/raw/jma/h*")
+
+# First, I convert the files in txt format
+def convert_file_to_txt(file_input, file_output):
+    with open(file_input, "r", encoding = "utf-8") as f:
+        lines = f.readlines()
+
+    with open (file_output, "w", encoding = "utf-8") as f:
+        for line in lines:
+            f.write(line)
+            
+for i, file in enumerate(files):
+    year = 2015 + i
+    convert_file_to_txt(file, f"/Users/anthony/Documents/master_thesis/data/raw/jma/jma_{year}.txt")
+ 
+# Now, I append   
+files_txt = glob.glob("/Users/anthony/Documents/master_thesis/data/raw/jma/jma_*.txt")
+files_txt.sort()
+
+with open("/Users/anthony/Documents/master_thesis/data/raw/jma/jma_combined.txt", "w", encoding="utf-8") as f:
+    for file in files_txt:
+        with open(file, "r", encoding="utf-8") as f1:
+            f.write(f1.read())
+```
+
+Second, I use the documentation provided by the JMA (https://www.data.jma.go.jp/eqev/data/bulletin/data/shindo/format_e.txt) to parse the lines.
+
+```{python}
+#| eval: false
+def parse_line(line):
+    try:
+        return {
+            "date":             f"{line[1:5]}-{line[5:7]}-{line[7:9]}",
+            "magnitude":        line[52:54].strip(),
+            "max_intensity":    line[61].strip(),
+            # The CRS is once again different. The following formula converts from DMS to standard format.
+            "eq_lat":           int(line[21:24]) + (int(line[24:28]) / 100) / 60,
+            "eq_lon":           int(line[32:36]) + (int(line[36:40]) / 100) / 60,
+            "damage_class":     line[62].strip(),
+            "tsunami_class":    line[63].strip(),
+            "district_number":  line[64].strip(),
+            "region_number":    line[65:68].strip(),
+        }
+    except:
+        return None
+
+with open("/Users/anthony/Documents/master_thesis/data/raw/jma/jma_combined.txt", "r", encoding="utf-8") as f:
+    lines = f.readlines()
+
+data = [parsed for line in lines if (parsed := parse_line(line)) is not None]
+
+df = pd.DataFrame(data)
+df.to_stata("/Users/anthony/Documents/master_thesis/data/raw/jma/jma_combined.dta", write_index=False)
+```
+
+Switching in Stata, I proceed to the sample selection when it comes to the earthquakes.
+
+```{stata}
+#| eval: false
+use "/Users/anthony/Documents/master_thesis/data/raw/jma/jma_combined.dta", clear
+
+* DROP
+drop if inlist(magnitude, "A0", "A1", "A2", "A3", "A4")
+destring magnitude, replace
+drop if magnitude == .
+drop if magnitude < 50
+
+* KEEP only the seisms with max_intensity >= 5
+keep if inlist(max_intensity, "7", "A", "B", "C", "D")
+replace max_intensity = "5"   if max_intensity == "A"
+replace max_intensity = "5.5" if max_intensity == "B"
+replace max_intensity = "6"   if max_intensity == "C"
+replace max_intensity = "6.5" if max_intensity == "D"
+destring max_intensity, replace
+
+* Standardize magnitude
+replace magnitude = magnitude / 10
+
+* Destring other variables
+destring damage_class tsunami_class, replace
+replace damage_class  = 0 if damage_class  == .
+replace tsunami_class = 0 if tsunami_class == .
+destring district_number, replace
+
+* For the seisms occuring the same day, keep only the strongest one
+bysort date: keep if _n == _N
+
+* Create date
+gen eq_date = date(date, "YMD")
+drop date
+
+* Preparing an index for the future merge
+gen index = _n
+
+* Get it in the right order and save
+order date magnitude max_intensity eq_lat eq_lon damage_class tsunami_class district_number region_number
+save "/Users/anthony/Documents/master_thesis/data/clean/eq_records.dta", replace
+```
+
+
+
 
 Records include of course latitude and longitude in DMS format. Then the following code convert those variables in the CRS WGS84 (epsg:4326) format:
 
@@ -217,6 +744,10 @@ foreach var of varlist fin_power {
 	bysort areacode (year): egen `var'_mean = mean(`var')
 }
 ```
+
+
+
+
 
 ## MERGING
 
