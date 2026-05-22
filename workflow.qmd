@@ -144,12 +144,12 @@ con.execute("""
 COPY (
     SELECT
         bukken_id::VARCHAR AS id,
-        start_date::DATE,
-        end_date::DATE,
+        start_date::DATE AS start_date,
+        end_date::DATE AS end_date,
         bukken_type::BIGINT AS type,
         addr1_1::BIGINT AS prefecture,
         addr1_2::BIGINT AS city_district,
-        eki1::BIGINT,
+        eki1::BIGINT AS eki1,
         bus_time1::BIGINT AS bus1_time,
         walk_distance1::BIGINT AS station1_distance,
         bus_time2::BIGINT AS bus2_time,
@@ -157,12 +157,12 @@ COPY (
         land_youto::BIGINT AS land_use_zone,
         land_toshi::BIGINT AS urban_plannning,
         land_chisei::BIGINT AS topography,
-        land_area::DOUBLE,
+        land_area::DOUBLE AS land_area,
         land_shidou::DOUBLE AS private_road_area,
         land_setback_flg::BIGINT AS setback_y,
         land_kenpei::BIGINT AS building_coverage_ratio,
         land_youseki::BIGINT AS floor_area_ratio,
-        land_right::BIGINT,
+        land_right::BIGINT as land_right,
         land_kokudohou::BIGINT AS land_use_planning,
         house_kouzou::BIGINT AS building_structure,
         house_area::DOUBLE AS sqft,
@@ -171,7 +171,7 @@ COPY (
         kenchiku_date::BIGINT AS construction_date,
         flg_new::BIGINT AS new_y,
         room_kaisuu::BIGINT AS floor,
-        balcony_area::DOUBLE,
+        balcony_area::DOUBLE AS balcony_area,
         madori_number_all::BIGINT AS rooms,
         madori_kind_all::BIGINT AS floor_plan_type,
         money_room::BIGINT AS price1,
@@ -179,18 +179,18 @@ COPY (
         money_kyoueki::BIGINT AS common_area_fee,
         money_combo::BIGINT AS price,
         parking_kubun::BIGINT AS parking_y,
-        school_ele_distance::BIGINT,
-        school_jun_distance::BIGINT,
-        convenience_distance::BIGINT,
-        super_distance::BIGINT,
-        hospital_distance::BIGINT,
+        school_ele_distance::BIGINT AS school_ele_distance,
+        school_jun_distance::BIGINT AS school_jun_distance,
+        convenience_distance::BIGINT AS convenience_distance,
+        super_distance::BIGINT AS super_distance,
+        hospital_distance::BIGINT AS hospital_distance,
         nl::DOUBLE AS lat,
         el::DOUBLE AS lon
     FROM read_parquet(
-        '/Users/anthony/Documents/master_thesis/data/raw/liffull_homes/rents1_combined.parquet'
+        '/Users/anthony/Documents/master_thesis/data/pre-processed/rents1_combined.parquet'
     )
 )
-TO '/Users/anthony/Documents/master_thesis/data/raw/liffull_homes/rents1_renamed.parquet'
+TO '/Users/anthony/Documents/master_thesis/data/pre-processed/rents1_renamed.parquet'
 (FORMAT PARQUET);
 """
 )
@@ -277,15 +277,18 @@ con.execute("""
 COPY (
     SELECT *
     FROM read_parquet(
-        '/Users/anthony/Documents/master_thesis/data/raw/liffull_homes/rents1_clean.parquet'
+        '/Users/anthony/Documents/master_thesis/data/pre-processed/rents1_renamed.parquet'
     )
     WHERE
         price IS NOT NULL AND price != 0
-        AND house_area IS NOT NULL AND house_area != 0
-        AND land_area IS NOT NULL AND land_area != 0
-        AND bukken_type IN (1101, 1201, 1202, 1203, 1204, 3101, 3102, 3103, 3104, 3105, 3212)
+    AND (
+        (sqft IS NOT NULL AND sqft != 0)
+        OR
+        (land_area IS NOT NULL AND land_area != 0)
+    )
+        AND type IN (1101, 1201, 1202, 1203, 1204, 3101, 3102, 3103, 3104, 3105, 3212)
 )
-TO '/Users/anthony/Documents/master_thesis/data/raw/liffull_homes/rents1_filtered.parquet'
+TO '/Users/anthony/Documents/master_thesis/data/pre-processed/rents1_filtered.parquet'
 (FORMAT PARQUET);
 """)
 ```
@@ -334,14 +337,14 @@ SELECT
     *,
     YEAR(start_date) AS year
 FROM read_parquet(
-    '/Users/anthony/Documents/master_thesis/data/raw/liffull_homes/rents1_filtered.parquet'
+    '/Users/anthony/Documents/master_thesis/data/pre-processed/rents1_filtered.parquet'
 )
 """)
 
 # =========================================================
 # 2. LOOP OVER YEARS
 # =========================================================
-years = range(2014, 2017)
+years = range(2014, 2018)
 
 for year in years:
 
@@ -357,37 +360,32 @@ for year in years:
     con.execute(f"""
         CREATE TABLE map_{year} AS
         SELECT *
-        FROM ST_Read({shapefile_map})
+        FROM ST_Read('{shapefile_map[year]}')
     """)
 
     # SPATIAL MERGE
     con.execute(f"""
-        CREATE TABLE rents1_{year}_geo AS
-        SELECT
-            r.*,
-            ST_Transform(
-                ST_Point(r.lon, r.lat),
-                'EPSG:4326',
-                'EPSG:4612'
-            ) AS point_geom,
-            s.CODE        AS mesh_code,
-            s.T30_I45_PS,
-            s.T30_I50_PS,
-            s.T30_I55_PS,
-            s.T30_I60_PS
-        FROM rents1_{year} r
-        LEFT JOIN map_{year} s
-            ON ST_Within(
-                ST_Transform(ST_Point(r.lon, r.lat), 'EPSG:4326', 'EPSG:4612'),
-                s.geom
-            )
-    """)
+    CREATE TABLE rents1_{year}_geo AS
+    SELECT
+        r.*,
+        s.CODE        AS mesh_code,
+        s.T30_I45_PS,
+        s.T30_I50_PS,
+        s.T30_I55_PS,
+        s.T30_I60_PS
+    FROM rents1_{year} r
+    LEFT JOIN map_{year} s
+        ON ST_Within(
+            ST_Transform(ST_Point(r.lon, r.lat), 'EPSG:4326', 'EPSG:4612'),
+            s.geom
+        )
+""")
 
     con.execute(f"DROP TABLE rents1_{year}")
     con.execute(f"DROP TABLE map_{year}")
 ```
 
-All the rents1_* remain to be appended:
+All the rents1_$*$ remain to be appended:
 
 ```{r}
 #| eval: false
@@ -409,7 +407,7 @@ Finally, let's save this in a `rents1.parquet`file.
 #| eval: false
 con.execute("""
 COPY rents_geo TO
-    '/Users/anthony/Documents/master_thesis/data/raw/liffull_homes/rents1.parquet'
+    '/Users/anthony/Documents/master_thesis/data/processed/rents1.parquet'
 (FORMAT PARQUET)
 """)
 ```
@@ -424,13 +422,13 @@ Two main differences: the names and the CRS. Let's easily rename the rents2 data
 con.execute("""
 COPY (
     SELECT
-        id,
+        id::VARCHAR AS id,
         pub_start_date::DATE AS start_date,
         pub_end_date::DATE AS end_date,
         bukken_type::BIGINT AS type,
         addr1_1::BIGINT AS prefecture,
         addr1_2::BIGINT AS city_district,
-        eki1::BIGINT AS train_code,
+        eki1::BIGINT AS eki1,
         bus_time1::BIGINT AS bus1_time,
         walk_distance1::BIGINT AS station1_distance,
         bus_time2::BIGINT AS bus2_time,
@@ -438,21 +436,21 @@ COPY (
         land_youto::BIGINT AS land_use_zone,
         land_toshi::BIGINT AS urban_plannning,
         land_chisei::BIGINT AS topography,
-        land_area::DOUBLE,
+        land_area::DOUBLE AS land_area,
         land_shidou::DOUBLE AS private_road_area,
         land_setback_flg::BIGINT AS setback_y,
         land_kenpei::BIGINT AS building_coverage_ratio,
         land_youseki::BIGINT AS floor_area_ratio,
-        land_right::BIGINT,
+        land_right::BIGINT AS land_right,
         land_kokudohou::BIGINT AS land_use_planning,
         house_kouzou::BIGINT AS building_structure,
         house_area::DOUBLE AS sqft,
         house_kaisuu::BIGINT AS building_nb_of_floors,
-        house_kaisuu_chika::BIGINT,
+        house_kaisuu_chika::BIGINT AS house_kaisuu_chika,
         kenchiku_date::BIGINT AS construction_date,
         flg_new::BIGINT AS new_y,
         room_kaisuu::BIGINT AS floor,
-        balcony_area::DOUBLE,
+        balcony_area::DOUBLE AS balcony_area,
         madori_number_all::BIGINT AS rooms,
         madori_kind_all::BIGINT AS floor_plan_type,
         money_room::BIGINT AS price1,
@@ -460,16 +458,16 @@ COPY (
         money_kyoueki::BIGINT AS common_area_fee,
         money_combo::BIGINT AS price,
         parking_kubun::BIGINT AS parking_y,
-        school_ele_distance::BIGINT,
-        school_jun_distance::BIGINT,
-        convenience_distance::BIGINT,
-        super_distance::BIGINT,
-        hospital_distance::BIGINT,
+        school_ele_distance::BIGINT AS school_ele_distance,
+        school_jun_distance::BIGINT AS school_jun_distance,
+        convenience_distance::BIGINT AS convenience_distance,
+        super_distance::BIGINT AS super_distance,
+        hospital_distance::BIGINT AS hospital_distance,
         nl::DOUBLE AS lat,
         el::DOUBLE AS lon
-    FROM read_csv_auto('/Users/anthony/Documents/master_thesis/data/raw/liffull_homes/rents_2024/bukken_rent_v1.0.1.tsv', delim='\t')
+    FROM read_csv_auto('/Users/anthony/Documents/master_thesis/data/raw/liffull_homes/rents_2024/bukken_rent_v1.0.1.tsv', delim='\t', ignore_errors=true)
 )
-TO '/Users/anthony/Documents/master_thesis/data/raw/liffull_homes/rents2_renamed.parquet'
+TO '/Users/anthony/Documents/master_thesis/data/pre-processed/rents2_renamed.parquet'
 (FORMAT PARQUET);
 """)
 ```
@@ -483,15 +481,18 @@ con.execute("""
 COPY (
     SELECT *
     FROM read_parquet(
-        '/Users/anthony/Documents/master_thesis/data/raw/liffull_homes/rents2_renamed.parquet'
+        '/Users/anthony/Documents/master_thesis/data/pre-processed/rents2_renamed.parquet'
     )
     WHERE
         price IS NOT NULL AND price != 0
-        AND house_area IS NOT NULL AND house_area != 0
-        AND land_area IS NOT NULL AND land_area != 0
-        AND bukken_type IN (1101, 1201, 1202, 1203, 1204, 3101, 3102, 3103, 3104, 3105, 3212)
+    AND (
+        (sqft IS NOT NULL AND sqft != 0)
+        OR
+        (land_area IS NOT NULL AND land_area != 0)
+    )
+        AND type IN (1101, 1201, 1202, 1203, 1204, 3101, 3102, 3103, 3104, 3105, 3212)
 )
-TO '/Users/anthony/Documents/master_thesis/data/raw/liffull_homes/rents2_filtered.parquet'
+TO '/Users/anthony/Documents/master_thesis/data/pre-processed/rents2_filtered.parquet'
 (FORMAT PARQUET);
 """)
 ```
@@ -775,8 +776,8 @@ destring g1201_numberofcommunitycentersnu - a7101_numberofhouseholdstotalhou, //
 
 Many values are missing. For example, the variables from the "population" category come from the Japanese census which happens every five years. I proceed three ways to fill in missing variables:
 
-linear interpolation
-: for data available only for years 2015 and 2020, mainly the ones from the census, I compute the linear line coefficients between those two variables and complete the missing variables depending on the year. 
+Linear interpolation
+: for data available only for years 2015 and 2020, mainly the ones from the census, I compute the linear line coefficients between those two variables and complete the missing variables depending on the year.
 
 ```{stata}
 #| eval: false
@@ -855,7 +856,8 @@ foreach var of varlist comm_centers libraries hospitals physicians dentists  {
 }
 ```
 
-For a few ones, I simply compute the mean for available years.
+Simple mean
+: I simply compute the mean for available years and fill it the remaining with it.
 
 ```{stata}
 #| eval: false
@@ -865,7 +867,7 @@ foreach var of varlist fin_power {
 }
 ```
 
-Finally, I create new variables.
+Finally, I create new variables more suitable for analysis.
 
 ```{stata}
 #| eval: false
@@ -969,6 +971,11 @@ merge m:1 index_10 using "/Users/anthony/Documents/master_thesis/data/clean/reco
 
 ## VARIABLE CREATION
 
+This section shows the variables I create to use later in the analysis part.
+
+I use python to compute the distance between each observation and each earthquake.
+
+do-file contains the new variables I will use in the analysis part.
 
 
 ## VISUALISATION

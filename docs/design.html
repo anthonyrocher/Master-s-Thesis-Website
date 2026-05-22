@@ -195,7 +195,6 @@ window.Quarto = {
   <ul>
   <li><a href="#a-theoritical-framework" id="toc-a-theoritical-framework" class="nav-link active" data-scroll-target="#a-theoritical-framework">A theoritical framework</a></li>
   <li><a href="#the-empirical-strategy" id="toc-the-empirical-strategy" class="nav-link" data-scroll-target="#the-empirical-strategy">The empirical strategy</a></li>
-  <li><a href="#first-approach-hedonic-price-model" id="toc-first-approach-hedonic-price-model" class="nav-link" data-scroll-target="#first-approach-hedonic-price-model">First approach: Hedonic price model</a></li>
   <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">References</a></li>
   </ul>
 </nav>
@@ -240,33 +239,16 @@ M = P(Z, r, p(i, r)) + Q.
 </section>
 <section id="the-empirical-strategy" class="level3">
 <h3 class="anchored" data-anchor-id="the-empirical-strategy">The empirical strategy</h3>
-<p>My economic outcomes are sales and rentals. Secondary outcomes may include earthquake insurance subscription and municipality expenses for earthquake prevention. The variable of interest is any earthquake over magnitude 6 occurring in Japan. One unit of observation is one property to be sell or to be rent. Those are available throughout the country, providing a great source of variation.</p>
-<p>To put it clearly:</p>
-<ul>
-<li><strong>Treatment</strong>: earthquake over magnitude 6 ocuring in the whole country</li>
-<li><strong>Main Outcomes</strong>: Sales and rentals</li>
-<li><strong>Units</strong>: properties to be sell or rented</li>
-<li><strong>Source of variation</strong>:
-<ul>
-<li>all over Japan</li>
-<li>for many types of buildings</li>
-<li>with different structures</li>
-</ul></li>
-<li><strong>Comparison group</strong>: exposed and not exposed areas.</li>
-</ul>
-</section>
-<section id="first-approach-hedonic-price-model" class="level2">
-<h2 class="anchored" data-anchor-id="first-approach-hedonic-price-model">First approach: Hedonic price model</h2>
 <p>Most of the papers set risk as a property attribute, and the use hedonic price approach as introduced by <span class="citation" data-cites="rosen1974">Rosen (<a href="#ref-rosen1974" role="doc-biblioref">1974</a>)</span>. This approach uses DiD terminology:</p>
-<p><span class="math display">\[\begin{equation}
-\ln P_{it} = \alpha_0 + \sum_{j=1}^{J} \alpha_j Z_{ij} + \beta r_i + \gamma Seismic_i + \delta Post_{it} + \theta_t (Post_{it} \times Seismic_i) + \varepsilon_{it}
-\end{equation}\]</span></p>
+<p><span class="math display">\[
+\ln P_{it} = \alpha_0 + \sum_{j=1}^{J} \alpha_j Z_{ij} + \beta r_i + \gamma Exposed_i + \delta Post_{it} + \theta_t (Post_{it} \times Exposed_i) + \varepsilon_{it}
+\]</span></p>
 <p>- <span class="math inline">\(\ln P_{it}\)</span>: log property price for unit <span class="math inline">\(i\)</span> at time <span class="math inline">\(t\)</span></p>
 <p>- <span class="math inline">\(Z_{ij}\)</span>: vector of property and location controls</p>
 <p>- <span class="math inline">\(r_i\)</span>: location fixed effects (prefectures)</p>
-<p>- <span class="math inline">\(Seismic_i\)</span>: baseline seismic risk exposure (over <span class="math inline">\(p = 0.3\)</span>)</p>
-<p>- <span class="math inline">\(Earthquake_{it}\)</span>: earthquake occurrence/intensity at time <span class="math inline">\(t\)</span></p>
-<p>- <span class="math inline">\(Earthquake_{it} \times Seismic_i\)</span>: interaction capturing heterogeneous effects</p>
+<p>- <span class="math inline">\(Exposed_i\)</span>: baseline seismic risk exposure (over <span class="math inline">\(p = 0.3\)</span>)</p>
+<p>- <span class="math inline">\(Post_{it}\)</span>: earthquake occurrence/intensity at time <span class="math inline">\(t\)</span></p>
+<p>- <span class="math inline">\(Post_{it} \times Exposed_i\)</span>: interaction capturing heterogeneous effects</p>
 <p>In practice, this is my first attempt:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode stata code-with-copy"><code class="sourceCode stata"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">regress</span> log_price <span class="co">///</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>    sqft age <span class="co">///</span></span>
