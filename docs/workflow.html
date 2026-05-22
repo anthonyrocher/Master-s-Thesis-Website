@@ -149,15 +149,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#cleaning" id="toc-cleaning" class="nav-link active" data-scroll-target="#cleaning">CLEANING</a>
   <ul class="collapse">
   <li><a href="#lets-clean-the-liffull-homes-datasets" id="toc-lets-clean-the-liffull-homes-datasets" class="nav-link" data-scroll-target="#lets-clean-the-liffull-homes-datasets">Let’s clean the Liffull Homes datasets</a></li>
-  <li><a href="#then-lets-clean-the-earthquakes-records-from-the-jma" id="toc-then-lets-clean-the-earthquakes-records-from-the-jma" class="nav-link" data-scroll-target="#then-lets-clean-the-earthquakes-records-from-the-jma">Then, let’s clean the earthquakes records from the JMA</a></li>
-  <li><a href="#finally-lets-clean-data-from-e-stat-and-macroeconomic-variables" id="toc-finally-lets-clean-data-from-e-stat-and-macroeconomic-variables" class="nav-link" data-scroll-target="#finally-lets-clean-data-from-e-stat-and-macroeconomic-variables">Finally, let’s clean data from e-stat and macroeconomic variables</a></li>
+  <li><a href="#lets-clean-the-earthquakes-records-from-the-jma" id="toc-lets-clean-the-earthquakes-records-from-the-jma" class="nav-link" data-scroll-target="#lets-clean-the-earthquakes-records-from-the-jma">Let’s clean the earthquakes records from the JMA</a></li>
+  <li><a href="#lets-clean-data-from-other-control-variables" id="toc-lets-clean-data-from-other-control-variables" class="nav-link" data-scroll-target="#lets-clean-data-from-other-control-variables">Let’s clean data from other control variables</a></li>
   </ul></li>
-  <li><a href="#merging" id="toc-merging" class="nav-link" data-scroll-target="#merging">MERGING</a>
-  <ul class="collapse">
-  <li><a href="#first-lets-merge-the-housing-data-with-the-shmaps" id="toc-first-lets-merge-the-housing-data-with-the-shmaps" class="nav-link" data-scroll-target="#first-lets-merge-the-housing-data-with-the-shmaps">First, let’s merge the housing data with the SHMaps</a></li>
-  <li><a href="#second-lets-merge-the-other-aggregated-variables" id="toc-second-lets-merge-the-other-aggregated-variables" class="nav-link" data-scroll-target="#second-lets-merge-the-other-aggregated-variables">Second, let’s merge the other aggregated variables</a></li>
-  <li><a href="#lets-eventullay-clean-the-final-dataset" id="toc-lets-eventullay-clean-the-final-dataset" class="nav-link" data-scroll-target="#lets-eventullay-clean-the-final-dataset">Let’s eventullay clean the final dataset</a></li>
-  </ul></li>
+  <li><a href="#merging" id="toc-merging" class="nav-link" data-scroll-target="#merging">MERGING</a></li>
+  <li><a href="#variable-creation" id="toc-variable-creation" class="nav-link" data-scroll-target="#variable-creation">VARIABLE CREATION</a></li>
   <li><a href="#visualisation" id="toc-visualisation" class="nav-link" data-scroll-target="#visualisation">VISUALISATION</a>
   <ul class="collapse">
   <li><a href="#basic-visuals" id="toc-basic-visuals" class="nav-link" data-scroll-target="#basic-visuals">Basic visuals</a></li>
@@ -224,8 +220,88 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a><span class="ss">"""</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Many of the columns which can be discarded and I create a lighter parquet file:</p>
+<style>
+.code-preview {
+  max-height: 200px;
+  overflow: hidden;
+  position: relative;
+}
+.code-preview::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 80px;
+  background: linear-gradient(transparent, var(--bs-body-bg, white));
+  pointer-events: none;
+}
+.code-preview.expanded {
+  max-height: none;
+}
+.code-preview.expanded::after {
+  display: none;
+}
+.expand-btn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  margin: -10px 0 12px;
+  cursor: pointer;
+  background: none;
+  border: none;
+  padding: 4px 0;
+  position: relative;
+  top: 8px;
+}
+.expand-btn svg {
+  width: 96px;
+  height: 32px;
+  transition: transform 0.3s ease;
+}
+.expand-btn.expanded svg {
+  transform: rotate(180deg);
+}
+</style>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  var ns = "http://www.w3.org/2000/svg";
+
+  document.querySelectorAll(".fold-chunk").forEach(function (el) {
+    var wrapper = document.createElement("div");
+    wrapper.className = "code-preview";
+    el.parentNode.insertBefore(wrapper, el);
+    wrapper.appendChild(el);
+
+    var svg = document.createElementNS(ns, "svg");
+    svg.setAttribute("viewBox", "0 0 72 24");
+
+    var poly = document.createElementNS(ns, "polyline");
+    poly.setAttribute("points", "4,8 36,20 68,8");
+    poly.setAttribute("stroke", "#888888");
+    poly.setAttribute("stroke-width", "3");
+    poly.setAttribute("stroke-linecap", "round");
+    poly.setAttribute("stroke-linejoin", "round");
+    poly.setAttribute("fill", "none");
+
+    svg.appendChild(poly);
+
+    var btn = document.createElement("button");
+    btn.className = "expand-btn";
+    btn.appendChild(svg);
+    wrapper.parentNode.insertBefore(btn, wrapper.nextSibling);
+
+    btn.addEventListener("click", function () {
+      wrapper.classList.toggle("expanded");
+      btn.classList.toggle("expanded");
+    });
+  });
+});
+</script>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>con.execute(<span class="st">"""</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python fold-chunk code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>con.execute(<span class="st">"""</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="st">COPY (</span></span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="st">    SELECT</span></span>
 <span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="st">        bukken_id::VARCHAR AS id,</span></span>
@@ -280,10 +356,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb3-53"><a href="#cb3-53" aria-hidden="true" tabindex="-1"></a><span class="st">"""</span></span>
 <span id="cb3-54"><a href="#cb3-54" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<p>Now, to get a event lighter dataset, I drop where <code>money_room</code>and <code>house_aear</code>/ <code>land_area</code>are missing. Taking a step forward to the sample selection, I keep only land for sales, condomium or appartments.</p>
+<p>Now, to get a event lighter dataset, I drop where <code>money_room</code>and <code>house_aear</code>/ <code>land_area</code> are missing. Taking a step forward to the sample selection, I keep only land for sales, condominium or apartments.</p>
 <div class="cell">
 <details class="code-fold">
-<summary>Code</summary>
+<summary>See property type codebook</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode stata code-with-copy"><code class="sourceCode stata"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co">/*</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="co">From the codebook:</span></span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="co">1101 Land for Sale</span></span>
@@ -480,7 +556,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Now I have processed with “monthly”, let’s clean the “period” data. Those ones cover the listings from October 2018 to November 2024. Two datasets are attached: the first one is called “bukken_rent_v1.0.1” and deals with rents, and the second one, “bukken_sale_v1.0.1”, is about the sales.</p>
 <p>Two main differences: the names and the CRS. Let’s easily rename the rents2 dataset as the rents1 dataset while selecting the associated columns.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>con.execute(<span class="st">"""</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python fold-chunk code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>con.execute(<span class="st">"""</span></span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="st">COPY (</span></span>
 <span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="st">    SELECT</span></span>
 <span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="st">        id,</span></span>
@@ -547,7 +623,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <p>Using the same loop as before, I merge rents2 with the years following:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># =========================================================</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python fold-chunk code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># =========================================================</span></span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="co">#  LOOP OVER YEARS</span></span>
 <span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="co"># =========================================================</span></span>
 <span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>years <span class="op">=</span> <span class="bu">range</span>(<span class="dv">2018</span>, <span class="dv">2024</span>)</span>
@@ -624,33 +700,37 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <p>With a few name exceptions, the last dataset (“bukken_sale_v1.0.1”) follows the same logic and I end up with three datasets that I finally append.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>con.execute(<span class="st">"""</span></span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="st">    CREATE TABLE data_all AS</span></span>
-<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="st">    SELECT * FROM read_parquet('/Users/anthony/Documents/master_thesis/data/raw/liffull_homes/rents1.parquet')</span></span>
-<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="st">    UNION ALL</span></span>
-<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a><span class="st">    SELECT * FROM read_parquet('/Users/anthony/Documents/master_thesis/data/raw/liffull_homes/rents2.parquet')</span></span>
-<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a><span class="st">    UNION ALL</span></span>
-<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a><span class="st">    SELECT * FROM read_parquet('/Users/anthony/Documents/master_thesis/data/raw/liffull_homes/sales.parquet')</span></span>
-<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a><span class="st">"""</span>)</span>
-<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a><span class="co"># This is intermediate step to discard potential duplicates</span></span>
-<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a>con.execute(<span class="st">"""</span></span>
-<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a><span class="st">    CREATE TABLE clean_data AS</span></span>
-<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a><span class="st">    SELECT DISTINCT * FROM data_all</span></span>
-<span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a><span class="st">"""</span>)</span>
-<span id="cb14-15"><a href="#cb14-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-16"><a href="#cb14-16" aria-hidden="true" tabindex="-1"></a>con.execute(<span class="st">"""</span></span>
-<span id="cb14-17"><a href="#cb14-17" aria-hidden="true" tabindex="-1"></a><span class="st">    COPY clean_data</span></span>
-<span id="cb14-18"><a href="#cb14-18" aria-hidden="true" tabindex="-1"></a><span class="st">    TO ''/Users/anthony/Documents/master_thesis/data/raw/liffull_homes/liffull.parquet''</span></span>
-<span id="cb14-19"><a href="#cb14-19" aria-hidden="true" tabindex="-1"></a><span class="st">    (FORMAT PARQUET)</span></span>
-<span id="cb14-20"><a href="#cb14-20" aria-hidden="true" tabindex="-1"></a><span class="st">"""</span>)</span>
-<span id="cb14-21"><a href="#cb14-21" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-22"><a href="#cb14-22" aria-hidden="true" tabindex="-1"></a>con.execute(<span class="st">"DROP TABLE raw_data"</span>)</span>
-<span id="cb14-23"><a href="#cb14-23" aria-hidden="true" tabindex="-1"></a>con.execute(<span class="st">"DROP TABLE clean_data"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># =========================================================</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="co">#  APPEND THE THREE LIFULL HOMES DATASETS</span></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="co"># =========================================================</span></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>con.execute(<span class="st">"""</span></span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a><span class="st">    CREATE TABLE data_all AS</span></span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a><span class="st">    SELECT * FROM read_parquet('/Users/anthony/Documents/master_thesis/data/raw/liffull_homes/rents1.parquet')</span></span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a><span class="st">    UNION ALL</span></span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a><span class="st">    SELECT * FROM read_parquet('/Users/anthony/Documents/master_thesis/data/raw/liffull_homes/rents2.parquet')</span></span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a><span class="st">    UNION ALL</span></span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a><span class="st">    SELECT * FROM read_parquet('/Users/anthony/Documents/master_thesis/data/raw/liffull_homes/sales.parquet')</span></span>
+<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a><span class="st">"""</span>)</span>
+<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a><span class="co"># This is intermediate step to discard potential duplicates</span></span>
+<span id="cb14-15"><a href="#cb14-15" aria-hidden="true" tabindex="-1"></a>con.execute(<span class="st">"""</span></span>
+<span id="cb14-16"><a href="#cb14-16" aria-hidden="true" tabindex="-1"></a><span class="st">    CREATE TABLE clean_data AS</span></span>
+<span id="cb14-17"><a href="#cb14-17" aria-hidden="true" tabindex="-1"></a><span class="st">    SELECT DISTINCT * FROM data_all</span></span>
+<span id="cb14-18"><a href="#cb14-18" aria-hidden="true" tabindex="-1"></a><span class="st">"""</span>)</span>
+<span id="cb14-19"><a href="#cb14-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-20"><a href="#cb14-20" aria-hidden="true" tabindex="-1"></a>con.execute(<span class="st">"""</span></span>
+<span id="cb14-21"><a href="#cb14-21" aria-hidden="true" tabindex="-1"></a><span class="st">    COPY clean_data</span></span>
+<span id="cb14-22"><a href="#cb14-22" aria-hidden="true" tabindex="-1"></a><span class="st">    TO '/Users/anthony/Documents/master_thesis/data/clean/liffull.parquet'</span></span>
+<span id="cb14-23"><a href="#cb14-23" aria-hidden="true" tabindex="-1"></a><span class="st">    (FORMAT PARQUET)</span></span>
+<span id="cb14-24"><a href="#cb14-24" aria-hidden="true" tabindex="-1"></a><span class="st">"""</span>)</span>
+<span id="cb14-25"><a href="#cb14-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-26"><a href="#cb14-26" aria-hidden="true" tabindex="-1"></a>con.execute(<span class="st">"DROP TABLE raw_data"</span>)</span>
+<span id="cb14-27"><a href="#cb14-27" aria-hidden="true" tabindex="-1"></a>con.execute(<span class="st">"DROP TABLE clean_data"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
-<section id="then-lets-clean-the-earthquakes-records-from-the-jma" class="level3">
-<h3 class="anchored" data-anchor-id="then-lets-clean-the-earthquakes-records-from-the-jma">Then, let’s clean the earthquakes records from the JMA</h3>
+<section id="lets-clean-the-earthquakes-records-from-the-jma" class="level3">
+<h3 class="anchored" data-anchor-id="lets-clean-the-earthquakes-records-from-the-jma">Let’s clean the earthquakes records from the JMA</h3>
 <p>Now, let’s turn to the JMA files. They can be download for each year and contain every single earthquake records. I download them for years from 2015 to 2024 and I use first Python and second Stata to clean and select them.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
@@ -690,7 +770,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>            <span class="st">"date"</span>:             <span class="ss">f"</span><span class="sc">{</span>line[<span class="dv">1</span>:<span class="dv">5</span>]<span class="sc">}</span><span class="ss">-</span><span class="sc">{</span>line[<span class="dv">5</span>:<span class="dv">7</span>]<span class="sc">}</span><span class="ss">-</span><span class="sc">{</span>line[<span class="dv">7</span>:<span class="dv">9</span>]<span class="sc">}</span><span class="ss">"</span>,</span>
 <span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>            <span class="st">"magnitude"</span>:        line[<span class="dv">52</span>:<span class="dv">54</span>].strip(),</span>
 <span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>            <span class="st">"max_intensity"</span>:    line[<span class="dv">61</span>].strip(),</span>
-<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>            <span class="co"># The CRS is once again different. The following formula converts from DMS to standard format.</span></span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>            <span class="co"># The CRS is once again different. The following formula converts from DMS to WGS84 (epsg:4326) format.</span></span>
 <span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a>            <span class="st">"eq_lat"</span>:           <span class="bu">int</span>(line[<span class="dv">21</span>:<span class="dv">24</span>]) <span class="op">+</span> (<span class="bu">int</span>(line[<span class="dv">24</span>:<span class="dv">28</span>]) <span class="op">/</span> <span class="dv">100</span>) <span class="op">/</span> <span class="dv">60</span>,</span>
 <span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a>            <span class="st">"eq_lon"</span>:           <span class="bu">int</span>(line[<span class="dv">32</span>:<span class="dv">36</span>]) <span class="op">+</span> (<span class="bu">int</span>(line[<span class="dv">36</span>:<span class="dv">40</span>]) <span class="op">/</span> <span class="dv">100</span>) <span class="op">/</span> <span class="dv">60</span>,</span>
 <span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a>            <span class="st">"damage_class"</span>:     line[<span class="dv">62</span>].strip(),</span>
@@ -744,35 +824,53 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb18-31"><a href="#cb18-31" aria-hidden="true" tabindex="-1"></a><span class="kw">drop</span> <span class="fu">date</span></span>
 <span id="cb18-32"><a href="#cb18-32" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb18-33"><a href="#cb18-33" aria-hidden="true" tabindex="-1"></a>* Preparing an <span class="fu">index</span> <span class="kw">for</span> the future <span class="kw">merge</span></span>
-<span id="cb18-34"><a href="#cb18-34" aria-hidden="true" tabindex="-1"></a><span class="kw">gen</span> <span class="fu">index</span> = <span class="dt">_n</span></span>
+<span id="cb18-34"><a href="#cb18-34" aria-hidden="true" tabindex="-1"></a><span class="kw">gen</span> eq_index = <span class="dt">_n</span></span>
 <span id="cb18-35"><a href="#cb18-35" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb18-36"><a href="#cb18-36" aria-hidden="true" tabindex="-1"></a>* Get it <span class="kw">in</span> the right <span class="kw">order</span> and <span class="kw">save</span></span>
-<span id="cb18-37"><a href="#cb18-37" aria-hidden="true" tabindex="-1"></a><span class="kw">order</span> <span class="fu">date</span> magnitude max_intensity eq_lat eq_lon damage_class tsunami_class district_number region_number</span>
+<span id="cb18-37"><a href="#cb18-37" aria-hidden="true" tabindex="-1"></a><span class="kw">order</span> eq_date eq_index magnitude max_intensity eq_lat eq_lon damage_class tsunami_class district_number region_number</span>
 <span id="cb18-38"><a href="#cb18-38" aria-hidden="true" tabindex="-1"></a><span class="kw">save</span> <span class="st">"/Users/anthony/Documents/master_thesis/data/clean/eq_records.dta"</span>, <span class="kw">replace</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<p>Records include of course latitude and longitude in DMS format. Then the following code convert those variables in the CRS WGS84 (epsg:4326) format:</p>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Convert latitude_deg / lat and longitude_deg / lon in DMS to WGS84 (epsg:4326)</span></span>
-<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> dms_to_decimals(latlon_deg: <span class="bu">int</span> <span class="op">=</span> <span class="dv">31</span>, latlon: <span class="bu">int</span> <span class="op">=</span> <span class="dv">1176</span>):</span>
-<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>    minute <span class="op">=</span> latlon <span class="op">//</span> <span class="dv">100</span></span>
-<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>    second <span class="op">=</span> latlon <span class="op">%</span> <span class="dv">100</span></span>
-<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> latlon_deg <span class="op">+</span> minute <span class="op">/</span> <span class="dv">60</span> <span class="op">+</span> second <span class="op">/</span> <span class="dv">3600</span></span>
-<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>jma_damage[<span class="st">"latitude"</span>] <span class="op">=</span> jma_damage.<span class="bu">apply</span>(</span>
-<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a>    <span class="kw">lambda</span> row : dms_to_decimals(row[<span class="st">"latitude_deg"</span>], row[<span class="st">"lat"</span>]),</span>
-<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a>    axis <span class="op">=</span> <span class="dv">1</span>)</span>
-<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a>jma_damage[<span class="st">"longitude"</span>] <span class="op">=</span> jma_damage.<span class="bu">apply</span>(</span>
-<span id="cb19-12"><a href="#cb19-12" aria-hidden="true" tabindex="-1"></a>    <span class="kw">lambda</span> row : dms_to_decimals(row[<span class="st">"longitude_deg"</span>], row[<span class="st">"lon"</span>]),</span>
-<span id="cb19-13"><a href="#cb19-13" aria-hidden="true" tabindex="-1"></a>    axis <span class="op">=</span> <span class="dv">1</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-<p>The records include a “damage _class” variable where damages are recorded.</p>
 </section>
-<section id="finally-lets-clean-data-from-e-stat-and-macroeconomic-variables" class="level3">
-<h3 class="anchored" data-anchor-id="finally-lets-clean-data-from-e-stat-and-macroeconomic-variables">Finally, let’s clean data from e-stat and macroeconomic variables</h3>
+<section id="lets-clean-data-from-other-control-variables" class="level3">
+<h3 class="anchored" data-anchor-id="lets-clean-data-from-other-control-variables">Let’s clean data from other control variables</h3>
+<p>To capture the attractiveness of a property, I collect other data from e-stat and some other macroeconomic variables.</p>
 <div class="cell">
-<details class="code-fold">
-<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode stata code-with-copy"><code class="sourceCode stata"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>********************************************************************************</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>* MERGE RAW FILES</span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a><span class="kw">local</span> files pop adm lab edu dwe med cul</span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a><span class="kw">local</span> pop_opts <span class="st">`"</span> <span class="kw">clear</span> <span class="st">"'</span></span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a><span class="st">local other_opts `"</span> rowrange(9) varnames(9) <span class="kw">clear</span> <span class="st">"'</span></span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a><span class="st">* Load population first</span></span>
+<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a><span class="st">import delimited using "</span>/Users/anthony/Documents/master_thesis/<span class="kw">data</span>/raw/<span class="fu">e</span>-stat/pop.csv<span class="st">", clear</span></span>
+<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a><span class="st">drop if year &lt; 2015</span></span>
+<span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a><span class="st">tempfile estat_combined</span></span>
+<span id="cb19-12"><a href="#cb19-12" aria-hidden="true" tabindex="-1"></a><span class="st">save `estat_combined', replace emptyok</span></span>
+<span id="cb19-13"><a href="#cb19-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-14"><a href="#cb19-14" aria-hidden="true" tabindex="-1"></a><span class="st">* Merge with the rest of the datasets</span></span>
+<span id="cb19-15"><a href="#cb19-15" aria-hidden="true" tabindex="-1"></a><span class="st">foreach f in adm lab edu dwe med cul {</span></span>
+<span id="cb19-16"><a href="#cb19-16" aria-hidden="true" tabindex="-1"></a><span class="st">    import delimited using "</span>/Users/anthony/Documents/master_thesis/<span class="kw">data</span>/raw/<span class="fu">e</span>-stat/<span class="ot">`f'</span>.csv<span class="st">", ///</span></span>
+<span id="cb19-17"><a href="#cb19-17" aria-hidden="true" tabindex="-1"></a><span class="st">        rowrange(9) varnames(9) clear</span></span>
+<span id="cb19-18"><a href="#cb19-18" aria-hidden="true" tabindex="-1"></a><span class="st">    drop items</span></span>
+<span id="cb19-19"><a href="#cb19-19" aria-hidden="true" tabindex="-1"></a><span class="st">    drop if year &lt; 2015</span></span>
+<span id="cb19-20"><a href="#cb19-20" aria-hidden="true" tabindex="-1"></a><span class="st">    merge 1:1 year areacode using `estat_combined', nogenerate</span></span>
+<span id="cb19-21"><a href="#cb19-21" aria-hidden="true" tabindex="-1"></a><span class="st">    save `estat_combined', replace</span></span>
+<span id="cb19-22"><a href="#cb19-22" aria-hidden="true" tabindex="-1"></a><span class="st">}</span></span>
+<span id="cb19-23"><a href="#cb19-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-24"><a href="#cb19-24" aria-hidden="true" tabindex="-1"></a><span class="st">* Convert to numeric</span></span>
+<span id="cb19-25"><a href="#cb19-25" aria-hidden="true" tabindex="-1"></a><span class="st">use `estat_combined', clear</span></span>
+<span id="cb19-26"><a href="#cb19-26" aria-hidden="true" tabindex="-1"></a><span class="st">destring g1201_numberofcommunitycentersnu - a7101_numberofhouseholdstotalhou, ///</span></span>
+<span id="cb19-27"><a href="#cb19-27" aria-hidden="true" tabindex="-1"></a><span class="st">    replace ignore("</span>***<span class="st">" "</span>-<span class="st">" "</span>,<span class="st">")</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>Many values are missing. For example, the variables from the “population” category come from the Japanese census which happens every five years. I proceed three ways to fill in missing variables:</p>
+<dl>
+<dt>linear interpolation</dt>
+<dd>
+for data available only for years 2015 and 2020, mainly the ones from the census, I compute the linear line coefficients between those two variables and complete the missing variables depending on the year.
+</dd>
+</dl>
+<div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode stata code-with-copy"><code class="sourceCode stata"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>********************************************************************************</span>
 <span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>* FILLING IN MISSING VALUES</span>
 <span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -798,63 +896,162 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb20-23"><a href="#cb20-23" aria-hidden="true" tabindex="-1"></a>    * Drop temporary <span class="kw">var</span></span>
 <span id="cb20-24"><a href="#cb20-24" aria-hidden="true" tabindex="-1"></a>    <span class="kw">drop</span> <span class="ot">`var'</span>_delta</span>
 <span id="cb20-25"><a href="#cb20-25" aria-hidden="true" tabindex="-1"></a>    <span class="kw">drop</span> <span class="ot">`var'</span>_base</span>
-<span id="cb20-26"><a href="#cb20-26" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb20-27"><a href="#cb20-27" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-28"><a href="#cb20-28" aria-hidden="true" tabindex="-1"></a>* Regression</span>
-<span id="cb20-29"><a href="#cb20-29" aria-hidden="true" tabindex="-1"></a><span class="kw">gen</span> inmigrants_reg = inmigrants</span>
-<span id="cb20-30"><a href="#cb20-30" aria-hidden="true" tabindex="-1"></a><span class="kw">gen</span> outmigrants_reg = outmigrants</span>
-<span id="cb20-31"><a href="#cb20-31" aria-hidden="true" tabindex="-1"></a><span class="kw">foreach</span> <span class="kw">var</span> <span class="kw">in</span> inmigrants outmigrants {</span>
-<span id="cb20-32"><a href="#cb20-32" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-33"><a href="#cb20-33" aria-hidden="true" tabindex="-1"></a>    <span class="kw">gen</span> yhat = .</span>
-<span id="cb20-34"><a href="#cb20-34" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-35"><a href="#cb20-35" aria-hidden="true" tabindex="-1"></a>    <span class="kw">levelsof</span> areacode, <span class="kw">local</span>(areas)</span>
-<span id="cb20-36"><a href="#cb20-36" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-37"><a href="#cb20-37" aria-hidden="true" tabindex="-1"></a>    <span class="kw">foreach</span> a <span class="kw">of</span> <span class="kw">local</span> areas {</span>
-<span id="cb20-38"><a href="#cb20-38" aria-hidden="true" tabindex="-1"></a>        <span class="fu">count</span> <span class="kw">if</span> areacode == <span class="ot">`a'</span> &amp; !<span class="fu">missing</span>(<span class="fu">year</span>, <span class="ot">`var'</span>)</span>
-<span id="cb20-39"><a href="#cb20-39" aria-hidden="true" tabindex="-1"></a>        </span>
-<span id="cb20-40"><a href="#cb20-40" aria-hidden="true" tabindex="-1"></a>        <span class="kw">if</span> <span class="fu">r</span>(<span class="kw">N</span>) &gt;= 2 {</span>
-<span id="cb20-41"><a href="#cb20-41" aria-hidden="true" tabindex="-1"></a>            <span class="kw">regress</span> <span class="ot">`var'</span> <span class="fu">year</span> <span class="kw">if</span> areacode == <span class="ot">`a'</span></span>
-<span id="cb20-42"><a href="#cb20-42" aria-hidden="true" tabindex="-1"></a>            <span class="kw">predict</span> temp <span class="kw">if</span> areacode == <span class="ot">`a'</span></span>
-<span id="cb20-43"><a href="#cb20-43" aria-hidden="true" tabindex="-1"></a>            </span>
-<span id="cb20-44"><a href="#cb20-44" aria-hidden="true" tabindex="-1"></a>            <span class="kw">replace</span> yhat = <span class="fu">round</span>(temp) <span class="kw">if</span> areacode == <span class="ot">`a'</span></span>
-<span id="cb20-45"><a href="#cb20-45" aria-hidden="true" tabindex="-1"></a>            <span class="kw">drop</span> temp</span>
-<span id="cb20-46"><a href="#cb20-46" aria-hidden="true" tabindex="-1"></a>        }</span>
-<span id="cb20-47"><a href="#cb20-47" aria-hidden="true" tabindex="-1"></a>        <span class="kw">else</span> {</span>
-<span id="cb20-48"><a href="#cb20-48" aria-hidden="true" tabindex="-1"></a>            <span class="kw">display</span> <span class="st">"Skipping areacode `a' for `var' (not enough data)"</span></span>
-<span id="cb20-49"><a href="#cb20-49" aria-hidden="true" tabindex="-1"></a>        }</span>
-<span id="cb20-50"><a href="#cb20-50" aria-hidden="true" tabindex="-1"></a>    }</span>
-<span id="cb20-51"><a href="#cb20-51" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-52"><a href="#cb20-52" aria-hidden="true" tabindex="-1"></a>    <span class="kw">replace</span> <span class="ot">`var'</span>_reg = yhat <span class="kw">if</span> <span class="fu">missing</span>(<span class="ot">`var'</span>)</span>
-<span id="cb20-53"><a href="#cb20-53" aria-hidden="true" tabindex="-1"></a>    <span class="kw">drop</span> yhat</span>
-<span id="cb20-54"><a href="#cb20-54" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb20-55"><a href="#cb20-55" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-56"><a href="#cb20-56" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-57"><a href="#cb20-57" aria-hidden="true" tabindex="-1"></a>* Take the nearest <span class="ot">value</span></span>
-<span id="cb20-58"><a href="#cb20-58" aria-hidden="true" tabindex="-1"></a><span class="kw">foreach</span> <span class="kw">var</span> <span class="kw">of</span> <span class="kw">varlist</span> comm_centers libraries hospitals physicians dentists  {</span>
-<span id="cb20-59"><a href="#cb20-59" aria-hidden="true" tabindex="-1"></a>    <span class="kw">gen</span> <span class="ot">`var'</span>_near = <span class="ot">`var'</span></span>
-<span id="cb20-60"><a href="#cb20-60" aria-hidden="true" tabindex="-1"></a>    <span class="kw">bysort</span> areacode (<span class="fu">year</span>): <span class="kw">replace</span> <span class="ot">`var'</span>_near = <span class="ot">`var'</span>_near[<span class="dt">_n</span>+1] <span class="kw">if</span> <span class="fu">missing</span>(<span class="ot">`var'</span>_near[1])</span>
-<span id="cb20-61"><a href="#cb20-61" aria-hidden="true" tabindex="-1"></a>    <span class="kw">bysort</span> areacode (<span class="fu">year</span>): <span class="kw">replace</span> <span class="ot">`var'</span>_near = <span class="ot">`var'</span>_near[<span class="dt">_n</span>-1] <span class="kw">if</span> <span class="fu">missing</span>(<span class="ot">`var'</span>_near) </span>
-<span id="cb20-62"><a href="#cb20-62" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb20-63"><a href="#cb20-63" aria-hidden="true" tabindex="-1"></a>* Simple <span class="kw">mean</span> computation</span>
-<span id="cb20-64"><a href="#cb20-64" aria-hidden="true" tabindex="-1"></a><span class="kw">foreach</span> <span class="kw">var</span> <span class="kw">of</span> <span class="kw">varlist</span> fin_power {</span>
-<span id="cb20-65"><a href="#cb20-65" aria-hidden="true" tabindex="-1"></a>    <span class="kw">bysort</span> areacode (<span class="fu">year</span>): <span class="kw">egen</span> <span class="ot">`var'</span>_mean = <span class="kw">mean</span>(<span class="ot">`var'</span>)</span>
-<span id="cb20-66"><a href="#cb20-66" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</details>
+<span id="cb20-26"><a href="#cb20-26" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<dl>
+<dt>Regression</dt>
+<dd>
+this method is based on the previous one, but more than two years are available.
+</dd>
+</dl>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode stata code-with-copy"><code class="sourceCode stata"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>* Regression</span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="kw">gen</span> inmigrants_reg = inmigrants</span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a><span class="kw">gen</span> outmigrants_reg = outmigrants</span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a><span class="kw">foreach</span> <span class="kw">var</span> <span class="kw">in</span> inmigrants outmigrants {</span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a>    <span class="kw">gen</span> yhat = .</span>
+<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a>    <span class="kw">levelsof</span> areacode, <span class="kw">local</span>(areas)</span>
+<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a>    <span class="kw">foreach</span> a <span class="kw">of</span> <span class="kw">local</span> areas {</span>
+<span id="cb21-11"><a href="#cb21-11" aria-hidden="true" tabindex="-1"></a>        <span class="fu">count</span> <span class="kw">if</span> areacode == <span class="ot">`a'</span> &amp; !<span class="fu">missing</span>(<span class="fu">year</span>, <span class="ot">`var'</span>)</span>
+<span id="cb21-12"><a href="#cb21-12" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb21-13"><a href="#cb21-13" aria-hidden="true" tabindex="-1"></a>        <span class="kw">if</span> <span class="fu">r</span>(<span class="kw">N</span>) &gt;= 2 {</span>
+<span id="cb21-14"><a href="#cb21-14" aria-hidden="true" tabindex="-1"></a>            <span class="kw">regress</span> <span class="ot">`var'</span> <span class="fu">year</span> <span class="kw">if</span> areacode == <span class="ot">`a'</span></span>
+<span id="cb21-15"><a href="#cb21-15" aria-hidden="true" tabindex="-1"></a>            <span class="kw">predict</span> temp <span class="kw">if</span> areacode == <span class="ot">`a'</span></span>
+<span id="cb21-16"><a href="#cb21-16" aria-hidden="true" tabindex="-1"></a>            </span>
+<span id="cb21-17"><a href="#cb21-17" aria-hidden="true" tabindex="-1"></a>            <span class="kw">replace</span> yhat = <span class="fu">round</span>(temp) <span class="kw">if</span> areacode == <span class="ot">`a'</span></span>
+<span id="cb21-18"><a href="#cb21-18" aria-hidden="true" tabindex="-1"></a>            <span class="kw">drop</span> temp</span>
+<span id="cb21-19"><a href="#cb21-19" aria-hidden="true" tabindex="-1"></a>        }</span>
+<span id="cb21-20"><a href="#cb21-20" aria-hidden="true" tabindex="-1"></a>        <span class="kw">else</span> {</span>
+<span id="cb21-21"><a href="#cb21-21" aria-hidden="true" tabindex="-1"></a>            <span class="kw">display</span> <span class="st">"Skipping areacode `a' for `var' (not enough data)"</span></span>
+<span id="cb21-22"><a href="#cb21-22" aria-hidden="true" tabindex="-1"></a>        }</span>
+<span id="cb21-23"><a href="#cb21-23" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb21-24"><a href="#cb21-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-25"><a href="#cb21-25" aria-hidden="true" tabindex="-1"></a>    <span class="kw">replace</span> <span class="ot">`var'</span>_reg = yhat <span class="kw">if</span> <span class="fu">missing</span>(<span class="ot">`var'</span>)</span>
+<span id="cb21-26"><a href="#cb21-26" aria-hidden="true" tabindex="-1"></a>    <span class="kw">drop</span> yhat</span>
+<span id="cb21-27"><a href="#cb21-27" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<dl>
+<dt>Nearest value</dt>
+<dd>
+For the rest of the variables, if a observation is missing, I take the value of the previous year. For example, if some city had 2 libraries in 2015 and 2016 is N.A, then I suppose I also had 2 libraries in 2016.
+</dd>
+</dl>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode stata code-with-copy"><code class="sourceCode stata"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>* Nearest <span class="kw">values</span></span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a><span class="kw">foreach</span> <span class="kw">var</span> <span class="kw">of</span> <span class="kw">varlist</span> comm_centers libraries hospitals physicians dentists  {</span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>    <span class="kw">gen</span> <span class="ot">`var'</span>_near = <span class="ot">`var'</span></span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>    <span class="kw">bysort</span> areacode (<span class="fu">year</span>): <span class="kw">replace</span> <span class="ot">`var'</span>_near = <span class="ot">`var'</span>_near[<span class="dt">_n</span>+1] <span class="kw">if</span> <span class="fu">missing</span>(<span class="ot">`var'</span>_near[1])</span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>    <span class="kw">bysort</span> areacode (<span class="fu">year</span>): <span class="kw">replace</span> <span class="ot">`var'</span>_near = <span class="ot">`var'</span>_near[<span class="dt">_n</span>-1] <span class="kw">if</span> <span class="fu">missing</span>(<span class="ot">`var'</span>_near) </span>
+<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>For a few ones, I simply compute the mean for available years.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode stata code-with-copy"><code class="sourceCode stata"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>* Simple <span class="kw">mean</span> computation</span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="kw">foreach</span> <span class="kw">var</span> <span class="kw">of</span> <span class="kw">varlist</span> fin_power {</span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>    <span class="kw">bysort</span> areacode (<span class="fu">year</span>): <span class="kw">egen</span> <span class="ot">`var'</span>_mean = <span class="kw">mean</span>(<span class="ot">`var'</span>)</span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>Finally, I create new variables.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode stata code-with-copy"><code class="sourceCode stata"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>********************************************************************************</span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>* CREATE RATIOS &amp; VARIABLES</span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>* Migration</span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a><span class="kw">gen</span> inmigration_rate = inmigrants_reg / pop_total_linear </span>
+<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a><span class="kw">gen</span> outmigration_rate = outmigrants_reg / pop_total_linear</span>
+<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a><span class="kw">gen</span> net_migration_rate = inmigrants_reg / outmigrants_reg</span>
+<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a><span class="kw">gen</span> net_migration = inmigrants_reg - outmigrants_reg</span>
+<span id="cb24-9"><a href="#cb24-9" aria-hidden="true" tabindex="-1"></a><span class="kw">gen</span> commutation_rate = commute_in_linear / commute_out_linear</span>
+<span id="cb24-10"><a href="#cb24-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-11"><a href="#cb24-11" aria-hidden="true" tabindex="-1"></a>* Composition</span>
+<span id="cb24-12"><a href="#cb24-12" aria-hidden="true" tabindex="-1"></a><span class="kw">gen</span> pop_o65_share = pop_o65_linear / pop_total_linear</span>
+<span id="cb24-13"><a href="#cb24-13" aria-hidden="true" tabindex="-1"></a><span class="kw">gen</span> pop_u15_share = pop_u15_linear / pop_total_linear</span>
+<span id="cb24-14"><a href="#cb24-14" aria-hidden="true" tabindex="-1"></a><span class="kw">gen</span> foreigners_share = foreigners_linear / pop_total_linear</span>
+<span id="cb24-15"><a href="#cb24-15" aria-hidden="true" tabindex="-1"></a><span class="kw">gen</span> skilled_workers_share = skilled_workers_linear / pop_total2_linear</span>
+<span id="cb24-16"><a href="#cb24-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-17"><a href="#cb24-17" aria-hidden="true" tabindex="-1"></a>* Labour</span>
+<span id="cb24-18"><a href="#cb24-18" aria-hidden="true" tabindex="-1"></a><span class="kw">gen</span> employement_rate = employed_linear / pop_total2_linear</span>
+<span id="cb24-19"><a href="#cb24-19" aria-hidden="true" tabindex="-1"></a><span class="kw">gen</span> unemployment_rate = unemployed_linear / pop_total2_linear</span>
+<span id="cb24-20"><a href="#cb24-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-21"><a href="#cb24-21" aria-hidden="true" tabindex="-1"></a>* Health</span>
+<span id="cb24-22"><a href="#cb24-22" aria-hidden="true" tabindex="-1"></a><span class="kw">gen</span> hospitals_pc = hospitals_near / pop_total_linear</span>
+<span id="cb24-23"><a href="#cb24-23" aria-hidden="true" tabindex="-1"></a><span class="kw">gen</span> dentists_pc = dentists_near / pop_total_linear</span>
+<span id="cb24-24"><a href="#cb24-24" aria-hidden="true" tabindex="-1"></a><span class="kw">gen</span> physicians_pc = physicians_near / pop_total_linear</span>
+<span id="cb24-25"><a href="#cb24-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-26"><a href="#cb24-26" aria-hidden="true" tabindex="-1"></a>* Culture</span>
+<span id="cb24-27"><a href="#cb24-27" aria-hidden="true" tabindex="-1"></a><span class="kw">gen</span> libraries_pc = libraries_near / pop_total_linear</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>Let’s save this cleaned dataset:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb25"><pre class="sourceCode stata code-with-copy"><code class="sourceCode stata"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="kw">save</span> <span class="st">"/Users/anthony/Documents/master_thesis/data/clean/estat.dta"</span>, <span class="kw">replace</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 </section>
 <section id="merging" class="level2">
 <h2 class="anchored" data-anchor-id="merging">MERGING</h2>
-<p>Now the data are pro-processed, they can be merged easily together.</p>
-<section id="first-lets-merge-the-housing-data-with-the-shmaps" class="level3">
-<h3 class="anchored" data-anchor-id="first-lets-merge-the-housing-data-with-the-shmaps">First, let’s merge the housing data with the SHMaps</h3>
+<p>Now the data are pro-processed, they can be merged easily together. I decide to go with <code>Stata</code> from now on, expect when I will compute distances later.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb26"><pre class="sourceCode stata code-with-copy"><code class="sourceCode stata"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>********************************************************************************</span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>********************************************************************************</span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>************ MERGING DATA ************</span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>********************************************************************************</span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a>********************************************************************************</span>
+<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a>********************************************************************************</span>
+<span id="cb26-8"><a href="#cb26-8" aria-hidden="true" tabindex="-1"></a>* LOAD THE MAIN DATASET</span>
+<span id="cb26-9"><a href="#cb26-9" aria-hidden="true" tabindex="-1"></a>import parquet <span class="kw">using</span> <span class="st">"/Users/anthony/Documents/master_thesis/data/clean/liffull.parquet"</span>, <span class="kw">clear</span></span>
+<span id="cb26-10"><a href="#cb26-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-11"><a href="#cb26-11" aria-hidden="true" tabindex="-1"></a>* Create areacode to <span class="fu">match</span> with <span class="fu">e</span>-stat <span class="kw">data</span></span>
+<span id="cb26-12"><a href="#cb26-12" aria-hidden="true" tabindex="-1"></a><span class="kw">gen</span> areacode = <span class="fu">string</span>(prefecture) + <span class="fu">string</span>(city_district)</span>
+<span id="cb26-13"><a href="#cb26-13" aria-hidden="true" tabindex="-1"></a><span class="kw">destring</span> areacode, <span class="kw">replace</span></span>
+<span id="cb26-14"><a href="#cb26-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-15"><a href="#cb26-15" aria-hidden="true" tabindex="-1"></a>********************************************************************************</span>
+<span id="cb26-16"><a href="#cb26-16" aria-hidden="true" tabindex="-1"></a>* COMBINE WITH E-STAT DATASET</span>
+<span id="cb26-17"><a href="#cb26-17" aria-hidden="true" tabindex="-1"></a><span class="kw">merge</span> <span class="fu">m</span>:1 areacode <span class="fu">year</span> <span class="kw">using</span> <span class="st">"/Users/anthony/Documents/master_thesis/data/clean/estat.dta"</span>, <span class="kw">keep</span>(<span class="fu">match</span>) nogenerate</span>
+<span id="cb26-18"><a href="#cb26-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-19"><a href="#cb26-19" aria-hidden="true" tabindex="-1"></a>* COMBINE WITH MACRO DATASET</span>
+<span id="cb26-20"><a href="#cb26-20" aria-hidden="true" tabindex="-1"></a><span class="kw">merge</span> <span class="fu">m</span>:1 <span class="fu">year</span> <span class="fu">week</span> <span class="kw">using</span> <span class="st">"/Users/anthony/Documents/master_thesis/data/clena/macro.dta"</span>, nogenerate</span>
+<span id="cb26-21"><a href="#cb26-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-22"><a href="#cb26-22" aria-hidden="true" tabindex="-1"></a>********************************************************************************</span>
+<span id="cb26-23"><a href="#cb26-23" aria-hidden="true" tabindex="-1"></a>* COMBINE WITH JMA DATASET</span>
+<span id="cb26-24"><a href="#cb26-24" aria-hidden="true" tabindex="-1"></a>* Since the earthquake records are <span class="kw">not</span> that numerous after selection,</span>
+<span id="cb26-25"><a href="#cb26-25" aria-hidden="true" tabindex="-1"></a>* <span class="fu">I</span> decide to go manually to avoid coding errors:</span>
+<span id="cb26-26"><a href="#cb26-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-27"><a href="#cb26-27" aria-hidden="true" tabindex="-1"></a>* <span class="fu">I</span> create an <span class="fu">index</span> <span class="kw">for</span> the records</span>
+<span id="cb26-28"><a href="#cb26-28" aria-hidden="true" tabindex="-1"></a><span class="kw">gen</span> eq_index = .</span>
+<span id="cb26-29"><a href="#cb26-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-30"><a href="#cb26-30" aria-hidden="true" tabindex="-1"></a>* Retrieving records dates from the eq_records dataset</span>
+<span id="cb26-31"><a href="#cb26-31" aria-hidden="true" tabindex="-1"></a>* Each <span class="kw">of</span> the following is ordered the same way <span class="kw">as</span> <span class="kw">in</span> the eq_records</span>
+<span id="cb26-32"><a href="#cb26-32" aria-hidden="true" tabindex="-1"></a><span class="kw">local</span> dates <span class="co">///</span></span>
+<span id="cb26-33"><a href="#cb26-33" aria-hidden="true" tabindex="-1"></a>20125 20136 20221 20230 20233 20238 20243 20279 <span class="co">///</span></span>
+<span id="cb26-34"><a href="#cb26-34" aria-hidden="true" tabindex="-1"></a>20282 20343 20467 20558 20559 20560 20562 20563 <span class="co">///</span></span>
+<span id="cb26-35"><a href="#cb26-35" aria-hidden="true" tabindex="-1"></a>20590 20621 20662 20697 20723 20748 20780 20816 <span class="co">///</span></span>
+<span id="cb26-36"><a href="#cb26-36" aria-hidden="true" tabindex="-1"></a>20878 20990 20995 21001 21011 21070 21098 21244 <span class="co">///</span></span>
+<span id="cb26-37"><a href="#cb26-37" aria-hidden="true" tabindex="-1"></a>21283 21288 21316 21329 21353 21372 21433 21462 <span class="co">///</span></span>
+<span id="cb26-38"><a href="#cb26-38" aria-hidden="true" tabindex="-1"></a>21552 21601 21679 21694 21718 21765 21902 21987 <span class="co">///</span></span>
+<span id="cb26-39"><a href="#cb26-39" aria-hidden="true" tabindex="-1"></a>22091 22162 22241 22261 22267 22270 22324 22359 <span class="co">///</span></span>
+<span id="cb26-40"><a href="#cb26-40" aria-hidden="true" tabindex="-1"></a>22401 22539 22559 22560 22617 22623 22649 22667 <span class="co">///</span></span>
+<span id="cb26-41"><a href="#cb26-41" aria-hidden="true" tabindex="-1"></a>22720 22722 22754 22787 22815 22816 22868 22920 <span class="co">///</span></span>
+<span id="cb26-42"><a href="#cb26-42" aria-hidden="true" tabindex="-1"></a>22939 23066 23135 23141 23143 23152 23156 23172</span>
+<span id="cb26-43"><a href="#cb26-43" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-44"><a href="#cb26-44" aria-hidden="true" tabindex="-1"></a>* If a publication starts <span class="kw">in</span> the next 7 days following an earthquake,</span>
+<span id="cb26-45"><a href="#cb26-45" aria-hidden="true" tabindex="-1"></a>* then it takes the <span class="fu">index</span> <span class="ot">value</span> associated to that earthquake</span>
+<span id="cb26-46"><a href="#cb26-46" aria-hidden="true" tabindex="-1"></a><span class="kw">local</span> i = 1</span>
+<span id="cb26-47"><a href="#cb26-47" aria-hidden="true" tabindex="-1"></a><span class="kw">foreach</span> <span class="kw">d</span> <span class="kw">of</span> <span class="kw">local</span> dates {</span>
+<span id="cb26-48"><a href="#cb26-48" aria-hidden="true" tabindex="-1"></a>    <span class="kw">di</span> <span class="st">"date = `d'   id = `i'"</span></span>
+<span id="cb26-49"><a href="#cb26-49" aria-hidden="true" tabindex="-1"></a>    <span class="kw">replace</span> eq_index = <span class="ot">`i'</span> <span class="kw">if</span> <span class="fu">date</span> &gt; <span class="ot">`d'</span> &amp; <span class="fu">date</span> &lt; (<span class="ot">`d'</span> + 7)</span>
+<span id="cb26-50"><a href="#cb26-50" aria-hidden="true" tabindex="-1"></a>    <span class="kw">local</span> ++i</span>
+<span id="cb26-51"><a href="#cb26-51" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb26-52"><a href="#cb26-52" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-53"><a href="#cb26-53" aria-hidden="true" tabindex="-1"></a>* Now <span class="kw">merge</span> according to the <span class="fu">index</span></span>
+<span id="cb26-54"><a href="#cb26-54" aria-hidden="true" tabindex="-1"></a><span class="kw">merge</span> <span class="fu">m</span>:1 index_10 <span class="kw">using</span> <span class="st">"/Users/anthony/Documents/master_thesis/data/clean/records.dta"</span>, <span class="kw">keep</span>(master <span class="fu">match</span>) nogenerate</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
 </section>
-<section id="second-lets-merge-the-other-aggregated-variables" class="level3">
-<h3 class="anchored" data-anchor-id="second-lets-merge-the-other-aggregated-variables">Second, let’s merge the other aggregated variables</h3>
-</section>
-<section id="lets-eventullay-clean-the-final-dataset" class="level3">
-<h3 class="anchored" data-anchor-id="lets-eventullay-clean-the-final-dataset">Let’s eventullay clean the final dataset</h3>
-</section>
+<section id="variable-creation" class="level2">
+<h2 class="anchored" data-anchor-id="variable-creation">VARIABLE CREATION</h2>
 </section>
 <section id="visualisation" class="level2">
 <h2 class="anchored" data-anchor-id="visualisation">VISUALISATION</h2>

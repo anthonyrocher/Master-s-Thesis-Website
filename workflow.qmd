@@ -54,8 +54,92 @@ duckdb.sql(f"""
 
 Many of the columns which can be discarded and I create a lighter parquet file:
 
+```{=html}
+<style>
+.code-preview {
+  max-height: 200px;
+  overflow: hidden;
+  position: relative;
+}
+.code-preview::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 80px;
+  background: linear-gradient(transparent, var(--bs-body-bg, white));
+  pointer-events: none;
+}
+.code-preview.expanded {
+  max-height: none;
+}
+.code-preview.expanded::after {
+  display: none;
+}
+.expand-btn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  margin: -10px 0 12px;
+  cursor: pointer;
+  background: none;
+  border: none;
+  padding: 4px 0;
+  position: relative;
+  top: 8px;
+}
+.expand-btn svg {
+  width: 96px;
+  height: 32px;
+  transition: transform 0.3s ease;
+}
+.expand-btn.expanded svg {
+  transform: rotate(180deg);
+}
+</style>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  var ns = "http://www.w3.org/2000/svg";
+
+  document.querySelectorAll(".fold-chunk").forEach(function (el) {
+    var wrapper = document.createElement("div");
+    wrapper.className = "code-preview";
+    el.parentNode.insertBefore(wrapper, el);
+    wrapper.appendChild(el);
+
+    var svg = document.createElementNS(ns, "svg");
+    svg.setAttribute("viewBox", "0 0 72 24");
+
+    var poly = document.createElementNS(ns, "polyline");
+    poly.setAttribute("points", "4,8 36,20 68,8");
+    poly.setAttribute("stroke", "#888888");
+    poly.setAttribute("stroke-width", "3");
+    poly.setAttribute("stroke-linecap", "round");
+    poly.setAttribute("stroke-linejoin", "round");
+    poly.setAttribute("fill", "none");
+
+    svg.appendChild(poly);
+
+    var btn = document.createElement("button");
+    btn.className = "expand-btn";
+    btn.appendChild(svg);
+    wrapper.parentNode.insertBefore(btn, wrapper.nextSibling);
+
+    btn.addEventListener("click", function () {
+      wrapper.classList.toggle("expanded");
+      btn.classList.toggle("expanded");
+    });
+  });
+});
+</script>
+```
+
 ```{python}
 #| eval: false
+#| class-source: fold-chunk
 con.execute("""
 COPY (
     SELECT
@@ -112,11 +196,12 @@ TO '/Users/anthony/Documents/master_thesis/data/raw/liffull_homes/rents1_renamed
 )
 ```
 
-Now, to get a event lighter dataset, I drop where `money_room`and `house_aear`/ `land_area`are missing. Taking a step forward to the sample selection, I keep only land for sales, condomium or appartments.
+Now, to get a event lighter dataset, I drop where `money_room`and `house_aear`/ `land_area` are missing. Taking a step forward to the sample selection, I keep only land for sales, condominium or apartments.
 
 ```{stata}
 #| eval: false
 #| code-fold: true
+#| code-summary: "See property type codebook"
 /*
 From the codebook:
 1101 Land for Sale
@@ -335,6 +420,7 @@ Two main differences: the names and the CRS. Let's easily rename the rents2 data
 
 ```{python}
 #| eval: false
+#| class-source: fold-chunk
 con.execute("""
 COPY (
     SELECT
@@ -429,6 +515,7 @@ Using the same loop as before, I merge rents2 with the years following:
 
 ```{python}
 #| eval: false
+#| class-source: fold-chunk
 # =========================================================
 #  LOOP OVER YEARS
 # =========================================================
@@ -509,6 +596,10 @@ With a few name exceptions, the last dataset ("bukken_sale_v1.0.1") follows the 
 
 ```{python}
 #| eval: false
+# =========================================================
+#  APPEND THE THREE LIFULL HOMES DATASETS
+# =========================================================
+
 con.execute("""
     CREATE TABLE data_all AS
     SELECT * FROM read_parquet('/Users/anthony/Documents/master_thesis/data/raw/liffull_homes/rents1.parquet')
@@ -526,7 +617,7 @@ con.execute("""
 
 con.execute("""
     COPY clean_data
-    TO ''/Users/anthony/Documents/master_thesis/data/raw/liffull_homes/liffull.parquet''
+    TO '/Users/anthony/Documents/master_thesis/data/clean/liffull.parquet'
     (FORMAT PARQUET)
 """)
 
@@ -534,7 +625,7 @@ con.execute("DROP TABLE raw_data")
 con.execute("DROP TABLE clean_data")
 ```
 
-### Then, let's clean the earthquakes records from the JMA
+### Let's clean the earthquakes records from the JMA
 
 Now, let's turn to the JMA files. They can be download for each year and contain every single earthquake records. I download them for years from 2015 to 2024 and I use first Python and second Stata to clean and select them.
 
@@ -543,7 +634,6 @@ Now, let's turn to the JMA files. They can be download for each year and contain
 import pandas as pd
 import glob
 ```
-
 
 First, I append them.
 
@@ -584,7 +674,7 @@ def parse_line(line):
             "date":             f"{line[1:5]}-{line[5:7]}-{line[7:9]}",
             "magnitude":        line[52:54].strip(),
             "max_intensity":    line[61].strip(),
-            # The CRS is once again different. The following formula converts from DMS to standard format.
+            # The CRS is once again different. The following formula converts from DMS to WGS84 (epsg:4326) format.
             "eq_lat":           int(line[21:24]) + (int(line[24:28]) / 100) / 60,
             "eq_lon":           int(line[32:36]) + (int(line[36:40]) / 100) / 60,
             "damage_class":     line[62].strip(),
@@ -641,42 +731,55 @@ gen eq_date = date(date, "YMD")
 drop date
 
 * Preparing an index for the future merge
-gen index = _n
+gen eq_index = _n
 
 * Get it in the right order and save
-order date magnitude max_intensity eq_lat eq_lon damage_class tsunami_class district_number region_number
+order eq_date eq_index magnitude max_intensity eq_lat eq_lon damage_class tsunami_class district_number region_number
 save "/Users/anthony/Documents/master_thesis/data/clean/eq_records.dta", replace
 ```
 
+### Let's clean data from other control variables
 
-
-
-Records include of course latitude and longitude in DMS format. Then the following code convert those variables in the CRS WGS84 (epsg:4326) format:
-
-```{python}
-#| eval: false
-# Convert latitude_deg / lat and longitude_deg / lon in DMS to WGS84 (epsg:4326)
-def dms_to_decimals(latlon_deg: int = 31, latlon: int = 1176):
-    minute = latlon // 100
-    second = latlon % 100
-    return latlon_deg + minute / 60 + second / 3600
-  
-jma_damage["latitude"] = jma_damage.apply(
-    lambda row : dms_to_decimals(row["latitude_deg"], row["lat"]),
-    axis = 1)
-
-jma_damage["longitude"] = jma_damage.apply(
-    lambda row : dms_to_decimals(row["longitude_deg"], row["lon"]),
-    axis = 1)
-```
-
-The records include a "damage \_class" variable where damages are recorded.
-
-### Finally, let's clean data from e-stat and macroeconomic variables
+To capture the attractiveness of a property, I collect other data from e-stat and some other macroeconomic variables.
 
 ```{stata}
 #| eval: false
-#| code-fold: true
+********************************************************************************
+* MERGE RAW FILES
+
+local files pop adm lab edu dwe med cul
+local pop_opts `" clear "'
+local other_opts `" rowrange(9) varnames(9) clear "'
+
+* Load population first
+import delimited using "/Users/anthony/Documents/master_thesis/data/raw/e-stat/pop.csv", clear
+drop if year < 2015
+tempfile estat_combined
+save `estat_combined', replace emptyok
+
+* Merge with the rest of the datasets
+foreach f in adm lab edu dwe med cul {
+    import delimited using "/Users/anthony/Documents/master_thesis/data/raw/e-stat/`f'.csv", ///
+        rowrange(9) varnames(9) clear
+    drop items
+    drop if year < 2015
+    merge 1:1 year areacode using `estat_combined', nogenerate
+    save `estat_combined', replace
+}
+
+* Convert to numeric
+use `estat_combined', clear
+destring g1201_numberofcommunitycentersnu - a7101_numberofhouseholdstotalhou, ///
+    replace ignore("***" "-" ",")
+```
+
+Many values are missing. For example, the variables from the "population" category come from the Japanese census which happens every five years. I proceed three ways to fill in missing variables:
+
+linear interpolation
+: for data available only for years 2015 and 2020, mainly the ones from the census, I compute the linear line coefficients between those two variables and complete the missing variables depending on the year. 
+
+```{stata}
+#| eval: false
 ********************************************************************************
 * FILLING IN MISSING VALUES
 
@@ -703,7 +806,13 @@ foreach var of varlist pop_total median_age lifeexp_male lifeexp_female pop_u15 
 	drop `var'_delta
 	drop `var'_base
 }
+```
 
+Regression
+: this method is based on the previous one, but more than two years are available.
+
+```{stata}
+#| eval: false
 * Regression
 gen inmigrants_reg = inmigrants
 gen outmigrants_reg = outmigrants
@@ -731,33 +840,136 @@ foreach var in inmigrants outmigrants {
     replace `var'_reg = yhat if missing(`var')
     drop yhat
 }
+```
 
+Nearest value
+: For the rest of the variables, if a observation is missing, I take the value of the previous year. For example, if some city had 2 libraries in 2015 and 2016 is N.A, then I suppose I also had 2 libraries in 2016.
 
-* Take the nearest value
+```{stata}
+#| eval: false
+* Nearest values
 foreach var of varlist comm_centers libraries hospitals physicians dentists  {
 	gen `var'_near = `var'
 	bysort areacode (year): replace `var'_near = `var'_near[_n+1] if missing(`var'_near[1])
 	bysort areacode (year): replace `var'_near = `var'_near[_n-1] if missing(`var'_near) 
 }
+```
+
+For a few ones, I simply compute the mean for available years.
+
+```{stata}
+#| eval: false
 * Simple mean computation
 foreach var of varlist fin_power {
 	bysort areacode (year): egen `var'_mean = mean(`var')
 }
 ```
 
+Finally, I create new variables.
 
+```{stata}
+#| eval: false
+********************************************************************************
+* CREATE RATIOS & VARIABLES
 
+* Migration
+gen inmigration_rate = inmigrants_reg / pop_total_linear 
+gen outmigration_rate = outmigrants_reg / pop_total_linear
+gen net_migration_rate = inmigrants_reg / outmigrants_reg
+gen net_migration = inmigrants_reg - outmigrants_reg
+gen commutation_rate = commute_in_linear / commute_out_linear
 
+* Composition
+gen pop_o65_share = pop_o65_linear / pop_total_linear
+gen pop_u15_share = pop_u15_linear / pop_total_linear
+gen foreigners_share = foreigners_linear / pop_total_linear
+gen skilled_workers_share = skilled_workers_linear / pop_total2_linear
+
+* Labour
+gen employement_rate = employed_linear / pop_total2_linear
+gen unemployment_rate = unemployed_linear / pop_total2_linear
+
+* Health
+gen hospitals_pc = hospitals_near / pop_total_linear
+gen dentists_pc = dentists_near / pop_total_linear
+gen physicians_pc = physicians_near / pop_total_linear
+
+* Culture
+gen libraries_pc = libraries_near / pop_total_linear
+```
+
+Let's save this cleaned dataset:
+
+```{stata}
+#| eval: false
+save "/Users/anthony/Documents/master_thesis/data/clean/estat.dta", replace
+```
 
 ## MERGING
 
-Now the data are pro-processed, they can be merged easily together.
+Now the data are pro-processed, they can be merged easily together. I decide to go with `Stata` from now on, expect when I will compute distances later.
 
-### First, let's merge the housing data with the SHMaps
+```{stata}
+#| eval: false
+********************************************************************************
+********************************************************************************
+************ MERGING DATA ************
+********************************************************************************
+********************************************************************************
 
-### Second, let's merge the other aggregated variables
+********************************************************************************
+* LOAD THE MAIN DATASET
+import parquet using "/Users/anthony/Documents/master_thesis/data/clean/liffull.parquet", clear
 
-### Let's eventullay clean the final dataset
+* Create areacode to match with e-stat data
+gen areacode = string(prefecture) + string(city_district)
+destring areacode, replace
+
+********************************************************************************
+* COMBINE WITH E-STAT DATASET
+merge m:1 areacode year using "/Users/anthony/Documents/master_thesis/data/clean/estat.dta", keep(match) nogenerate
+
+* COMBINE WITH MACRO DATASET
+merge m:1 year week using "/Users/anthony/Documents/master_thesis/data/clena/macro.dta", nogenerate
+
+********************************************************************************
+* COMBINE WITH JMA DATASET
+* Since the earthquake records are not that numerous after selection,
+* I decide to go manually to avoid coding errors:
+
+* I create an index for the records
+gen eq_index = .
+
+* Retrieving records dates from the eq_records dataset
+* Each of the following is ordered the same way as in the eq_records
+local dates ///
+20125 20136 20221 20230 20233 20238 20243 20279 ///
+20282 20343 20467 20558 20559 20560 20562 20563 ///
+20590 20621 20662 20697 20723 20748 20780 20816 ///
+20878 20990 20995 21001 21011 21070 21098 21244 ///
+21283 21288 21316 21329 21353 21372 21433 21462 ///
+21552 21601 21679 21694 21718 21765 21902 21987 ///
+22091 22162 22241 22261 22267 22270 22324 22359 ///
+22401 22539 22559 22560 22617 22623 22649 22667 ///
+22720 22722 22754 22787 22815 22816 22868 22920 ///
+22939 23066 23135 23141 23143 23152 23156 23172
+
+* If a publication starts in the next 7 days following an earthquake,
+* then it takes the index value associated to that earthquake
+local i = 1
+foreach d of local dates {
+    di "date = `d'   id = `i'"
+    replace eq_index = `i' if date > `d' & date < (`d' + 7)
+    local ++i
+}
+
+* Now merge according to the index
+merge m:1 index_10 using "/Users/anthony/Documents/master_thesis/data/clean/records.dta", keep(master match) nogenerate
+```
+
+## VARIABLE CREATION
+
+
 
 ## VISUALISATION
 

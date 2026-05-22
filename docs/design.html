@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Design – Master’s Thesis</title>
+<title>Theory and Empirical Design – Master’s Thesis</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -193,10 +193,9 @@ window.Quarto = {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#theory" id="toc-theory" class="nav-link active" data-scroll-target="#theory">Theory</a></li>
-  <li><a href="#setup" id="toc-setup" class="nav-link" data-scroll-target="#setup">Setup</a></li>
+  <li><a href="#a-theoritical-framework" id="toc-a-theoritical-framework" class="nav-link active" data-scroll-target="#a-theoritical-framework">A theoritical framework</a></li>
+  <li><a href="#the-empirical-strategy" id="toc-the-empirical-strategy" class="nav-link" data-scroll-target="#the-empirical-strategy">The empirical strategy</a></li>
   <li><a href="#first-approach-hedonic-price-model" id="toc-first-approach-hedonic-price-model" class="nav-link" data-scroll-target="#first-approach-hedonic-price-model">First approach: Hedonic price model</a></li>
-  <li><a href="#second-approach-synthetic-control-method" id="toc-second-approach-synthetic-control-method" class="nav-link" data-scroll-target="#second-approach-synthetic-control-method">Second approach: Synthetic Control Method</a></li>
   <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">References</a></li>
   </ul>
 </nav>
@@ -206,7 +205,7 @@ window.Quarto = {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Design</h1>
+<h1 class="title">Theory and Empirical Design</h1>
 </div>
 
 
@@ -223,11 +222,24 @@ window.Quarto = {
 </header>
 
 
-<section id="theory" class="level2">
-<h2 class="anchored" data-anchor-id="theory">Theory</h2>
+<section id="a-theoritical-framework" class="level3">
+<h3 class="anchored" data-anchor-id="a-theoritical-framework">A theoritical framework</h3>
+<p>Let <span class="math inline">\(p\)</span> denote the subjective probability that a property will be hit by an earthquake. <span class="math inline">\(p\)</span> depends on both the information set <span class="math inline">\(i\)</span> that individuals possess about seismic risks (such as recent events, media coverage, etc.), and <span class="math inline">\(r\)</span>, the objective attributes that make earthquakes more likely to occur, such as being located on seismic faults. Note that <span class="math inline">\(\pi\)</span>, the objective probability of an earthquake, is included in <span class="math inline">\(i\)</span> in our case, since maps are provided and publicly available.</p>
+<p>The Hedonic Price Function is given by: <span class="math display">\[
+P = P(Z, r, p(i, r))
+\]</span></p>
+<p>where <span class="math inline">\(P\)</span> denotes the price of the house and <span class="math inline">\(Z\)</span> denotes an additional set of structural, environmental, and locational characteristics not related to the seismic hazard maps.</p>
+<p>Following <span class="citation" data-cites="brookshire_test_1985">Brookshire et al. (<a href="#ref-brookshire_test_1985" role="doc-biblioref">1985</a>)</span>, the decision of agents is modeled using a state-dependent expected utility function: <span class="math display">\[
+EU = p(i, r) \cdot U^E[Z, r, Q] + (1 - p(i, r)) \cdot U^{NE}[Z, r, Q],
+\]</span> where <span class="math inline">\(U^E(\cdot)\)</span> is the homeowner’s utility in the event of an earthquake, and <span class="math inline">\(U^{NE}(\cdot)\)</span> is the homeowner’s utility when no such event occurs. Here, <span class="math inline">\(Q\)</span> is a composite commodity, and the budget constraint of the homeowner is: <span class="math display">\[
+M = P(Z, r, p(i, r)) + Q.
+\]</span></p>
+<p>Maximizing expected utility with respect to <span class="math inline">\(p\)</span>, subject to the budget constraint, and then dividing by the expected marginal utility of income yields: <span class="math display">\[
+\frac{\partial P}{\partial p} = \frac{U^{E} - U^{NE}}{p(i,r)\frac{\partial U^{E}}{\partial Q} + \left(1 - p(i,r)\right)\frac{\partial U^{NE}}{\partial Q}}.
+\]</span></p>
 </section>
-<section id="setup" class="level2">
-<h2 class="anchored" data-anchor-id="setup">Setup</h2>
+<section id="the-empirical-strategy" class="level3">
+<h3 class="anchored" data-anchor-id="the-empirical-strategy">The empirical strategy</h3>
 <p>My economic outcomes are sales and rentals. Secondary outcomes may include earthquake insurance subscription and municipality expenses for earthquake prevention. The variable of interest is any earthquake over magnitude 6 occurring in Japan. One unit of observation is one property to be sell or to be rent. Those are available throughout the country, providing a great source of variation.</p>
 <p>To put it clearly:</p>
 <ul>
@@ -267,9 +279,6 @@ window.Quarto = {
 <span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>    c.earthquake##c.seismic <span class="co">///</span></span>
 <span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>    i.prefecture, <span class="kw">robust</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
-<section id="second-approach-synthetic-control-method" class="level2">
-<h2 class="anchored" data-anchor-id="second-approach-synthetic-control-method">Second approach: Synthetic Control Method</h2>
-</section>
 <section id="references" class="level2">
 
 
@@ -278,6 +287,9 @@ window.Quarto = {
 </section>
 
 <div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
+<div id="ref-brookshire_test_1985" class="csl-entry" role="listitem">
+Brookshire, David S., Mark A. Thayer, John Tschirhart, and William D. Schulze. 1985. <span>“A <span>Test</span> of the <span>Expected</span> <span>Utility</span> <span>Model</span>: <span>Evidence</span> from <span>Earthquake</span> <span>Risks</span>.”</span> <em>Journal of Political Economy</em> 93 (2): 369–89. <a href="http://www.jstor.org/stable/1832182">http://www.jstor.org/stable/1832182</a>.
+</div>
 <div id="ref-rosen1974" class="csl-entry" role="listitem">
 Rosen, Sherwin. 1974. <span>“Hedonic Prices and Implicit Markets: Product Differentiation in Pure Competition.”</span> <em>Journal of Political Economy</em> 82 (1): 34–55. <a href="http://www.jstor.org/stable/1830899">http://www.jstor.org/stable/1830899</a>.
 </div>

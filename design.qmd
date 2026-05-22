@@ -1,12 +1,37 @@
 ---
-title: "Design"
+title: "Theory and Empirical Design"
 editor: visual
 bibliography: references.bib
 ---
 
-## Theory
+### A theoritical framework
 
-## Setup
+Let $p$ denote the subjective probability that a property will be hit by an earthquake.
+$p$ depends on both the information set $i$ that individuals possess about seismic risks (such as recent events, media coverage, etc.), and $r$, the objective attributes that make earthquakes more likely to occur, such as being located on seismic faults.
+Note that $\pi$, the objective probability of an earthquake, is included in $i$ in our case, since maps are provided and publicly available.
+
+The Hedonic Price Function is given by:
+$$
+P = P(Z, r, p(i, r))
+$$
+
+where $P$ denotes the price of the house and $Z$ denotes an additional set of structural, environmental, and locational characteristics not related to the seismic hazard maps.
+
+Following @brookshire_test_1985, the decision of agents is modeled using a state-dependent expected utility function:
+$$
+EU = p(i, r) \cdot U^E[Z, r, Q] + (1 - p(i, r)) \cdot U^{NE}[Z, r, Q],
+$$
+where $U^E(\cdot)$ is the homeowner's utility in the event of an earthquake, and $U^{NE}(\cdot)$ is the homeowner's utility when no such event occurs. Here, $Q$ is a composite commodity, and the budget constraint of the homeowner is:
+$$
+M = P(Z, r, p(i, r)) + Q.
+$$
+
+Maximizing expected utility with respect to $p$, subject to the budget constraint, and then dividing by the expected marginal utility of income yields:
+$$
+\frac{\partial P}{\partial p} = \frac{U^{E} - U^{NE}}{p(i,r)\frac{\partial U^{E}}{\partial Q} + \left(1 - p(i,r)\right)\frac{\partial U^{NE}}{\partial Q}}.
+$$
+
+### The empirical strategy
 
 My economic outcomes are sales and rentals. Secondary outcomes may include earthquake insurance subscription and municipality expenses for earthquake prevention. The variable of interest is any earthquake over magnitude 6 occurring in Japan. One unit of observation is one property to be sell or to be rent. Those are available throughout the country, providing a great source of variation.
 
@@ -55,7 +80,5 @@ regress log_price ///
     c.earthquake##c.seismic ///
     i.prefecture, robust
 ```
-
-## Second approach: Synthetic Control Method
 
 ## References
