@@ -1,0 +1,92 @@
+---
+title: "Seismic Risk in Japan: Effects on Real Estate Prices"
+author: "Anthony Rocher"
+format: pdf
+editor: visual
+---
+
+\title{Seismic Hazard Mapping In Japan: the effects real estate prices}
+\author{Anthony Rocher}
+\date{}
+\begin{abstract}
+
+What is the cost of being exposed to natural disasters? Focusing on earthquakes in Japan, my master’s thesis investigates the effects of risk mapping on land and real estate prices. Seismic mapping has evolved continuously since the 2000s, and new faults have been discovered. My hypothesis is that this has had a negative effect on land and houses exposed to these risks, reducing their value while controlling for other factors. I contribute to the literature on climate risk exposure and its economic consequences.
+    
+\end{abstract}
+
+\section{Introduction}
+
+How do natural disasters change risk aversion?
+
+The theory states
+
+Are people aware of the dangers they face? The theory states that a natural disaster acts as a signal, thus favoring the housing safety premium. Still, the extents of such a hypothesis remain to be seen. Does that information really affect people's housing reponse?
+
+How housing markets react to natural disasters? While many studies have investigated the aftermaths of natural disasters, little is know about the potential differential price reaction gap between exposed and non exposed areas after such an event. Yet, in the short run, risk mapping might drive investment choices and therefore, in the long run, turn out to be one of the key factor of inequalities. With intensifying climate disasters, one may wonder how people are aware of climatic risks.
+
+In the short run, investors might want to avoid risky investments. In the long run, risk exposed areas might reconfigure spatial inequalities.
+
+The paper proceeds as follows. Section II presents a brief theory of housing prices under uncertainty. Section III presents Japan's background with earthquakes and describes the data. Section IV outlines my estimation strategy and identification assumptions. Section V presents the empirical results of the risk exposure effects on prices, and and Section VI presents results on time-on-the-market. Section VII uses robustness checks. Section VIII concludes.
+
+\section{A Natural Distaster Risk Model}
+
+Let denote $p$ the subjective probability that a property will be hit by an earthquake. $p$ depends on both the information set $i$ individuals possess about the seismic risks (such as a recent event, media coverage, etc.), and $r$ the objective attributes for earthquakes to be more likely to happen, such as being located right on seismic faults. Note that $\pi$, the objective probability of an earthquake, is included in $i$ in our case, since maps are provided and publicly available. Then the Hedonic Price Function is given by: $$
+P = P(Z, r, p(i, r)),
+$$ with $P$ denoting the price of the house and Z denoting an additional set of structural, environmental and locational characteristics not related to the seismic hazards maps. Following Brookshire et al. (1985), the decision of agents is modeled using a state dependent expected utlility function: $$
+EU = p(i, r) \cdot U^E[Z, r, Q] + (1 - p(i, r)) \cdot U^{NE}[Z, r, Q],
+$$ where $U^E(.)$ is the homeowner's utility in a state in which a earthquake occurs and $U^NE(.)$ is the homeowner's utility when there is no such event. $Q$ is a composite commodity, and the budget constraint of the homeowner is given by: $$
+M = P(Z, r, p(i, r)) + Q
+$$ Maximising expected utility with respect to $p$ subject to the budget constraint and then dividing through by the expected marginal utility of income results in the following expression: $$
+\frac{\partial P}{\partial p}
+=
+\frac{U^{E} - U^{NE}}
+{
+p(i,r)\frac{\partial U^{E}}{\partial Q}
++
+\left(1 - p(i,r)\right)\frac{\partial U^{NE}}{\partial Q}
+}
+$$
+
+\section{Data}
+
+\subsubsection{Real Estate Data}
+
+I use data from \textit{Liffull Homes}, one the biggest real estate companies in Japan. The data consists in listings, covering all prefectures in Japan, from January 2015 to October 2017. The data set contains ??? billions of observations, each of them including the price, the characteristics of the property, and the exact geolocation. As there are listings, they are estimations and may slightly differ from the real transaction price. However, I believe the
+
+\subsubsection{Risk Mapping Data}
+
+The risk maps are available from the \textit{Japan Seismic Hazard Information Station}. A webite was created in 2009 to inform people about seism risk, and everyone can take a look at the maps, easily downloadable. They have been uploaded every year since 2009 (expect with 2015). The maps have a high image resolution of 250 meters. There are many seismic risk measures. I choose to use the "probability that each site will be affected by an earthquake of seismic intensity 6 lower or more within 30 years," as this one is described as representative by the J-SHIS itself (J-SHIS, insérer la réf ici).
+
+\subsubsection{Additional Data}
+
+To complete those data, I use some other sources of data. First, I use data from \textit{e-stat} which provides information about demographics, education, health and the labour market in Japan, aggregated at the city level. Data from the population census are available for 2015 and 2020. Other data are missing for some years. To deal with this issue, I use three ways. I use linear interpolation for the census missing values, linear regression and the nearest values for the other missing values. For example, number of habitants for 2023 is derived from the values of 2015 and 2020, number of migrants is derived using linear regression and the number of hospitals for a missing year takes the value of the previous year not missing. See Apendix for each case.
+
+Macroeconomic variables are to take into account when it comes to the housing market. One of the most important is interest rate. Japan's interest rate was extremely stable throughout the period covered by our data, around 1%. Additional macroeconomic variables include growth domestic product and "Indexes of Business Conditions" provided by e-stat. I choose the lagging index, see Apendix for data details.
+
+\subsubsection{Construction of the dataset}
+
+I make a number of sample restrictions. I only keep observations dealing with lands, houses or apartments, discarding for example shop rents or parking sales. I decide to focus only on the private market, discarding public housing, and I also drop observations that consist in temporary accommodation such hotels or dormitories. You may find details about sample selection in the Appendix.
+
+Risk maps are available each year. I first merge the Lifful Homes data set with all the maps for every year. Then, I associate each observation to the right map according to the listing publication year.
+
+\section{Empirical Strategy}
+
+\subsubsection{Treatment Definition}
+
+I use Differences-in-Difference count
+
+\subsubsection{Equation}
+
+$$
+\ln P_{it} = \alpha_0 + \sum_{j=1}^{J} \alpha_j Z_{ij} + \beta r_i + \gamma Exposed_i + \delta Post_{it} + \theta_t (Post_{it} \times Exposed_i) + \varepsilon_{it}
+$$
+
+$P_{it}$ is the logarithm of the price of add $i$ at time $t$, $Z$ is a set of structural characteristics of the good. $Post_i$ takes 1 when the advertising is publised within 1 month after a big eartquake occurs.
+
+\section{Effects on prices and quantities}
+
+\section{Robustness checks}
+
+\section{Conclusion}
+
+\end{document}

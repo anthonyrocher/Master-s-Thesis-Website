@@ -102,7 +102,7 @@
     "href": "slides.html#research-question-motivation",
     "title": "Master’s Thesis Seminar",
     "section": "Research Question & Motivation",
-    "text": "Research Question & Motivation\n\n\n\n\n\n\n\nResearch Question\n\n\nHow costly it is to be exposed to natural disasters?\n\n\n\n\nWhy does it matter?\nPeople’s awareness and behavior about such threats\nInvestments and maybe inequalities in the long run\nIntensifying disasters: floods, hurricanes, wildfires, and droughts.\nMy research may apply to other type of risks"
+    "text": "Research Question & Motivation\n\n\n\n\nResearch Question\n\n\nHow information shocks such as natural disasters modify risk aversion in housing prices depending on exposure to risk?\n\n\n\n\n\nWhy does it matter?\nPeople’s awareness and Risk aversion to natural disasters\nInvestors and the safety premium\nin the long run, might drive inequalities\nIntensifying disasters: floods, hurricanes, wildfires, and droughts."
   },
   {
     "objectID": "slides.html#literature-review",
@@ -116,21 +116,21 @@
     "href": "slides.html#data-1",
     "title": "Master’s Thesis Seminar",
     "section": "Data (1)",
-    "text": "Data (1)\n\n\n\n\n\nRisk mapping data\n\n\n\nJapan Meteorological Agency Records (JMA)\nall earthquakes records\ncoordinates / magnitude\nJapan Seismic Hazard Information Station (J-SHIS)\nrisk hazard maps\nuploaded every year\n\n\n\n\n\n\n\n\nReal estate data\n\n\n\nLIFULL HOMES\nrentals and sales across Japan from 2015 to 2023\n\n\n\n\n\n\n\nOther data\n\n\n\nE-STAT & OTHERS\naggregated variables & macroeconomic variables\n\n\n\n\nMain argument of my research: matching them"
+    "text": "Data (1)\n\n\n\n\n\nRisk mapping data\n\n\n\nJapan Meteorological Agency Records (JMA)\nall earthquakes records\ncoordinates / magnitude\nJapan Seismic Hazard Information Station (J-SHIS)\nrisk hazard maps for every year\naccuracy: 250m \\(\\times\\) 250m\n\n\n\n\n\n\n\n\nReal estate data\n\n\n\nLiffull Homes\nOne the main real estate agencies in Japan\nlistings of rentals and sales across Japan from 2015 to 2024\n70GB of data\ncoordinates\nsqft, distance to the station, building materials, etc.\n\n\n\n\nI collect demographic data from the Japanese census via E-stat (aggregated at the municipality level)."
   },
   {
     "objectID": "slides.html#data-2",
     "href": "slides.html#data-2",
     "title": "Master’s Thesis Seminar",
     "section": "Data (2)",
-    "text": "Data (2)\n\n\n\n\n2020 Seismic Hazard Map from the J-SHIS"
+    "text": "Data (2)\nOfficial 2020 seismic hazard map from the J-SHIS\n\\(p\\) = probability that an earthquake of intensity 5 or more will hit in the next 30 years.\n\n\n\n\n\n\n\n\\(p &lt; 0.03\\)\n\n\n\n\n\n\\(0.03 &lt; p &lt; 0.06\\)\n\n\n\n\n\n\n\n\\(0.06 &lt; p &lt; 0.26\\)\n\n\n\n\n\n\\(p &gt; 0.26\\)"
   },
   {
     "objectID": "slides.html#data-3",
     "href": "slides.html#data-3",
     "title": "Master’s Thesis Seminar",
     "section": "Data (3)",
-    "text": "Data (3)\nThe Liffull Homes dataset:\n\n\n\n\npub_start_date\n\n\npub_end_date\n\n\nbuilding_id\n\n\nunit_id\n\n\nstatus\n\n\n\n\nbukken_type\n\n\nall_number\n\n\nempty_number\n\n\naddr1_1_name\n\n\naddr1_2_name\n\n\n\n\naddr2_name\n\n\nrosen1_name\n\n\neki1_name\n\n\nwalk_distance1\n\n\nrosen2_name\n\n\n\n\neki2_name\n\n\nwalk_distance2\n\n\nland_youto\n\n\nland_toshi\n\n\nland_area\n\n\n\n\nlatitude\n\n\nlongitude\n\n\nland_right_label\n\n\nhouse_kouzou_label\n\n\nsqft\n\n\n\n\nhouse_kaisuu\n\n\nhouse_kaisuu_chika\n\n\nkenchiku_date\n\n\nflg_new\n\n\nroom_kaisuu\n\n\n\n\nbalcony_area\n\n\nwindow_angle_label\n\n\nmadori_kind_all_label\n\n\nprice\n\n\nmoney_tsubo\n\n\n\n\nmoney_kyoueki\n\n\nmoney_reikin_amount\n\n\nmoney_shikikin_amount\n\n\nparking_money\n\n\nusable_status_label\n\n\n\n\nschool_ele_distance\n\n\nconvenience_distance\n\n\nsuper_distance\n\n\nhospital_distance\n\n\npark_distance\n\n\n\n\n\nMany variables, billions of observations\nOutcomes: price & time-on-the-market"
+    "text": "Data (3)"
   },
   {
     "objectID": "slides.html#empirical-strategy",
@@ -319,14 +319,14 @@
     "href": "slides.html#empirical-strategy-1",
     "title": "Master’s Thesis Seminar",
     "section": "Empirical Strategy (1)",
-    "text": "Empirical Strategy (1)\n\n\n\n\n\n\n\nIn progress\n\n\n\n\\[\n\\begin{aligned}\n\\ln P_{it} = \\alpha_0 &+ \\sum_{j=1}^{J} \\alpha_j Z_{ij} + \\beta r_i + \\gamma Exposed_i + \\delta Post_{it} \\\\\n&+ \\theta_t (Post_{it} \\times Exposed_i) + \\varepsilon_{it}\n\\end{aligned}\n\\]\n\n\n\n\n\n\n\n\\(Z_{ij}\\): vector of property and location controls\n\\(r_i\\): location fixed effects (prefectures) interacting with year fixed effects\n\\(Exposed_i\\): baseline seismic risk exposure (\\(p &gt; 0.3\\))\n\\(Post_{it}\\): \\(i\\) is published within one month after a big earthquake (over magnitude 6)\n\\(Post_{it} \\times Exposed_i\\): interaction capturing heterogeneous effects\n\nControls include aggregated data such as population, net migration, employment rate, facilities (e.g. number of hospitals, shcools, a municipality financial index), and some macro variables (GDP, business index)"
+    "text": "Empirical Strategy (1)\nDifference-in-Differences Methodology\n\nTreated group: \\(p &gt; 0.26\\)\nControl group: \\(p &lt; 0.06\\)\nI discard the observations with intermediate values\nLet’s denote \\(\\text{Exposed}_i = \\begin{cases} 1 & \\text{if } p_i &gt; 0.26 \\\\ 0 & \\text{if } p_i &lt; 0.06 \\end{cases}\\)\nI may consider a continuous treatment in the future\nBut what about the information shocks?"
   },
   {
     "objectID": "slides.html#empirical-strategy-2",
     "href": "slides.html#empirical-strategy-2",
     "title": "Master’s Thesis Seminar",
     "section": "Empirical Strategy (2)",
-    "text": "Empirical Strategy (2)\n\n\n\n\n\n\n\nIn progress\n\n\n\n\\[\n\\begin{aligned}\n\\ln P_{it} = \\alpha_0 &+ \\sum_{j=1}^{J} \\alpha_j Z_{ij} + \\beta r_i + \\gamma Seismic_i + \\delta Earthquake_{it} \\\\\n&+ \\theta_t (Earthquake_{it} \\times Seismic_i) + \\varepsilon_{it}\n\\end{aligned}\n\\]\n\n\n\n\n\n\n\n\\(Z_{ij}\\): vector of property and location controls\n\\(r_i\\): location fixed effects (prefectures)\n\\(Seismic_i\\): baseline seismic risk exposure (over \\(p = 0.3\\))\n\\(Earthquake_{it}\\): earthquake occurrence/intensity at time \\(t\\)\n\\(Earthquake_{it} \\times Seismic_i\\): interaction capturing heterogeneous effects\n\n\\(Z_{ij}\\) includes aggregated data such as population, net migration, employment rate, facilities (e.g. number of hospitals, shcools, a municipality financial index), and some macro variables (GDP, business index)"
+    "text": "Empirical Strategy (2)\n\n\n\n\n\n\n\nIn progress\n\n\n\n\\[\n\\begin{aligned}\n\\ln P_{it} = \\alpha_0 &+ \\sum_{j=1}^{J} \\alpha_j Z_{ij} + \\beta r_i + \\gamma Exposed_i + \\delta Post_{it} \\\\\n&+ \\theta_t (Post_{it} \\times Exposed_i) + \\varepsilon_{it}\n\\end{aligned}\n\\]\n\n\n\n\n\n\n\n\\(ln P_{it}\\): Log Price\n\\(Z_{ij}\\): vector of property and location controls\n\\(r_i\\): prefecture and year fixed effects\n\\(Exposed_i\\): baseline seismic risk exposure\n\\(Post_{it}\\): Announce \\(i\\) is published \\(x\\) days after a “big earthquake”. Right now \\(x = 30\\).\n\\(Post_{it} \\times Exposed_i\\): interaction capturing treatment effects"
   },
   {
     "objectID": "slides.html#questions-1",
@@ -368,21 +368,21 @@
     "href": "slides.html#intuition",
     "title": "Master’s Thesis Seminar",
     "section": "Intuition",
-    "text": "Intuition\n\nDescription of my research"
+    "text": "Intuition"
   },
   {
     "objectID": "slides.html#theoretical-part",
     "href": "slides.html#theoretical-part",
     "title": "Master’s Thesis Seminar",
     "section": "Theoretical Part",
-    "text": "Theoretical Part\n\n\n\n\n\n\nStill in progress\n\n\nLet \\(p\\) be the subjective probability of a earthquake to happen. \\(p\\) depends on \\(i\\), the information set available, and \\(r\\), the objective attributes that make such an event more likely. Then the HPF is:\n\\(P = P(Z, r, p(i, r))\\)\nExpected utility becomes:\n\\(EU = p(i, r) \\cdot U^E[Z, r, Q] + (1 - p(i, r)) \\cdot U^{NE}[Z, r, Q]\\)\nGiven the budget constraint \\(M = P(Z, r, p(i, r)) + Q\\) (with \\(Q\\) being a composite commodity), the maximization of utility is given by:\n\\(\\frac{\\partial P}{\\partial p}=\\frac{U^{E} - U^{NE}}{p(i,r)\\frac{\\partial U^{E}}{\\partial Q}+\\left(1 - p(i,r)\\right)\\frac{\\partial U^{NE}}{\\partial Q}}\\)"
+    "text": "Theoretical Part\n\n\n\n\n\n\nStill in progress\n\n\nLet \\(p\\) be the subjective probability of a earthquake to happen. \\(p\\) depends on \\(i\\), the information set available, and \\(r\\), the objective attributes that make such an event more likely. Then the HPF is:\n\\[P = P(Z, r, p(i, r))\\]\nExpected utility becomes:\n\\(EU = p(i, r) \\cdot U^E[Z, r, Q] + (1 - p(i, r)) \\cdot U^{NE}[Z, r, Q]\\)\nGiven the budget constraint \\(M = P(Z, r, p(i, r)) + Q\\) (with \\(Q\\) being a composite commodity), the maximization of utility is given by:\n\\(\\frac{\\partial P}{\\partial p}=\\frac{U^{E} - U^{NE}}{p(i,r)\\frac{\\partial U^{E}}{\\partial Q}+\\left(1 - p(i,r)\\right)\\frac{\\partial U^{NE}}{\\partial Q}}\\)"
   },
   {
     "objectID": "slides.html#empirical-analysis-a-literature-review",
     "href": "slides.html#empirical-analysis-a-literature-review",
     "title": "Master’s Thesis Seminar",
     "section": "Empirical Analysis: A Literature Review",
-    "text": "Empirical Analysis: A Literature Review\nMany papers on natural disasters and their consequences on housing prices (Brookshire et al. (1985), Hidano, Hoshino, and Sugiura (2015), Balboni (2025) among many others).\nMy work heavily relies on Ikefuji et al. (2022).\nMy main contribution:\n\nExtending the analysis to the housing market\nTime extension (recent years)"
+    "text": "Empirical Analysis: A Literature Review\nMany papers on natural disasters and their consequences on housing prices (Brookshire et al. (1985), Hidano, Hoshino, and Sugiura (2015), Balboni (2025) among many others).\nMy work heavily relies on Ikefuji et al. (2022).\nMy main contribution:\n\nExtending the analysis to the housing market"
   },
   {
     "objectID": "slides.html#test",
@@ -410,7 +410,7 @@
     "href": "slides.html#data-4",
     "title": "Master’s Thesis Seminar",
     "section": "Data (4)",
-    "text": "Data (4)\nCapturing the attractivness (city level)\n\n\n\n\nyearcode\n\n\nareacode\n\n\narea\n\n\ncomm_centers\n\n\n\n\nlibraries\n\n\nlifeexp_male\n\n\nhospitals\n\n\nphysicians\n\n\n\n\ndentists\n\n\nnew_dwellings\n\n\ndwellings_serv\n\n\nlarge_retail\n\n\n\n\nkindergartens\n\n\nelem_schools\n\n\nelem_teachers\n\n\nelem_students\n\n\n\n\nupper_sec_sch\n\n\npop_total2\n\n\nemployed\n\n\nlabor_force\n\n\n\n\nskilled_workers\n\n\nselfemp_with\n\n\ncommute_out\n\n\ncommute_in\n\n\n\n\nfin_power\n\n\ninvest_exp\n\n\ndisaster_exp\n\n\nedu_exp_elem\n\n\n\n\nedu_exp_lower\n\n\nedu_exp_upper\n\n\npop_total\n\n\nmedian_age\n\n\n\n\npop_o65\n\n\nforeigners\n\n\ndid_pop\n\n\ninmigrants\n\n\n\n\noutmigrants\n\n\nhouseholds\n\n\npop_total_linear\n\n\nlifeexp_male_linear\n\n\n\n\n\n\n\nand the macroeconomic conditions\nSuch as the interst rate, Indexes of Business Conditions (Cabinet office)."
+    "text": "Data (4)\nCapturing the attractivness (city level)\n\nborder: 1.5px solid #666; padding: 14px 18px; display: block; width: 100%; font-family: monospace; font-size: 0.88rem; line-height: 1.55; overflow-x: auto; “} +—————–+—————+——————+———————+ | yearcode | areacode | area | comm_centers | +—————–+—————+——————+———————+ | libraries | lifeexp_male | hospitals | physicians | +—————–+—————+——————+———————+ | dentists | new_dwellings | dwellings_serv | large_retail | +—————–+—————+——————+———————+ | kindergartens | elem_schools | elem_teachers | elem_students | +—————–+—————+——————+———————+ | upper_sec_sch | pop_total2 | employed | labor_force | +—————–+—————+——————+———————+ | skilled_workers | selfemp_with | commute_out | commute_in | +—————–+—————+——————+———————+ | fin_power | invest_exp | disaster_exp | edu_exp_elem | +—————–+—————+——————+———————+ | edu_exp_lower | edu_exp_upper | pop_total | median_age | +—————–+—————+——————+———————+ | pop_o65 | foreigners | did_pop | inmigrants | +—————–+—————+——————+———————+ | outmigrants | households | pop_total_linear | lifeexp_male_linear | +—————–+—————+——————+———————+\n\n\n\n\nand the macroeconomic conditions\nSuch as the interst rate, Indexes of Business Conditions (Cabinet office)."
   },
   {
     "objectID": "slides.html#now",
@@ -432,5 +432,68 @@
     "title": "Design",
     "section": "",
     "text": "Let \\(p\\) denote the subjective probability that a property will be hit by an earthquake. \\(p\\) depends on both the information set \\(i\\) that individuals possess about seismic risks (such as recent events, media coverage, etc.), and \\(r\\), the objective attributes that make earthquakes more likely to occur, such as being located on seismic faults. Note that \\(\\pi\\), the objective probability of an earthquake, is included in \\(i\\) in our case, since maps are provided and publicly available.\nThe Hedonic Price Function is given by: \\[\nP = P(Z, r, p(i, r))\n\\]\nwhere \\(P\\) denotes the price of the house and \\(Z\\) denotes an additional set of structural, environmental, and locational characteristics not related to the seismic hazard maps.\nFollowing Brookshire et al. (1985), the decision of agents is modeled using a state-dependent expected utility function: \\[\nEU = p(i, r) \\cdot U^E[Z, r, Q] + (1 - p(i, r)) \\cdot U^{NE}[Z, r, Q],\n\\] where \\(U^E(\\cdot)\\) is the homeowner’s utility in the event of an earthquake, and \\(U^{NE}(\\cdot)\\) is the homeowner’s utility when no such event occurs. Here, \\(Q\\) is a composite commodity, and the budget constraint of the homeowner is: \\[\nM = P(Z, r, p(i, r)) + Q.\n\\]\nMaximizing expected utility with respect to \\(p\\), subject to the budget constraint, and then dividing by the expected marginal utility of income yields: \\[\n\\frac{\\partial P}{\\partial p} = \\frac{U^{E} - U^{NE}}{p(i,r)\\frac{\\partial U^{E}}{\\partial Q} + \\left(1 - p(i,r)\\right)\\frac{\\partial U^{NE}}{\\partial Q}}.\n\\]"
+  },
+  {
+    "objectID": "design.html#empirical-strategy-2",
+    "href": "design.html#empirical-strategy-2",
+    "title": "Theory and Empirical Design",
+    "section": "Empirical strategy (2)",
+    "text": "Empirical strategy (2)\n\\[\n\\ln P_{it} = \\alpha_0 + \\sum_{j=1}^{J} \\alpha_j Z_{ij} + \\beta r_i + \\gamma Exposed_i + \\delta Post_{it} + \\theta_t (Post_{it} \\times Exposed_i \\times Distance_i) + \\varepsilon_{it}\n\\]"
+  },
+  {
+    "objectID": "draft.html",
+    "href": "draft.html",
+    "title": "Paper",
+    "section": "",
+    "text": "%%%%%%%%%%%%%%%%%%%%%%\nAre people aware of the dangers they face? The theory states that a natural disaster acts as a signal, thus favoring the housing safety premium. Still, the extents of such a hypothesis remain to be seen. Does that information really affect people’s housing reponse?\nWhile many studies have studied the direct\nHow housing markets react to natural disasters? While many studies have investigated the aftermaths of natural disasters, little is know about the potential differential price reaction gap between exposed and non exposed areas after such an event. Yet, in the short run, risk mapping might drive investment choices and therefore, in the long run, turn out to be one of the key factor of inequalities. With intensifying climate disasters, one may wonder how people are aware of climatic risks.\nJapan is one the most prone-earthquake countries in the world.\nIn the short run, investors might want to avoid risky investments. In the long run, risk exposed areas might reconfigure spatial inequalities.\nWhile most of the papers have studied the direct costs, some others investigate the indirect costs of\nThe paper proceeds as follows. Section II presents a brief theory of housing prices under uncertainty. Section III presents Japan’s background with earthquakes and describes the data. Section IV outlines my estimation strategy and identification assumptions. Section V presents the empirical results of the risk exposure effects on prices, and and Section VI presents results on time-on-the-market. Section VII uses robustness checks. Section VIII concludes.\n%%%%%%%%%%%%%%%%%%%%%% % SECTION II\nLet denote \\(p\\) the subjective probability that a property will be hit by an earthquake. \\(p\\) depends on both the information set \\(i\\) individuals possess about the seismic risks (such as a recent event, media coverage, etc.), and \\(r\\) the objective attributes for earthquakes to be more likely to happen, such as being located right on seismic faults. Note that \\(\\pi\\), the objective probability of an earthquake, is included in \\(i\\) in our case, since maps are provided and publicly available. Then the Hedonic Price Function is given by: [ P = P(Z, r, p(i, r)), ] with \\(P\\) denoting the price of the house and Z denoting an additional set of structural, environmental and locational characteristics not related to the seismic hazards maps. Following Brookshire et al. (1985), the decision of agents is modeled using a state dependent expected utlility function: [ EU = p(i, r) U^E[Z, r, Q] + (1 - p(i, r)) U^{NE}[Z, r, Q], ] where \\(U^E(.)\\) is the homeowner’s utility in a state in which a earthquake occurs and \\(U^NE(.)\\) is the homeowner’s utility when there is no such event. \\(Q\\) is a composite commodity, and the budget constraint of the homeowner is given by: [ M = P(Z, r, p(i, r)) + Q ] Maximising expected utility with respect to \\(p\\) subject to the budget constraint and then dividing through by the expected marginal utility of income results in the following expression: \\[\n\\frac{\\partial P}{\\partial p}\n=\n\\frac{U^{E} - U^{NE}}\n{\np(i,r)\\frac{\\partial U^{E}}{\\partial Q}\n+\n\\left(1 - p(i,r)\\right)\\frac{\\partial U^{NE}}{\\partial Q}\n}\n\\]\n%%%%%%%%%%%%%%%%%%%%%% % SECTION III\n% Japan and earthquakes\n% Data\nI use data from , one the biggest real estate companies in Japan. The data consists in listings, covering all prefectures in Japan, from ?? 2015 to ?? 2023. The dataset contain ??? billions of observations, each includeind the house properties such as price and exact geolocation, among many other item (see Apendix for data details). While prices are only about estimation, the data also contains time the ad is available, which I will use as another outcome.\nThe risk maps are available from the . A webite was created in 2009 to inform people about seism risk, and everyone can take a look at the maps, easily downloadable. They have been updloaded every year since 2009 (expect with 2015). The maps have a high image resolution of 250 meters. There are many seismic risk measures. I choose to use the “probability that each site will be affected by an earthquake of seismic intensity 6 lower or more within 30 years,” as this one is described as representative by the J-SHIS itself (J-SHIS, insérer la réf ici).\nTo complete the above data, I use some other sources of data. First, I use data from which provides information about demographics, education, health and the labour market in Japan, aggregated at the city level. Data from the population census are available for 2015 and 2020. Other data are missing for some years. To deal with this issue, I use three ways. I use linear interpolation for the census missing values, linear regression and the nearest values for the other missing values. For example, number of habitants for 2023 is derived from the values of 2015 and 2020, number of migrants is derived using linear regression and the number of hospitals for a missing year takes the value of the previous year not missing. See Apendix for each case.\nMacroeconomic variables are to take into account when it comes to the housing market. One of the most important is interest rate. Japan’s interest rate was extremely stable throughout the period covered by our data, around 1%. Additional macroeconomic variables include growth domestic product and “Indexes of Business Conditions” provided by e-stat. I choose the lagging index, see Apendix for data details.\n% Sample selection I make a number of sample restrictions. I only keep observations that are about houses or appartments, discarding for example shop rents or parking sales. I decide to focus only on the private market, discarding public housing, and I also drop observations that consist in temporary accomodation such hotels or dormitories. You may find details about sample selection in the Apendix.\nRisk maps are available each year. I first merge the Lifful Homes dataset with all the maps for every year. Then, I associate each observation to the right map according to the listing publication year.\n% Summary statistics\n%%%%%%%%%%%%%%%%%%%%%% % SECTION IV\n\\[\\begin{equation}\n\\ln P_{it} = \\alpha_0 + \\sum_{j=1}^{J} \\alpha_j Z_{ij} + \\beta r_i + \\gamma Exposed_i + \\delta Post_{it} + \\theta_t (Post_{it} \\times Exposed_i) + \\varepsilon_{it}\n\\end{equation}\\]\n\\(P_{it}\\) is the logarithm of the price of add \\(i\\) at time \\(t\\), \\(Z\\) is a set of structural characteristics of the good. \\(Post_i\\) takes 1 when the advertising is publised within 1 month after a big eartquake occurs.\n% SECTION V % RESULTS ON PRICES\n% SECTION VI % RESULTS TIME-ON-THE-MARKET\n% SECTION VII\n% SECTION VIII\n\\end{document}"
+  },
+  {
+    "objectID": "slides.html#empirical-strategy-2-1",
+    "href": "slides.html#empirical-strategy-2-1",
+    "title": "Master’s Thesis Seminar",
+    "section": "Empirical Strategy (2)",
+    "text": "Empirical Strategy (2)"
+  },
+  {
+    "objectID": "slides.html#data---empirical-strategy",
+    "href": "slides.html#data---empirical-strategy",
+    "title": "Master’s Thesis Seminar",
+    "section": "Data - Empirical Strategy",
+    "text": "Data - Empirical Strategy\n\n\n\n\n\n\n\n\\(p &lt; 0.03\\)\n\n\n\n\n\n\\(0.03 &lt; p &lt; 0.06\\)\n\n\n\n\n\n\n\n\\(0.06 &lt; p &lt; 0.26\\)\n\n\n\n\n\n\\(p &gt; 0.26\\)"
+  },
+  {
+    "objectID": "slides.html#empirical-strategy-1-1",
+    "href": "slides.html#empirical-strategy-1-1",
+    "title": "Master’s Thesis Seminar",
+    "section": "Empirical Strategy (1)",
+    "text": "Empirical Strategy (1)\nDifference-in-Differences Methodology\n\nI consider the earthquakes of intensity 5 or more.\nI will call them “big earthquakes”."
+  },
+  {
+    "objectID": "slides.html#descriptive-statistics",
+    "href": "slides.html#descriptive-statistics",
+    "title": "Master’s Thesis Seminar",
+    "section": "Descriptive statistics",
+    "text": "Descriptive statistics"
+  },
+  {
+    "objectID": "slides.html#results-1",
+    "href": "slides.html#results-1",
+    "title": "Master’s Thesis Seminar",
+    "section": "Results (1)",
+    "text": "Results (1)"
+  },
+  {
+    "objectID": "slides.html#results",
+    "href": "slides.html#results",
+    "title": "Master’s Thesis Seminar",
+    "section": "Results",
+    "text": "Results"
+  },
+  {
+    "objectID": "slides.html#in-the-near-future",
+    "href": "slides.html#in-the-near-future",
+    "title": "Master’s Thesis Seminar",
+    "section": "In the near future",
+    "text": "In the near future\nThings I have to work on:\n\nRedo the regression tables with a cleaner code\nSelect the right controls\nThink about the FE\nGenerate more descriptive statistics\n\nCaveats:\n\nNo control for other types of risk"
   }
 ]
