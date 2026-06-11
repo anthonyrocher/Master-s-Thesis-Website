@@ -1,0 +1,24 @@
+\begin{table}[htbp]\centering
+\def\sym#1{\ifmmode^{#1}\else\(^{#1}\)\fi}
+\caption{Exposure at intensity 6+ on house sales}
+\begin{tabular}{l*{1}{c}}
+\toprule
+\midrule
+Exposed             &      0.0106\sym{*}  \\
+                    &   (0.00572)         \\
+\addlinespace
+Post                &           0         \\
+                    &         (.)         \\
+\addlinespace
+Exposed $\times$ Post&           0         \\
+                    &         (.)         \\
+\midrule
+Observations        &      19,541         \\
+R-squared           &       0.447         \\
+Controls            &  \checkmark         \\
+Month $\times$ Region FE&  \checkmark         \\
+\bottomrule
+\multicolumn{2}{l}{\footnotesize Standard errors in parentheses}\\
+\multicolumn{2}{l}{\footnotesize \sym{*} \(p<0.10\), \sym{**} \(p<0.05\), \sym{***} \(p<0.01\)}\\
+\end{tabular}
+\end{table}

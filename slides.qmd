@@ -58,7 +58,7 @@ My work heavily relies on @ikefuji2022.
 
 **My main contribution:**
 
-::: {.incremental}
+::: incremental
 -   Extending the analysis to the housing market
 :::
 
@@ -154,8 +154,8 @@ Difference-in-Differences Methodology
 Difference-in-Differences Methodology
 
 ::: incremental
-- I consider the **earthquakes of intensity 5 or more**.
-- I will call them "big earthquakes".
+-   I consider the **earthquakes of intensity 5 or more**.
+-   I will call them "big earthquakes".
 :::
 
 ::: fragment
@@ -212,13 +212,13 @@ $$
 
 Things I have to work on:
 
-- Redo the regression tables with a cleaner code
-- Select the right controls
-- Think about the FE
-- Generate more descriptive statistics
+-   Redo the regression tables with a cleaner code
+-   Select the right controls
+-   Think about the FE
+-   Generate more descriptive statistics
 
 Caveats:
 
-- No control for other types of risk
+-   No control for other types of risk
 
 ## References
