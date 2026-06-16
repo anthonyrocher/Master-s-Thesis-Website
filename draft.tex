@@ -1,0 +1,659 @@
+% Options for packages loaded elsewhere
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+\PassOptionsToPackage{dvipsnames,svgnames,x11names}{xcolor}
+%
+\documentclass[
+  letterpaper,
+  DIV=11,
+  numbers=noendperiod]{scrartcl}
+\usepackage{xcolor}
+\usepackage{amsmath,amssymb}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math} % this also loads fontspec
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+\usepackage{lmodern}
+\ifPDFTeX\else
+  % xetex/luatex font selection
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+% Make \paragraph and \subparagraph free-standing
+\makeatletter
+\ifx\paragraph\undefined\else
+  \let\oldparagraph\paragraph
+  \renewcommand{\paragraph}{
+    \@ifstar
+      \xxxParagraphStar
+      \xxxParagraphNoStar
+  }
+  \newcommand{\xxxParagraphStar}[1]{\oldparagraph*{#1}\mbox{}}
+  \newcommand{\xxxParagraphNoStar}[1]{\oldparagraph{#1}\mbox{}}
+\fi
+\ifx\subparagraph\undefined\else
+  \let\oldsubparagraph\subparagraph
+  \renewcommand{\subparagraph}{
+    \@ifstar
+      \xxxSubParagraphStar
+      \xxxSubParagraphNoStar
+  }
+  \newcommand{\xxxSubParagraphStar}[1]{\oldsubparagraph*{#1}\mbox{}}
+  \newcommand{\xxxSubParagraphNoStar}[1]{\oldsubparagraph{#1}\mbox{}}
+\fi
+\makeatother
+
+
+\usepackage{longtable,booktabs,array}
+\usepackage{calc} % for calculating minipage widths
+% Correct order of tables after \paragraph or \subparagraph
+\usepackage{etoolbox}
+\makeatletter
+\patchcmd\longtable{\par}{\if@noskipsec\mbox{}\fi\par}{}{}
+\makeatother
+% Allow footnotes in longtable head/foot
+\IfFileExists{footnotehyper.sty}{\usepackage{footnotehyper}}{\usepackage{footnote}}
+\makesavenoteenv{longtable}
+\usepackage{graphicx}
+\makeatletter
+\newsavebox\pandoc@box
+\newcommand*\pandocbounded[1]{% scales image to fit in text height/width
+  \sbox\pandoc@box{#1}%
+  \Gscale@div\@tempa{\textheight}{\dimexpr\ht\pandoc@box+\dp\pandoc@box\relax}%
+  \Gscale@div\@tempb{\linewidth}{\wd\pandoc@box}%
+  \ifdim\@tempb\p@<\@tempa\p@\let\@tempa\@tempb\fi% select the smaller of both
+  \ifdim\@tempa\p@<\p@\scalebox{\@tempa}{\usebox\pandoc@box}%
+  \else\usebox{\pandoc@box}%
+  \fi%
+}
+% Set default figure placement to htbp
+\def\fps@figure{htbp}
+\makeatother
+
+
+% definitions for citeproc citations
+\NewDocumentCommand\citeproctext{}{}
+\NewDocumentCommand\citeproc{mm}{%
+  \begingroup\def\citeproctext{#2}\cite{#1}\endgroup}
+\makeatletter
+ % allow citations to break across lines
+ \let\@cite@ofmt\@firstofone
+ % avoid brackets around text for \cite:
+ \def\@biblabel#1{}
+ \def\@cite#1#2{{#1\if@tempswa , #2\fi}}
+\makeatother
+\newlength{\cslhangindent}
+\setlength{\cslhangindent}{1.5em}
+\newlength{\csllabelwidth}
+\setlength{\csllabelwidth}{3em}
+\newenvironment{CSLReferences}[2] % #1 hanging-indent, #2 entry-spacing
+ {\begin{list}{}{%
+  \setlength{\itemindent}{0pt}
+  \setlength{\leftmargin}{0pt}
+  \setlength{\parsep}{0pt}
+  % turn on hanging indent if param 1 is 1
+  \ifodd #1
+   \setlength{\leftmargin}{\cslhangindent}
+   \setlength{\itemindent}{-1\cslhangindent}
+  \fi
+  % set entry spacing
+  \setlength{\itemsep}{#2\baselineskip}}}
+ {\end{list}}
+\usepackage{calc}
+\newcommand{\CSLBlock}[1]{\hfill\break\parbox[t]{\linewidth}{\strut\ignorespaces#1\strut}}
+\newcommand{\CSLLeftMargin}[1]{\parbox[t]{\csllabelwidth}{\strut#1\strut}}
+\newcommand{\CSLRightInline}[1]{\parbox[t]{\linewidth - \csllabelwidth}{\strut#1\strut}}
+\newcommand{\CSLIndent}[1]{\hspace{\cslhangindent}#1}
+
+
+
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+
+
+
+ 
+
+
+\setlength{\skip\footins}{25pt}
+\KOMAoption{captions}{tableheading}
+\usepackage{tcolorbox}
+\makeatletter
+\@ifpackageloaded{caption}{}{\usepackage{caption}}
+\AtBeginDocument{%
+\ifdefined\contentsname
+  \renewcommand*\contentsname{Table of contents}
+\else
+  \newcommand\contentsname{Table of contents}
+\fi
+\ifdefined\listfigurename
+  \renewcommand*\listfigurename{List of Figures}
+\else
+  \newcommand\listfigurename{List of Figures}
+\fi
+\ifdefined\listtablename
+  \renewcommand*\listtablename{List of Tables}
+\else
+  \newcommand\listtablename{List of Tables}
+\fi
+\ifdefined\figurename
+  \renewcommand*\figurename{Figure}
+\else
+  \newcommand\figurename{Figure}
+\fi
+\ifdefined\tablename
+  \renewcommand*\tablename{Table}
+\else
+  \newcommand\tablename{Table}
+\fi
+}
+\@ifpackageloaded{float}{}{\usepackage{float}}
+\floatstyle{ruled}
+\@ifundefined{c@chapter}{\newfloat{codelisting}{h}{lop}}{\newfloat{codelisting}{h}{lop}[chapter]}
+\floatname{codelisting}{Listing}
+\newcommand*\listoflistings{\listof{codelisting}{List of Listings}}
+\makeatother
+\makeatletter
+\@ifpackageloaded{tikz}{}{\usepackage{tikz}}
+\makeatother
+\makeatletter
+\@ifpackageloaded{caption}{}{\usepackage{caption}}
+\@ifpackageloaded{subcaption}{}{\usepackage{subcaption}}
+\makeatother
+\usepackage{bookmark}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\urlstyle{same}
+\hypersetup{
+  colorlinks=true,
+  linkcolor={blue},
+  filecolor={Maroon},
+  citecolor={Blue},
+  urlcolor={Blue},
+  pdfcreator={LaTeX via pandoc}}
+
+
+\author{}
+\date{}
+\begin{document}
+
+
+\begin{center}
+  \vspace*{0.5cm}
+
+  {\LARGE \textbf{Risk Aversion in Housing Prices: \\ Effects of big earthquakes in Japan}} \\
+  \vspace{1.0cm}
+
+  {\large \textsc{By Anthony Rocher}\textsuperscript{a}} \\
+  \vspace{0.6cm}
+  
+  {\small \textit{Under the direction of} \textsc{Sophie Buhnik}\textsuperscript{b} \textit{and} \textsc{Florence Goffette-Nagot}\textsuperscript{c}} \\
+  \vspace{1.5cm}
+
+  \textsuperscript{a} \small ENS de Lyon, F-69007 Lyon, France. \textit{anthony.rocher@ens-lyon.fr}.\\
+  \textsuperscript{b} \small Ecole Supérieure des Professions Immobilières, 92300 Paris, France. \textit{s.buhnik@groupe-espi.fr}. \\
+  \textsuperscript{c} \small Cergic, ENS de Lyon, CNRS, F-69007 Lyon, France. \textit{florence.goffette-nagot@cnrs.fr}.
+\end{center}
+
+\vspace{0.8cm}
+
+\begin{quote}
+\small
+\noindent \textbf{Abstract---} I investigate how housing prices response to risk exposure following big earthquakes as information shocks in Japan. Using a new dataset covering whole Japan from 2015 to 2017 with ??? billions of observations, I use a DiD strategy to determine how much unaffected but still at risk areas react to the occurrence of earthquakes of intensity 6 or upper. \textit{(JEL R30, Q54)}
+\end{quote}
+
+\vspace{1cm}
+
+\noindent How risk-averse is the housing market following a large
+information shock, such as a natural disaster? Standard theory suggests
+that, as information about risk depreciates over time, a recent shock
+should widen the price differential between high- and low-risk areas,
+conditional on an increase in the safety premium. However, the extent to
+which housing markets incorporate such information remains an empirical
+question.
+
+Understanding how information shocks are capitalized into housing
+markets provides insight into whether households perceive the risks they
+face and how much they value newly acquired information. If the
+elasticity of housing prices with respect to risk exposure is close to
+zero, disaster-related information may have limited effects on housing
+markets: prices may fail to function as effective signals of underlying
+risk. Alternatively, households may recognize the risks but choose to
+remain in exposed locations, placing little or no monetary value on risk
+reduction. Conversely, if households fully adjust their location choices
+in response to new information, high-risk areas may experience declining
+demand and reduced attractiveness. Over time, this adjustment could lead
+to lower investment in exposed regions. More broadly, persistent
+exposure to environmental risk may become a source of inequality, as
+rising safety premiums make low-risk locations increasingly inaccessible
+to lower-income households.
+
+In this paper, I study how recent earthquakes affect housing prices
+depending on properties' exposure to seismic risk, as measured by their
+location on official Seismic Hazard Maps. I examine both the magnitude
+of the safety premium associated with lower-risk locations and how this
+premium changes following information shocks generated by major
+earthquakes.
+
+I use a unique dataset from a Japanese real estate agency containing
+property listings across Japan between October 2014 and December 2017.
+Using detailed geocoordinates, I match each property to its
+corresponding level of seismic risk based on the Seismic Hazard Maps
+provided by Japanese disaster prevention authorities. This combination
+of high-frequency real estate data and spatial measures of earthquake
+risk allows me to examine how housing markets incorporate new
+information about disaster exposure.
+
+\textbf{Research question}: How information shocks such as natural
+disasters modify risk aversion in housing prices depending on exposure
+to risk?
+
+This paper contributes to the literature on hedonic pricing, initiated
+by Rosen (1974), and to the study of risk capitalization in housing
+markets. A large body of work has examined how risk perceptions are
+incorporated into property values, showing that differences in exposure
+to adverse events are reflected in equilibrium prices (Brookshire et al.
+(1985)).
+
+More broadly, this paper contributes to the literature on real estate
+markets under uncertainty. Previous studies have investigated the impact
+of natural disasters on housing prices, including floods (Bin and
+Polasky (2004), Atreya, Ferreira, and Kriesel (2013), Atreya and
+Ferreira (2015)), wildfires (add references), and earthquakes (Beron et
+al. (1997), Sato and Shiba (2021)). These papers provide evidence that
+households update their valuation of properties following major
+risk-related events, but the extent and persistence of these adjustments
+remain open questions.
+
+A growing literature has focused specifically on the effects of
+earthquakes in Japan, often relying on detailed administrative data
+provided by the Ministry of Land, Infrastructure, Transport and Tourism
+(MLIT). For example, Naoi, Seko, and Sumita (2009) and Hidano, Hoshino,
+and Sugiura (2015) use these data to study the capitalization of
+earthquake risk into land and property values. This paper builds
+particularly on the work of Ikefuji et al. (2022), who show that land
+prices are {[}insert main finding{]}. I extend this line of research by
+examining how earthquake-related information shocks are incorporated
+into the broader housing market.
+
+While previous work has investigated related questions, existing
+analyses have often been constrained by limited data availability. This
+paper leverages a newly available dataset containing billions of highly
+granular observations, covering both transactions and rental markets for
+land, houses, and apartments. The richness and accuracy of this dataset
+allow for a more comprehensive analysis of how housing markets respond
+to changes in perceived risk. The main contribution of this paper
+therefore lies in providing new evidence on the adjustment of housing
+markets following large information shocks, exploiting an unprecedented
+level of detail in real estate outcomes.
+
+My results are \ldots\ldots\ldots..
+
+The paper proceeds as follows. Section II presents a brief theory of
+housing prices under uncertainty. Section III presents Japan's
+background with earthquakes and describes the data. Section IV outlines
+my estimation strategy and identification assumptions. Section V
+presents the empirical results of the risk exposure effects on prices.
+Section VI uses robustness checks. Section VIII concludes.
+
+\section{Theoretical Framework}
+
+Let denote \(p\) the subjective probability that a property will be hit
+by an earthquake. \(p\) depends on both the information set \(i\)
+individuals possess about the seismic risks (such as a recent event,
+media coverage, etc.), and \(r\) the objective attributes for
+earthquakes to be more likely to happen, such as being located right on
+seismic faults. Note that \(\pi\), the objective probability of an
+earthquake, is included in \(i\) in our case, since maps are provided
+and publicly available. Then the Hedonic Price Function is given by: \[
+P = P(Z, r, p(i, r)),
+\] with \(P\) denoting the price of the house and Z denoting an
+additional set of structural, environmental and locational
+characteristics not related to the seismic hazards maps. Following
+Brookshire et al.~(1985), the location decision of agents is modeled
+using a state dependent expected utlility function: \[
+EU = p(i, r) \cdot U^E[Z, r, Q] + (1 - p(i, r)) \cdot U^{NE}[Z, r, Q],
+\] where \(U^E(.)\) is the homeowner's utility in a state in which a
+earthquake occurs and \(U^NE(.)\) is the homeowner's utility when there
+is no such event. \(Q\) is a composite commodity, and the budget
+constraint of the homeowner is given by: \[
+M = P(Z, r, p(i, r)) + Q
+\] Maximising expected utility with respect to \(p\) subject to the
+budget constraint and then dividing through by the expected marginal
+utility of income results in the following expression: \[
+\frac{\partial P}{\partial p}
+=
+\frac{U^{E} - U^{NE}}
+{
+p(i,r)\frac{\partial U^{E}}{\partial Q}
++
+\left(1 - p(i,r)\right)\frac{\partial U^{NE}}{\partial Q}
+}
+\]
+
+\section{Background and Data}
+
+Japan is among the countries most exposed to seismic risk worldwide,
+having experienced several highly destructive earthquakes throughout its
+modern history. The Great Kantō Earthquake of 1923 was one of the
+deadliest disasters, killing more than 110,000 people and devastating
+large parts of Tokyo and Yokohama (Schencking (2007)). In response to
+the need for greater scientific understanding of seismic activity, the
+Earthquake Research Institute was established two years later to promote
+research in seismology and volcanology.
+
+Institutional responses to earthquake risk continued to develop over the
+following decades. In 1981, the revision of the Building Standards Law
+introduced stricter seismic requirements, mandating that newly
+constructed buildings be designed to withstand major damage from
+earthquakes reaching intensity levels of 6--7 on the Japanese seismic
+scale. The 1995 Hanshin-Awaji Earthquake further highlighted the
+vulnerability of urban areas, causing extensive destruction in the Kobe
+region. More recently, the 2011 Tōhoku Earthquake became the most
+devastating earthquake in contemporary Japan, largely due to the massive
+tsunami that followed and significantly amplified its human and economic
+impacts.
+
+Japanese people are often reminded of the earthquake threat. September
+1st has been designated as Disaster Prevention Day since the Kantō
+Earthquake, alongside other local memorial events. The J-SHIS was
+created in 2005 to prevent and prepare for earthquake disasters by
+providing a public portal for seismic hazard information across Japan,
+which has been available since July 2009. These maps are based on the
+Seismic Hazard Map I describe below.
+
+Over the last decades, Japan has been preparing for the so-called
+``megathrust earthquake,'' which is believed to cause enormous damage
+across the country (Kobe University (2024)).
+
+\subsubsection{Real Estate Data}
+
+I use data from \textit{Lifull Homes}, one of the largest real estate
+companies in Japan. The dataset consists of property listings covering
+all prefectures in Japan from January 2015 to October 2017. It contains
+27,885,84 observations, including information on prices, property
+characteristics, and exact geolocation. Since these data come from
+listings, prices represent asking prices and may slightly differ from
+actual transaction prices. From this dataset, I retain only information
+on land, houses, and apartments, excluding commercial properties such as
+shops and other types of real estate. Table 1 describes the property
+types contained in the dataset.
+
+\input{images/tab_property_type.tex}
+
+\subsubsection{Risk Mapping Data}
+
+The risk maps are available from the
+\textit{Japan Seismic Hazard Information Station (J-SHIS)}. They have
+been published annually since 2009, except for 2015. Several measures of
+seismic risk are available. I use the so-called ``Probabilistic Seismic
+Hazard Maps (PSHM),'' which rely on the concept of ``exceedance
+probability,'' referring to the probability that ground shaking exceeds
+a given intensity level at a specific location over a certain period
+(within the next 30 years). Within these measures, I use the ``Average
+case.''\footnote{A glossary is available on the J-SHIS website: https://www.j-shis.bosai.go.jp/en/glossary}
+
+The maps have a high spatial resolution of 250 meters, and I match the
+previous dataset with these maps with high accuracy according to the
+listing publication
+year.\footnote{As the 2015 map was unfortunately the only missing year, I attribute observations from 2015 to the 2014 map.}
+One may argue that these maps are affected by recent earthquakes. This
+is true. However, the computation process relies on a Poisson
+distribution based on a 100,000-year historical period, and there is
+limited variation from one year to another (to be checked).
+
+\subsubsection{Earthquake records}
+
+I use earthquake record data from the
+\textit{Japan Meteorological Agency (JMA)}. The dataset includes all
+earthquake records from 1919 to the present, covering events that
+directly or indirectly affected Japanese territory. The observations
+include the date, location, magnitude, and intensity of each earthquake.
+While magnitude is the international measure based on the well-known
+Richter scale, I use the Japanese seismic intensity system, which
+measures the level of shaking experienced at a given
+location.\footnote{Intensity values are defined as “values observed using seismic intensity meters installed on the ground or on the first floor of low-rise buildings.” For example, an intensity level of 6 or higher is described as: “It is impossible to remain standing or move without crawling. People may be thrown through the air.” See JMA website for more information: https://www.jma.go.jp/jma/en/Activities/inttable.html}
+
+The final selection consists of one earthquake: the 2016 Kumamoto
+Earthquake. This earthquake occurred on April 16th in Kyushu Prefecture,
+in southern Japan, and caused 277 deaths and 2,809 injuries. This
+earthquake sequence was the deadliest in Japan since 2011 and received
+extensive coverage from the Japanese media\footnote{citer la source.}.
+
+\subsubsection{Additional Data}
+
+To complement these data, I use Japanese census data from
+\textit{e-Stat}. The census is conducted every five years, and I use the
+2015 wave. The data are aggregated at the prefectural and municipal
+levels.\footnote{The census contains information on Densely Inhabited Districts (DID), including DID population and DID area. I use these measures to compute population density as a control variable. It also provides information on the number of migrants and total population, allowing me to compute the net migration rate as a measure of local attractiveness.}
+
+\begin{figure}
+\centering
+\input{images/simple.tex}
+\caption{Test of Hedonic regression}
+\end{figure}
+
+\section{Empirical Strategy}
+
+\subsubsection{Sample selection}
+
+I focus on earthquakes occurring within Japan. This choice is motivated
+by an underlying ``distance'' hypothesis, which suggests that domestic
+catastrophes have a greater impact on national risk perceptions than
+disasters occurring abroad. This selection is also consistent with the
+JMA investigation zone, which records only seismic events occurring
+within Japanese territory.
+
+\subsubsection{Treatment Definition}
+
+I use Differences-in-Difference strategy. I create the treated group and
+the control group based on the official Seismic Hazard Maps (SHM)
+provided by the J-SHIS. I use the maps called ``Probability of
+excellence'' which are constructed around the probability that an
+earthquake will occur in the next 30 years.
+
+To better understand what will be the control and the treated group,
+let's visualize the official 2020 (the latest one) Seismic hazard risk
+map. The picture shows the second one show \(p\) = probability that
+earthquake of intensity 6 + will occur in the next 30 years''.
+
+\pandocbounded{\includegraphics[keepaspectratio]{images/test.png}}
+
+This map is constructed from \(p\) \textbf{which is the probabily that
+an earthquake of magnitude 6 or more will srike in the next 30 years}. I
+choose the thresholds according to the official documentation provided
+by the J-SHIS.
+
+\input{images/tab_exposure60_region.tex}
+
+\subsubsection{Equation}
+
+\[
+\ln P_{it} = \alpha_0 + \sum_{j=1}^{J} \alpha_j Z_{ij} + \beta r_i + \gamma Exposed_i + \delta Post_{it} + \theta_t (Post_{it} \times Exposed_i) + \varepsilon_{it}
+\]
+
+\(P_{it}\) is the logarithm of the price of add \(i\) at time \(t\),
+\(Z\) is a set of structural characteristics of the good. \(Post_i\)
+takes 1 when the advertising is publised within 1 month after a big
+earthquake occurs.
+
+I obtain the following results if I apply this equation to the data.
+
+\input{images/reg_all_did1.tex}
+
+I have a problem when it comes to the \(Post\) variable, with Stata
+saying too much co-linearity with the FE. Note that the FE are here
+\(region \times year_-month\). I tried as a first attempt with only
+\(region \times year\), but the same error made me opt for
+\(region \times year_-month\).
+
+With the same error, I have tried for each type of properties:
+
+\input{images/reg_housesale_did1.tex}
+
+\begin{tcolorbox}[title=Controls used]
+
+\begin{itemize}
+    \item Number of rooms (\texttt{rooms})
+    \item Average room size (\texttt{room\_sqft})
+    \item Floor (\texttt{floor})
+    \item \texttt{age\_g}
+    \begin{itemize}
+        \item Age $< 3$
+        \item After the Tohoku earthquake (from 2011)
+        \item After the Kobe earthquake (1995--2010)
+        \item After the para-seismic law (1981--1994)
+        \item After the City Planning Law (1968--1980)
+        \item After the WW2 (1945--1967)
+    \end{itemize}
+    \item Distance to the nearest station as a proxy for distance to the center (\texttt{station1\_distance})
+    \item Number of inhabitants of the municipality as a (bad) proxy for density (\texttt{pop\_total\_linear})
+    \begin{itemize}
+        \item To be replaced by number of inhabitants divided by municipality size
+    \end{itemize}
+    \item Density measured as follows:
+    \begin{itemize}
+        \item Rural if DID (Density Inhabited Districts) does not exist
+        \item $\log(\text{density})$ otherwise
+    \end{itemize}
+    \item Share of migration at the municipality level as a proxy for attractiveness (\texttt{net\_migration\_rate})
+\end{itemize}
+
+\end{tcolorbox}
+
+\section{Robustness checks}
+
+Keeping only a few regions and apply fixed effects at the prefecture
+level?
+
+\section{Conclusion}
+
+Controls that would be nice to add:
+
+\begin{itemize}
+\tightlist
+\item
+  Average wages as a proxy for area dynamics
+\item
+  Height above the sea level
+\item
+  distance to the sea
+\end{itemize}
+
+Caveats:
+
+\begin{itemize}
+\tightlist
+\item
+  No control for other types of risk
+\end{itemize}
+
+\section{Acknowledgments}
+
+\section{Questions}
+
+\section{References}
+
+\phantomsection\label{refs}
+\begin{CSLReferences}{1}{0}
+\bibitem[\citeproctext]{ref-atreya_seeing_2015}
+Atreya, Ajita, and Susana Ferreira. 2015. {``Seeing Is {Believing}?
+{Evidence} from {Property} {Prices} in {Inundated} {Areas}.''}
+\emph{Risk Analysis} 35 (5): 828--48.
+\url{https://doi.org/10.1111/risa.12307}.
+
+\bibitem[\citeproctext]{ref-atreya_forgetting_2013}
+Atreya, Ajita, Susana Ferreira, and Warren Kriesel. 2013. {``Forgetting
+the {Flood}? {An} {Analysis} of the {Flood} {Risk} {Discount} over
+{Time}.''} \emph{Land Economics} 89 (4): 577--96.
+\url{http://www.jstor.org/stable/24243692}.
+
+\bibitem[\citeproctext]{ref-beron_analysis_1997}
+Beron, Kurt J., James C. Murdoch, Mark A. Thayer, and Wim P. M.
+Vijverberg. 1997. {``An {Analysis} of the {Housing} {Market} Before and
+After the 1989 {Loma} {Prieta} {Earthquake}.''} \emph{Land Economics} 73
+(1): 101--13. \url{https://doi.org/10.2307/3147080}.
+
+\bibitem[\citeproctext]{ref-bin_effects_2004}
+Bin, Okmyung, and Stephen Polasky. 2004. {``Effects of {Flood} {Hazards}
+on {Property} {Values}: {Evidence} Before and After {Hurricane}
+{Floyd}.''} \emph{Land Economics} 80 (4): 490--500.
+\url{https://doi.org/10.2307/3655805}.
+
+\bibitem[\citeproctext]{ref-brookshire_test_1985}
+Brookshire, David S., Mark A. Thayer, John Tschirhart, and William D.
+Schulze. 1985. {``A {Test} of the {Expected} {Utility} {Model}:
+{Evidence} from {Earthquake} {Risks}.''} \emph{Journal of Political
+Economy} 93 (2): 369--89. \url{http://www.jstor.org/stable/1832182}.
+
+\bibitem[\citeproctext]{ref-hidano_effect_2015}
+Hidano, Noboru, Tadao Hoshino, and Ayako Sugiura. 2015. {``The Effect of
+Seismic Hazard Risk Information on Property Prices: {Evidence} from a
+Spatial Regression Discontinuity Design.''} \emph{Regional Science and
+Urban Economics} 53 (July): 113--22.
+\url{https://doi.org/10.1016/j.regsciurbeco.2015.05.005}.
+
+\bibitem[\citeproctext]{ref-ikefuji2022}
+Ikefuji, Masako, Roger J. A. Laeven, Jan R. Magnus, and Yuan Yue. 2022.
+{``Earthquake Risk Embedded in Property Prices: Evidence from Five
+Japanese Cities.''} \emph{Journal of the American Statistical
+Association} 117 (537): 82--93.
+\url{https://doi.org/10.1080/01621459.2021.1928512}.
+
+\bibitem[\citeproctext]{ref-kobeuniversity_earthquake_feature}
+Kobe University. 2024. {``Passing down Experiences from the Earthquake:
+The Kobe University of Mercantile Marine and the Great Hanshin-Awaji
+Earthquake.''} Kobe University. September 13, 2024.
+\url{https://www.kobe-u.ac.jp/en/news/article/feature0008/}.
+
+\bibitem[\citeproctext]{ref-naoi_earthquake_2009}
+Naoi, Michio, Miki Seko, and Kazuto Sumita. 2009. {``Earthquake Risk and
+Housing Prices in {Japan}: {Evidence} Before and After Massive
+Earthquakes.''} \emph{Regional Science and Urban Economics} 39 (6):
+658--69. \url{https://doi.org/10.1016/j.regsciurbeco.2009.08.002}.
+
+\bibitem[\citeproctext]{ref-rosen1974}
+Rosen, Sherwin. 1974. {``Hedonic Prices and Implicit Markets: Product
+Differentiation in Pure Competition.''} \emph{Journal of Political
+Economy} 82 (1): 34--55. \url{http://www.jstor.org/stable/1830899}.
+
+\bibitem[\citeproctext]{ref-sato_impact_2021}
+Sato, Yasuhiro, and Keita Shiba. 2021. {``The Impact of {Tsunamis} on
+Land Appraisals: {Evidence} from {Western} {Japan}.''} \emph{PLOS ONE}
+16 (4): e0248860. \url{https://doi.org/10.1371/journal.pone.0248860}.
+
+\bibitem[\citeproctext]{ref-schencking2007kanto}
+Schencking, J. Charles. 2007. {``The Great Kant{ō} Earthquake of 1923
+and the Japanese Nation.''} Association for Asian Studies. September
+2007.
+\url{https://www.asianstudies.org/publications/eaa/archives/the-great-kanto-earthquake-of-1923-and-the-japanese-nation/}.
+
+\end{CSLReferences}
+
+
+
+
+\end{document}
