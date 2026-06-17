@@ -321,29 +321,40 @@ Section VI uses robustness checks. Section VIII concludes.
 
 \section{Theoretical Framework}
 
-Let denote \(p\) the subjective probability that a property will be hit
-by an earthquake. \(p\) depends on both the information set \(i\)
-individuals possess about the seismic risks (such as a recent event,
-media coverage, etc.), and \(r\) the objective attributes for
-earthquakes to be more likely to happen, such as being located right on
-seismic faults. Note that \(\pi\), the objective probability of an
-earthquake, is included in \(i\) in our case, since maps are provided
-and publicly available. Then the Hedonic Price Function is given by: \[
-P = P(Z, r, p(i, r)),
-\] with \(P\) denoting the price of the house and Z denoting an
-additional set of structural, environmental and locational
-characteristics not related to the seismic hazards maps. Following
-Brookshire et al.~(1985), the location decision of agents is modeled
-using a state dependent expected utlility function: \[
+Let us suppose that information about earthquake risks is available.
+When making location choices, households may take into account the
+safety of the place where they choose to locate. Following the hedonic
+pricing approach, safety is a property attribute, like other attributes
+including structural, neighborhood, and community characteristics, even
+though it contains a random component. The basic intuition is that, all
+else being equal, households should locate along a hedonic price
+gradient for safety, with higher prices in safer locations. Based on
+expected utility theory (Ehrlich and Becker (1972)), I develop a short
+theoretical model to capture how information affects housing price
+formation.
+
+Let \(p\) denote the subjective probability that a property will be
+affected by an earthquake. \(p\) depends on both the information set
+\(i\) that individuals possess about seismic risks (such as a recent
+event, media coverage, etc.) and \(r\), the objective attributes that
+make earthquakes more likely to occur, such as being located near
+seismic faults. The hedonic price function is then given by
+\[P = P(Z, r, p(i,r))\] where \(P\) denotes the price of the house and
+\(Z\) denotes an additional set of structural, environmental, and
+locational characteristics unrelated to the seismic hazard maps.
+Following Brookshire et al. (1985), the location choice of agents is
+modeled using a state-dependent expected utility function:
+\begin{equation}\phantomsection\label{eq-1}{
 EU = p(i, r) \cdot U^E[Z, r, Q] + (1 - p(i, r)) \cdot U^{NE}[Z, r, Q],
-\] where \(U^E(.)\) is the homeowner's utility in a state in which a
-earthquake occurs and \(U^NE(.)\) is the homeowner's utility when there
-is no such event. \(Q\) is a composite commodity, and the budget
-constraint of the homeowner is given by: \[
-M = P(Z, r, p(i, r)) + Q
-\] Maximising expected utility with respect to \(p\) subject to the
-budget constraint and then dividing through by the expected marginal
-utility of income results in the following expression: \[
+}\end{equation} where \(U^E(.)\) is the homeowner's utility in the state
+in which an earthquake occurs, and \(U^{NE}(.)\) is the homeowner's
+utility when such an event does not occur. \(Q\) is a composite
+commodity, and the homeowner's budget constraint is given by
+\begin{equation}\phantomsection\label{eq-2}{M = P(Z, r, p(i, r)) + Q}\end{equation}
+Maximizing expected utility with respect to \(p\) subject to the budget
+constraint and then dividing through by the expected marginal utility of
+income results in the following expression:
+\begin{equation}\phantomsection\label{eq-3}{
 \frac{\partial P}{\partial p}
 =
 \frac{U^{E} - U^{NE}}
@@ -351,8 +362,24 @@ utility of income results in the following expression: \[
 p(i,r)\frac{\partial U^{E}}{\partial Q}
 +
 \left(1 - p(i,r)\right)\frac{\partial U^{NE}}{\partial Q}
-}
-\]
+} < 0
+}\end{equation} To evaluate how an exogenous information shock---such as
+a recent natural disaster---affects the housing market, let the change
+in the information set be denoted by \(\Delta i = i_1 - i_0 > 0\).
+Solving the differential equation with respect to \(i\) and substituting
+using (Equation~\ref{eq-3}), we obtain:
+
+\begin{equation}\phantomsection\label{eq-4}{\frac{\partial P}{\partial i} = \frac{\partial P}{\partial p} \cdot \frac{\partial p}{\partial i} \iff \frac{\partial P}{\partial p} = \left[ \frac{U^E - U^{NE}}{p(i, r)\frac{\partial U^E}{\partial Q} + (1 - p(i, r))\frac{\partial U^{NE}}{\partial Q}} \right] \cdot \frac{\partial p}{\partial i} }\end{equation}
+
+From this expression, we can see how exogenous information shocks
+reshape consumers' subjective probability beliefs, while holding \(r\)
+constant. If \(\frac{\partial P}{\partial i} = 0\), then
+\(\frac{\partial p}{\partial i} = 0\), implying that consumers do not
+respond to information shocks. Otherwise, if
+\(\frac{\partial p}{\partial i} > 0\), consumers update their beliefs in
+response to new information. The following sections introduce the
+empirical analysis to assess the extent to which the information set
+plays a role in housing price formation.
 
 \section{Background and Data}
 
@@ -469,11 +496,10 @@ within Japanese territory.
 
 \subsubsection{Treatment Definition}
 
-I use Differences-in-Difference strategy. I create the treated group and
-the control group based on the official Seismic Hazard Maps (SHM)
-provided by the J-SHIS. I use the maps called ``Probability of
-excellence'' which are constructed around the probability that an
-earthquake will occur in the next 30 years.
+I create the treated group and the control group based on the official
+Seismic Hazard Maps (SHM) provided by the J-SHIS. I use the maps called
+``Probability of excellence'' which are constructed around the
+probability that an earthquake will occur in the next 30 years.
 
 To better understand what will be the control and the treated group,
 let's visualize the official 2020 (the latest one) Seismic hazard risk
@@ -608,6 +634,11 @@ Brookshire, David S., Mark A. Thayer, John Tschirhart, and William D.
 Schulze. 1985. {``A {Test} of the {Expected} {Utility} {Model}:
 {Evidence} from {Earthquake} {Risks}.''} \emph{Journal of Political
 Economy} 93 (2): 369--89. \url{http://www.jstor.org/stable/1832182}.
+
+\bibitem[\citeproctext]{ref-exputil}
+Ehrlich, Isaac, and Gary S. Becker. 1972. {``Market Insurance,
+Self-Insurance, and Self-Protection.''} \emph{Journal of Political
+Economy} 80 (4): 623--48. \url{http://www.jstor.org/stable/1829358}.
 
 \bibitem[\citeproctext]{ref-hidano_effect_2015}
 Hidano, Noboru, Tadao Hoshino, and Ayako Sugiura. 2015. {``The Effect of

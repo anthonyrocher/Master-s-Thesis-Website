@@ -50,7 +50,7 @@ This paper contributes to the literature on hedonic pricing, initiated by @rosen
 
 More broadly, this paper contributes to the literature on real estate markets under uncertainty. Previous studies have investigated the impact of natural disasters on housing prices, including floods (@bin_effects_2004, @atreya_forgetting_2013, @atreya_seeing_2015), wildfires (add references), and earthquakes (@beron_analysis_1997, @sato_impact_2021). These papers provide evidence that households update their valuation of properties following major risk-related events, but the extent and persistence of these adjustments remain open questions.
 
-A growing literature has focused specifically on the effects of earthquakes in Japan, often relying on detailed administrative data provided by the Ministry of Land, Infrastructure, Transport and Tourism (MLIT). For example, @naoi_earthquake_2009 and @hidano_effect_2015 use these data to study the capitalization of earthquake risk into land and property values. This paper builds particularly on the work of @ikefuji2022, who show that land prices are [insert main finding]. I extend this line of research by examining how earthquake-related information shocks are incorporated into the broader housing market.
+A growing literature has focused specifically on the effects of earthquakes in Japan, often relying on detailed administrative data provided by the Ministry of Land, Infrastructure, Transport and Tourism (MLIT). For example, @naoi_earthquake_2009 and @hidano_effect_2015 use these data to study the capitalization of earthquake risk into land and property values. This paper builds particularly on the work of @ikefuji2022, who show that land prices are \[insert main finding\]. I extend this line of research by examining how earthquake-related information shocks are incorporated into the broader housing market.
 
 While previous work has investigated related questions, existing analyses have often been constrained by limited data availability. This paper leverages a newly available dataset containing billions of highly granular observations, covering both transactions and rental markets for land, houses, and apartments. The richness and accuracy of this dataset allow for a more comprehensive analysis of how housing markets respond to changes in perceived risk. The main contribution of this paper therefore lies in providing new evidence on the adjustment of housing markets following large information shocks, exploiting an unprecedented level of detail in real estate outcomes.
 
@@ -60,13 +60,13 @@ The paper proceeds as follows. Section II presents a brief theory of housing pri
 
 \section{Theoretical Framework}
 
-Let denote $p$ the subjective probability that a property will be hit by an earthquake. $p$ depends on both the information set $i$ individuals possess about the seismic risks (such as a recent event, media coverage, etc.), and $r$ the objective attributes for earthquakes to be more likely to happen, such as being located right on seismic faults. Note that $\pi$, the objective probability of an earthquake, is included in $i$ in our case, since maps are provided and publicly available. Then the Hedonic Price Function is given by: $$
-P = P(Z, r, p(i, r)),
-$$ with $P$ denoting the price of the house and Z denoting an additional set of structural, environmental and locational characteristics not related to the seismic hazards maps. Following Brookshire et al. (1985), the location decision of agents is modeled using a state dependent expected utlility function: $$
+Let us suppose that information about earthquake risks is available. When making location choices, households may take into account the safety of the place where they choose to locate. Following the hedonic pricing approach, safety is a property attribute, like other attributes including structural, neighborhood, and community characteristics, even though it contains a random component. The basic intuition is that, all else being equal, households should locate along a hedonic price gradient for safety, with higher prices in safer locations. Based on expected utility theory (@exputil), I develop a short theoretical model to capture how information affects housing price formation.
+
+Let $p$ denote the subjective probability that a property will be affected by an earthquake. $p$ depends on both the information set $i$ that individuals possess about seismic risks (such as a recent event, media coverage, etc.) and $r$, the objective attributes that make earthquakes more likely to occur, such as being located near seismic faults. The hedonic price function is then given by $$P = P(Z, r, p(i,r))$$
+where $P$ denotes the price of the house and $Z$ denotes an additional set of structural, environmental, and locational characteristics unrelated to the seismic hazard maps. Following @brookshire_test_1985, the location choice of agents is modeled using a state-dependent expected utility function:
+$$
 EU = p(i, r) \cdot U^E[Z, r, Q] + (1 - p(i, r)) \cdot U^{NE}[Z, r, Q],
-$$ where $U^E(.)$ is the homeowner's utility in a state in which a earthquake occurs and $U^NE(.)$ is the homeowner's utility when there is no such event. $Q$ is a composite commodity, and the budget constraint of the homeowner is given by: $$
-M = P(Z, r, p(i, r)) + Q
-$$ Maximising expected utility with respect to $p$ subject to the budget constraint and then dividing through by the expected marginal utility of income results in the following expression: $$
+$$ {#eq-1} where $U^E(.)$ is the homeowner’s utility in the state in which an earthquake occurs, and $U^{NE}(.)$ is the homeowner’s utility when such an event does not occur. $Q$ is a composite commodity, and the homeowner’s budget constraint is given by $$M = P(Z, r, p(i, r)) + Q$$ {#eq-2} Maximizing expected utility with respect to $p$ subject to the budget constraint and then dividing through by the expected marginal utility of income results in the following expression: $$
 \frac{\partial P}{\partial p}
 =
 \frac{U^{E} - U^{NE}}
@@ -74,8 +74,12 @@ $$ Maximising expected utility with respect to $p$ subject to the budget constra
 p(i,r)\frac{\partial U^{E}}{\partial Q}
 +
 \left(1 - p(i,r)\right)\frac{\partial U^{NE}}{\partial Q}
-}
-$$
+} < 0
+$$ {#eq-3} To evaluate how an exogenous information shock—such as a recent natural disaster—affects the housing market, let the change in the information set be denoted by $\Delta i = i_1 - i_0 > 0$. Solving the differential equation with respect to $i$ and substituting using (@eq-3), we obtain:
+
+$$\frac{\partial P}{\partial i} = \frac{\partial P}{\partial p} \cdot \frac{\partial p}{\partial i} \iff \frac{\partial P}{\partial p} = \left[ \frac{U^E - U^{NE}}{p(i, r)\frac{\partial U^E}{\partial Q} + (1 - p(i, r))\frac{\partial U^{NE}}{\partial Q}} \right] \cdot \frac{\partial p}{\partial i} $$ {#eq-4}
+
+From this expression, we can see how exogenous information shocks reshape consumers’ subjective probability beliefs, while holding $r$ constant. If $\frac{\partial P}{\partial i} = 0$, then $\frac{\partial p}{\partial i} = 0$, implying that consumers do not respond to information shocks. Otherwise, if $\frac{\partial p}{\partial i} > 0$, consumers update their beliefs in response to new information. The following sections introduce the empirical analysis to assess the extent to which the information set plays a role in housing price formation.
 
 \section{Background and Data}
 
@@ -85,17 +89,17 @@ Institutional responses to earthquake risk continued to develop over the followi
 
 Japanese people are often reminded of the earthquake threat. September 1st has been designated as Disaster Prevention Day since the Kantō Earthquake, alongside other local memorial events. The J-SHIS was created in 2005 to prevent and prepare for earthquake disasters by providing a public portal for seismic hazard information across Japan, which has been available since July 2009. These maps are based on the Seismic Hazard Map I describe below.
 
-Over the last decades, Japan has been preparing for the so-called “megathrust earthquake,” which is believed to cause enormous damage across the country (@kobeuniversity_earthquake_feature). 
+Over the last decades, Japan has been preparing for the so-called “megathrust earthquake,” which is believed to cause enormous damage across the country (@kobeuniversity_earthquake_feature).
 
 \subsubsection{Real Estate Data}
 
-I use data from \textit{Lifull Homes}, one of the largest real estate companies in Japan. The dataset consists of property listings covering all prefectures in Japan from January 2015 to October 2017. It contains 27,885,84 observations, including information on prices, property characteristics, and exact geolocation. Since these data come from listings, prices represent asking prices and may slightly differ from actual transaction prices. From this dataset, I retain only information on land, houses, and apartments, excluding commercial properties such as shops and other types of real estate. Table 1 describes the property types contained in the dataset. 
+I use data from \textit{Lifull Homes}, one of the largest real estate companies in Japan. The dataset consists of property listings covering all prefectures in Japan from January 2015 to October 2017. It contains 27,885,84 observations, including information on prices, property characteristics, and exact geolocation. Since these data come from listings, prices represent asking prices and may slightly differ from actual transaction prices. From this dataset, I retain only information on land, houses, and apartments, excluding commercial properties such as shops and other types of real estate. Table 1 describes the property types contained in the dataset.
 
 ![](images/tab_property_type.tex)
 
 \subsubsection{Risk Mapping Data}
 
-The risk maps are available from the \textit{Japan Seismic Hazard Information Station (J-SHIS)}. They have been published annually since 2009, except for 2015. Several measures of seismic risk are available. I use the so-called “Probabilistic Seismic Hazard Maps (PSHM),” which rely on the concept of “exceedance probability,” referring to the probability that ground shaking exceeds a given intensity level at a specific location over a certain period (within the next 30 years). Within these measures, I use the “Average case.”\footnote{A glossary is available on the J-SHIS website: https://www.j-shis.bosai.go.jp/en/glossary}  
+The risk maps are available from the \textit{Japan Seismic Hazard Information Station (J-SHIS)}. They have been published annually since 2009, except for 2015. Several measures of seismic risk are available. I use the so-called “Probabilistic Seismic Hazard Maps (PSHM),” which rely on the concept of “exceedance probability,” referring to the probability that ground shaking exceeds a given intensity level at a specific location over a certain period (within the next 30 years). Within these measures, I use the “Average case.”\footnote{A glossary is available on the J-SHIS website: https://www.j-shis.bosai.go.jp/en/glossary}
 
 The maps have a high spatial resolution of 250 meters, and I match the previous dataset with these maps with high accuracy according to the listing publication year.\footnote{As the 2015 map was unfortunately the only missing year, I attribute observations from 2015 to the 2014 map.} One may argue that these maps are affected by recent earthquakes. This is true. However, the computation process relies on a Poisson distribution based on a 100,000-year historical period, and there is limited variation from one year to another (to be checked).
 
@@ -119,7 +123,7 @@ I focus on earthquakes occurring within Japan. This choice is motivated by an un
 
 \subsubsection{Treatment Definition}
 
-I use Differences-in-Difference strategy. I create the treated group and the control group based on the official Seismic Hazard Maps (SHM) provided by the J-SHIS. I use the maps called "Probability of excellence" which are constructed around the probability that an earthquake will occur in the next 30 years. 
+I create the treated group and the control group based on the official Seismic Hazard Maps (SHM) provided by the J-SHIS. I use the maps called "Probability of excellence" which are constructed around the probability that an earthquake will occur in the next 30 years.
 
 To better understand what will be the control and the treated group, let's visualize the official 2020 (the latest one) Seismic hazard risk map. The picture shows the second one show $p$ = probability that earthquake of intensity 6 + will occur in the next 30 years".
 
@@ -191,11 +195,10 @@ Controls that would be nice to add:
 
 Caveats:
 
-- No control for other types of risk
+-   No control for other types of risk
 
 \section{Acknowledgments}
 
 \section{Questions}
-
 
 \section{References}
