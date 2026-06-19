@@ -142,6 +142,8 @@
 \setlength{\skip\footins}{25pt}
 \KOMAoption{captions}{tableheading}
 \usepackage{tcolorbox}
+\usepackage{pifont}
+\newcommand{\cmark}{\ding{51}}
 \makeatletter
 \@ifpackageloaded{caption}{}{\usepackage{caption}}
 \AtBeginDocument{%
@@ -227,13 +229,12 @@
 
 \vspace{1cm}
 
-\noindent How risk-averse is the housing market following a large
-information shock, such as a natural disaster? Standard theory suggests
-that, as information about risk depreciates over time, a recent shock
-should widen the price differential between high- and low-risk areas,
-conditional on an increase in the safety premium. However, the extent to
-which housing markets incorporate such information remains an empirical
-question.
+\noindent How households' risk aversion is translated to housing prices?
+Standard theory suggests that, as information about risk depreciates
+over time, a recent shock should widen the price differential between
+high- and low-risk areas, conditional on an increase in the safety
+premium. However, the extent to which housing markets incorporate such
+information remains an empirical question.
 
 Understanding how information shocks are capitalized into housing
 markets provides insight into whether households perceive the risks they
@@ -429,8 +430,6 @@ on land, houses, and apartments, excluding commercial properties such as
 shops and other types of real estate. Table 1 describes the property
 types contained in the dataset.
 
-\input{images/tab_property_type.tex}
-
 \subsubsection{Risk Mapping Data}
 
 The risk maps are available from the
@@ -439,14 +438,17 @@ been published annually since 2009, except for 2015. Several measures of
 seismic risk are available. I use the so-called ``Probabilistic Seismic
 Hazard Maps (PSHM),'' which rely on the concept of ``exceedance
 probability,'' referring to the probability that ground shaking exceeds
-a given intensity level at a specific location over a certain period
-(within the next 30 years). Within these measures, I use the ``Average
-case.''\footnote{A glossary is available on the J-SHIS website: https://www.j-shis.bosai.go.jp/en/glossary}
+a given intensity level at a specific location over a certain
+period\footnote{Within these measures, I use the “Average case.” A glossary is available on the J-SHIS website: https://www.j-shis.bosai.go.jp/en/glossary}.
+
+To match what the Japanese people are the most likely to come across, I
+choose \ldots{} These maps are based on the probability that \ldots{}
 
 The maps have a high spatial resolution of 250 meters, and I match the
 previous dataset with these maps with high accuracy according to the
 listing publication
 year.\footnote{As the 2015 map was unfortunately the only missing year, I attribute observations from 2015 to the 2014 map.}
+
 One may argue that these maps are affected by recent earthquakes. This
 is true. However, the computation process relies on a Poisson
 distribution based on a 100,000-year historical period, and there is
@@ -472,20 +474,40 @@ extensive coverage from the Japanese media\footnote{citer la source.}.
 
 \subsubsection{Additional Data}
 
+From the \textit{Geospatial Information Authority of Japan}, I collect
+elevation maps. These maps contain geological information, including
+elevation above sea level and ground slopes. As they use the same
+250-meter mesh as the \textit{J-SHIS}, I match these data accordingly. I
+use average elevation within each spatial unit and average ground slope
+as additional controls.
+\footnote{See <https://nlftp.mlit.go.jp/ksj/gml/datalist/KsjTmplt-G04-d.html> for data description.}
+
 To complement these data, I use Japanese census data from
 \textit{e-Stat}. The census is conducted every five years, and I use the
 2015 wave. The data are aggregated at the prefectural and municipal
 levels.\footnote{The census contains information on Densely Inhabited Districts (DID), including DID population and DID area. I use these measures to compute population density as a control variable. It also provides information on the number of migrants and total population, allowing me to compute the net migration rate as a measure of local attractiveness.}
 
-\begin{figure}
-\centering
-\input{images/simple.tex}
-\caption{Test of Hedonic regression}
-\end{figure}
+\subsubsection{Descriptive Statistics}
+
+To include : distribution of variables, graphs for price evolution.
 
 \section{Empirical Strategy}
 
-\subsubsection{Sample selection}
+I aim to identify the impact of an information shock -the 16 April 2016
+Kumamoto earthquake- on the exposed area differential gap.
+
+Explain the possible information (salience) chain.
+
+In the following, I first present the empirical model and develop our
+identi􏰄cation strategy with regard to re􏰅ection and location
+endogeneity.
+
+\begin{itemize}
+\item
+  prices of houses for sales -\textgreater{} argue greater impact. What
+  is the share of homeownership?
+\item
+\end{itemize}
 
 I focus on earthquakes occurring within Japan. This choice is motivated
 by an underlying ``distance'' hypothesis, which suggests that domestic
@@ -494,11 +516,9 @@ disasters occurring abroad. This selection is also consistent with the
 JMA investigation zone, which records only seismic events occurring
 within Japanese territory.
 
-\subsubsection{Treatment Definition}
-
 I create the treated group and the control group based on the official
 Seismic Hazard Maps (SHM) provided by the J-SHIS. I use the maps called
-``Probability of excellence'' which are constructed around the
+``Probability of exceedance'' which are constructed around the
 probability that an earthquake will occur in the next 30 years.
 
 To better understand what will be the control and the treated group,
@@ -506,39 +526,33 @@ let's visualize the official 2020 (the latest one) Seismic hazard risk
 map. The picture shows the second one show \(p\) = probability that
 earthquake of intensity 6 + will occur in the next 30 years''.
 
-\pandocbounded{\includegraphics[keepaspectratio]{images/test.png}}
-
 This map is constructed from \(p\) \textbf{which is the probabily that
 an earthquake of magnitude 6 or more will srike in the next 30 years}. I
 choose the thresholds according to the official documentation provided
 by the J-SHIS.
 
-\input{images/tab_exposure60_region.tex}
+Insérer l'image
 
-\subsubsection{Equation}
+\subsubsection{Empirical Model}
 
 \[
 \ln P_{it} = \alpha_0 + \sum_{j=1}^{J} \alpha_j Z_{ij} + \beta r_i + \gamma Exposed_i + \delta Post_{it} + \theta_t (Post_{it} \times Exposed_i) + \varepsilon_{it}
 \]
 
-\(P_{it}\) is the logarithm of the price of add \(i\) at time \(t\),
-\(Z\) is a set of structural characteristics of the good. \(Post_i\)
-takes 1 when the advertising is publised within 1 month after a big
-earthquake occurs.
+\begin{itemize}
+\item
+  \(P_{it}\) is the logarithm of the price of add \(i\) at time \(t\).
+  \textbf{Prices} are prices of houses for sale on the Liffull website.
+\item
+  \(Z_{ij}\) is a set of characteristics.
+\end{itemize}
 
-I obtain the following results if I apply this equation to the data.
+of add \(i\) at time \(t\), \(Z\) is a set of structural characteristics
+of the good. Since I consider only the Kumamōto earthquake in my
+setting, \(Post_i\) is a dummy that takes 1 when \(i\) is published one
+month following the earthquake (from 16apr2016 to 16may2016).
 
-\input{images/reg_all_did1.tex}
-
-I have a problem when it comes to the \(Post\) variable, with Stata
-saying too much co-linearity with the FE. Note that the FE are here
-\(region \times year_-month\). I tried as a first attempt with only
-\(region \times year\), but the same error made me opt for
-\(region \times year_-month\).
-
-With the same error, I have tried for each type of properties:
-
-\input{images/reg_housesale_did1.tex}
+\input{images/did_housesale.tex}
 
 \begin{tcolorbox}[title=Controls used]
 

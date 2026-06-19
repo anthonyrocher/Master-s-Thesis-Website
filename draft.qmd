@@ -7,6 +7,8 @@ format:
           \setlength{\skip\footins}{25pt}
 header-includes:
   - \usepackage{tcolorbox}
+  - \usepackage{pifont}
+  - \newcommand{\cmark}{\ding{51}}
 bibliography: references.bib
 ---
 
@@ -36,7 +38,7 @@ bibliography: references.bib
 
 \vspace{1cm}
 
-\noindent How risk-averse is the housing market following a large information shock, such as a natural disaster? Standard theory suggests that, as information about risk depreciates over time, a recent shock should widen the price differential between high- and low-risk areas, conditional on an increase in the safety premium. However, the extent to which housing markets incorporate such information remains an empirical question.
+\noindent How households' risk aversion is translated to housing prices? Standard theory suggests that, as information about risk depreciates over time, a recent shock should widen the price differential between high- and low-risk areas, conditional on an increase in the safety premium. However, the extent to which housing markets incorporate such information remains an empirical question.
 
 Understanding how information shocks are capitalized into housing markets provides insight into whether households perceive the risks they face and how much they value newly acquired information. If the elasticity of housing prices with respect to risk exposure is close to zero, disaster-related information may have limited effects on housing markets: prices may fail to function as effective signals of underlying risk. Alternatively, households may recognize the risks but choose to remain in exposed locations, placing little or no monetary value on risk reduction. Conversely, if households fully adjust their location choices in response to new information, high-risk areas may experience declining demand and reduced attractiveness. Over time, this adjustment could lead to lower investment in exposed regions. More broadly, persistent exposure to environmental risk may become a source of inequality, as rising safety premiums make low-risk locations increasingly inaccessible to lower-income households.
 
@@ -62,9 +64,7 @@ The paper proceeds as follows. Section II presents a brief theory of housing pri
 
 Let us suppose that information about earthquake risks is available. When making location choices, households may take into account the safety of the place where they choose to locate. Following the hedonic pricing approach, safety is a property attribute, like other attributes including structural, neighborhood, and community characteristics, even though it contains a random component. The basic intuition is that, all else being equal, households should locate along a hedonic price gradient for safety, with higher prices in safer locations. Based on expected utility theory (@exputil), I develop a short theoretical model to capture how information affects housing price formation.
 
-Let $p$ denote the subjective probability that a property will be affected by an earthquake. $p$ depends on both the information set $i$ that individuals possess about seismic risks (such as a recent event, media coverage, etc.) and $r$, the objective attributes that make earthquakes more likely to occur, such as being located near seismic faults. The hedonic price function is then given by $$P = P(Z, r, p(i,r))$$
-where $P$ denotes the price of the house and $Z$ denotes an additional set of structural, environmental, and locational characteristics unrelated to the seismic hazard maps. Following @brookshire_test_1985, the location choice of agents is modeled using a state-dependent expected utility function:
-$$
+Let $p$ denote the subjective probability that a property will be affected by an earthquake. $p$ depends on both the information set $i$ that individuals possess about seismic risks (such as a recent event, media coverage, etc.) and $r$, the objective attributes that make earthquakes more likely to occur, such as being located near seismic faults. The hedonic price function is then given by $$P = P(Z, r, p(i,r))$$ where $P$ denotes the price of the house and $Z$ denotes an additional set of structural, environmental, and locational characteristics unrelated to the seismic hazard maps. Following @brookshire_test_1985, the location choice of agents is modeled using a state-dependent expected utility function: $$
 EU = p(i, r) \cdot U^E[Z, r, Q] + (1 - p(i, r)) \cdot U^{NE}[Z, r, Q],
 $$ {#eq-1} where $U^E(.)$ is the homeowner’s utility in the state in which an earthquake occurs, and $U^{NE}(.)$ is the homeowner’s utility when such an event does not occur. $Q$ is a composite commodity, and the homeowner’s budget constraint is given by $$M = P(Z, r, p(i, r)) + Q$$ {#eq-2} Maximizing expected utility with respect to $p$ subject to the budget constraint and then dividing through by the expected marginal utility of income results in the following expression: $$
 \frac{\partial P}{\partial p}
@@ -95,13 +95,15 @@ Over the last decades, Japan has been preparing for the so-called “megathrust 
 
 I use data from \textit{Lifull Homes}, one of the largest real estate companies in Japan. The dataset consists of property listings covering all prefectures in Japan from January 2015 to October 2017. It contains 27,885,84 observations, including information on prices, property characteristics, and exact geolocation. Since these data come from listings, prices represent asking prices and may slightly differ from actual transaction prices. From this dataset, I retain only information on land, houses, and apartments, excluding commercial properties such as shops and other types of real estate. Table 1 describes the property types contained in the dataset.
 
-![](images/tab_property_type.tex)
-
 \subsubsection{Risk Mapping Data}
 
-The risk maps are available from the \textit{Japan Seismic Hazard Information Station (J-SHIS)}. They have been published annually since 2009, except for 2015. Several measures of seismic risk are available. I use the so-called “Probabilistic Seismic Hazard Maps (PSHM),” which rely on the concept of “exceedance probability,” referring to the probability that ground shaking exceeds a given intensity level at a specific location over a certain period (within the next 30 years). Within these measures, I use the “Average case.”\footnote{A glossary is available on the J-SHIS website: https://www.j-shis.bosai.go.jp/en/glossary}
+The risk maps are available from the \textit{Japan Seismic Hazard Information Station (J-SHIS)}. They have been published annually since 2009, except for 2015. Several measures of seismic risk are available. I use the so-called “Probabilistic Seismic Hazard Maps (PSHM),” which rely on the concept of “exceedance probability,” referring to the probability that ground shaking exceeds a given intensity level at a specific location over a certain period\footnote{Within these measures, I use the “Average case.” A glossary is available on the J-SHIS website: https://www.j-shis.bosai.go.jp/en/glossary}.
 
-The maps have a high spatial resolution of 250 meters, and I match the previous dataset with these maps with high accuracy according to the listing publication year.\footnote{As the 2015 map was unfortunately the only missing year, I attribute observations from 2015 to the 2014 map.} One may argue that these maps are affected by recent earthquakes. This is true. However, the computation process relies on a Poisson distribution based on a 100,000-year historical period, and there is limited variation from one year to another (to be checked).
+To match what the Japanese people are the most likely to come across, I choose ... These maps are based on the probability that ...
+
+The maps have a high spatial resolution of 250 meters, and I match the previous dataset with these maps with high accuracy according to the listing publication year.\footnote{As the 2015 map was unfortunately the only missing year, I attribute observations from 2015 to the 2014 map.}
+
+One may argue that these maps are affected by recent earthquakes. This is true. However, the computation process relies on a Poisson distribution based on a 100,000-year historical period, and there is limited variation from one year to another (to be checked).
 
 \subsubsection{Earthquake records}
 
@@ -111,45 +113,59 @@ The final selection consists of one earthquake: the 2016 Kumamoto Earthquake. Th
 
 \subsubsection{Additional Data}
 
+From the \textit{Geospatial Information Authority of Japan}, I collect elevation maps. These maps contain geological information, including elevation above sea level and ground slopes. As they use the same 250-meter mesh as the \textit{J-SHIS}, I match these data accordingly. I use average elevation within each spatial unit and average ground slope as additional controls. \footnote{See <https://nlftp.mlit.go.jp/ksj/gml/datalist/KsjTmplt-G04-d.html> for data description.}
+
 To complement these data, I use Japanese census data from \textit{e-Stat}. The census is conducted every five years, and I use the 2015 wave. The data are aggregated at the prefectural and municipal levels.\footnote{The census contains information on Densely Inhabited Districts (DID), including DID population and DID area. I use these measures to compute population density as a control variable. It also provides information on the number of migrants and total population, allowing me to compute the net migration rate as a measure of local attractiveness.}
 
-![Test of Hedonic regression](images/simple.tex)
+<div>
+
+From there, I only keep `House for sale`.
+
+As I will specify in the regression notes in the table below, all estimations are run on the restricted sample of houses for sale.
+
+This choice is based on the expectation that an effect is more likely to be detected in the context of house purchases.
+
+</div>
+
+\subsubsection{Descriptive Statistics}
+
+To include : distribution of variables, graphs for price evolution.
 
 \section{Empirical Strategy}
 
-\subsubsection{Sample selection}
+I aim to identify the impact of an information shock -the 16 April 2016 Kumamoto earthquake- on the exposed area differential gap.
+
+Explain the possible information (salience) chain.
+
+In the following, I first present the empirical model and develop our identi􏰄cation strategy with regard to re􏰅ection and location endogeneity.
+
+-   prices of houses for sales -\> argue greater impact. What is the share of homeownership?
+
+-   
 
 I focus on earthquakes occurring within Japan. This choice is motivated by an underlying “distance” hypothesis, which suggests that domestic catastrophes have a greater impact on national risk perceptions than disasters occurring abroad. This selection is also consistent with the JMA investigation zone, which records only seismic events occurring within Japanese territory.
 
-\subsubsection{Treatment Definition}
-
-I create the treated group and the control group based on the official Seismic Hazard Maps (SHM) provided by the J-SHIS. I use the maps called "Probability of excellence" which are constructed around the probability that an earthquake will occur in the next 30 years.
+I create the treated group and the control group based on the official Seismic Hazard Maps (SHM) provided by the J-SHIS. I use the maps called "Probability of exceedance" which are constructed around the probability that an earthquake will occur in the next 30 years.
 
 To better understand what will be the control and the treated group, let's visualize the official 2020 (the latest one) Seismic hazard risk map. The picture shows the second one show $p$ = probability that earthquake of intensity 6 + will occur in the next 30 years".
 
-![](images/test.png)
-
 This map is constructed from $p$ **which is the probabily that an earthquake of magnitude 6 or more will srike in the next 30 years**. I choose the thresholds according to the official documentation provided by the J-SHIS.
 
-![](images/tab_exposure60_region.tex)
+Insérer l'image
 
-\subsubsection{Equation}
+\subsubsection{Empirical Model}
 
 $$
 \ln P_{it} = \alpha_0 + \sum_{j=1}^{J} \alpha_j Z_{ij} + \beta r_i + \gamma Exposed_i + \delta Post_{it} + \theta_t (Post_{it} \times Exposed_i) + \varepsilon_{it}
 $$
 
-$P_{it}$ is the logarithm of the price of add $i$ at time $t$, $Z$ is a set of structural characteristics of the good. $Post_i$ takes 1 when the advertising is publised within 1 month after a big earthquake occurs.
+-   $P_{it}$ is the logarithm of the price of add $i$ at time $t$. **Prices** are prices of houses for sale on the Liffull website.
 
-I obtain the following results if I apply this equation to the data.
+-   $Z_{ij}$ is a set of characteristics.
 
-![](images/reg_all_did1.tex)
+of add $i$ at time $t$, $Z$ is a set of structural characteristics of the good. Since I consider only the Kumamōto earthquake in my setting, $Post_i$ is a dummy that takes 1 when $i$ is published one month following the earthquake (from 16apr2016 to 16may2016).
 
-I have a problem when it comes to the $Post$ variable, with Stata saying too much co-linearity with the FE. Note that the FE are here $region \times year_-month$. I tried as a first attempt with only $region \times year$, but the same error made me opt for $region \times year_-month$.
-
-With the same error, I have tried for each type of properties:
-
-![](images/reg_housesale_did1.tex)
+![](images/did_housesale.tex)
 
 \begin{tcolorbox}[title=Controls used]
 
