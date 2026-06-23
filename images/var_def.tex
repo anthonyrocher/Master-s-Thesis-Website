@@ -1,0 +1,59 @@
+\begin{table}[H]
+\centering
+\caption{Description of variables -- Controls used}
+\begin{tabular}{|p{0.35\textwidth}|p{0.55\textwidth}|}
+\hline
+\textbf{Variables} & \textbf{Definition} \\
+\hline
+
+\texttt{Number of rooms} & Self-explanatory \\
+\hline
+
+\texttt{Average room size} & Self-explanatory \\
+\hline
+
+\texttt{Floor} & Number of floors \\
+\hline
+
+\texttt{Age} & 
+\begin{tabular}[t]{l}
+- Age $< 3$ \\
+- After the Tohoku earthquake (from 2011) \\
+- After the Kobe earthquake (1995--2010) \\
+- After the para-seismic law (1981--1994) \\
+- After the City Planning Law (1968--1980) \\
+- After the WW2 (1945--1967)
+\end{tabular}
+\\
+\hline
+
+\texttt{Building structure} &
+\begin{tabular}[t]{l}
+- Wooden structure \\
+- Block structure \& Reinforced concrete block \\
+- Steel frame structure \& Lightweight steel frame \\
+- Reinforced concrete \& Precast concrete \& High-performance precast concrete \& Alkaline concrete \\
+- Steel reinforced concrete
+\end{tabular}
+\\
+\hline
+
+\texttt{Distance to station} & Distance to the nearest station in Km. In the Japanese case, stations are a good proxy for city centers. \\
+\hline
+
+\texttt{Density} & 
+Density Inhabited Districts (DID) is defined by the Population Census, where areas with a population density of 4,000 people per square kilometer or higher are adjacent to each other and have a total population of 5,000 or more.
+
+\begin{itemize}
+\setlength{\itemsep}{0pt}
+\item 0 if DID is not defined
+\item $\log\left(\frac{\text{Number of people living in DID}}{\text{Size of the DID area}}\right)$ if DID is defined
+\end{itemize}
+\\
+\hline
+
+\texttt{Net migration rate} & Number of in-migrants over number of total population in 2015. \\
+\hline
+
+\end{tabular}
+\end{table}

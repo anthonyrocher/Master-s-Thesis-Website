@@ -9,6 +9,7 @@ header-includes:
   - \usepackage{tcolorbox}
   - \usepackage{pifont}
   - \newcommand{\cmark}{\ding{51}}
+  - \newcommand{\sym}[1]{\ifmmode^{#1}\else\(^{#1}\)\fi}
 bibliography: references.bib
 ---
 
@@ -36,9 +37,11 @@ bibliography: references.bib
 \noindent \textbf{Abstract---} I investigate how housing prices response to risk exposure following big earthquakes as information shocks in Japan. Using a new dataset covering whole Japan from 2015 to 2017 with ??? billions of observations, I use a DiD strategy to determine how much unaffected but still at risk areas react to the occurrence of earthquakes of intensity 6 or upper. \textit{(JEL R30, Q54)}
 \end{quote}
 
+天災は忘れた頃にやってくる 寺田虎彦
+
 \vspace{1cm}
 
-\noindent How households' risk aversion is translated to housing prices? Standard theory suggests that, as information about risk depreciates over time, a recent shock should widen the price differential between high- and low-risk areas, conditional on an increase in the safety premium. However, the extent to which housing markets incorporate such information remains an empirical question.
+\noindent "A natural disaster strikes when people lose their memory of the previous one." -- Torahiko TERADA. How households' risk aversion is translated to housing prices? Standard theory suggests that, as information about risk depreciates over time, a recent shock should widen the price differential between high- and low-risk areas, conditional on an increase in the safety premium. However, the extent to which housing markets incorporate such information remains an empirical question.
 
 Understanding how information shocks are capitalized into housing markets provides insight into whether households perceive the risks they face and how much they value newly acquired information. If the elasticity of housing prices with respect to risk exposure is close to zero, disaster-related information may have limited effects on housing markets: prices may fail to function as effective signals of underlying risk. Alternatively, households may recognize the risks but choose to remain in exposed locations, placing little or no monetary value on risk reduction. Conversely, if households fully adjust their location choices in response to new information, high-risk areas may experience declining demand and reduced attractiveness. Over time, this adjustment could lead to lower investment in exposed regions. More broadly, persistent exposure to environmental risk may become a source of inequality, as rising safety premiums make low-risk locations increasingly inaccessible to lower-income households.
 
@@ -62,7 +65,7 @@ The paper proceeds as follows. Section II presents a brief theory of housing pri
 
 \section{Theoretical Framework}
 
-Let us suppose that information about earthquake risks is available. When making location choices, households may take into account the safety of the place where they choose to locate. Following the hedonic pricing approach, safety is a property attribute, like other attributes including structural, neighborhood, and community characteristics, even though it contains a random component. The basic intuition is that, all else being equal, households should locate along a hedonic price gradient for safety, with higher prices in safer locations. Based on expected utility theory (@exputil), I develop a short theoretical model to capture how information affects housing price formation.
+Let us suppose that information about earthquake risks is available\footnote{Anticipating on the empirical part, such information is displayed on the add, see Table ?}. When making location choices, households may take into account the safety of the place where they choose to locate. Following the hedonic pricing approach, safety is a property attribute, like other attributes including structural, neighborhood, and community characteristics, even though it contains a random component. The basic intuition is that, all else being equal, households should locate along a hedonic price gradient for safety, with higher prices in safer locations. Based on expected utility theory (@exputil), I develop a short theoretical model to capture how information affects housing price formation.
 
 Let $p$ denote the subjective probability that a property will be affected by an earthquake. $p$ depends on both the information set $i$ that individuals possess about seismic risks (such as a recent event, media coverage, etc.) and $r$, the objective attributes that make earthquakes more likely to occur, such as being located near seismic faults. The hedonic price function is then given by $$P = P(Z, r, p(i,r))$$ where $P$ denotes the price of the house and $Z$ denotes an additional set of structural, environmental, and locational characteristics unrelated to the seismic hazard maps. Following @brookshire_test_1985, the location choice of agents is modeled using a state-dependent expected utility function: $$
 EU = p(i, r) \cdot U^E[Z, r, Q] + (1 - p(i, r)) \cdot U^{NE}[Z, r, Q],
@@ -135,9 +138,7 @@ To include : distribution of variables, graphs for price evolution.
 
 I aim to identify the impact of an information shock -the 16 April 2016 Kumamoto earthquake- on the exposed area differential gap.
 
-Explain the possible information (salience) chain.
-
-In the following, I first present the empirical model and develop our identi􏰄cation strategy with regard to re􏰅ection and location endogeneity.
+\[Explain the potential mechanism\]
 
 -   prices of houses for sales -\> argue greater impact. What is the share of homeownership?
 
@@ -151,7 +152,9 @@ To better understand what will be the control and the treated group, let's visua
 
 This map is constructed from $p$ **which is the probabily that an earthquake of magnitude 6 or more will srike in the next 30 years**. I choose the thresholds according to the official documentation provided by the J-SHIS.
 
-Insérer l'image
+![2020 Seismic Hazard Map from J-SHIS](images/risk_map_from_jshis.png) **Note:** $p$ = **probability that an earthquake of intensity 6 upper will hit in the next 30 years**
+
+In the following, I first present the empirical model and develop my identication strategy.
 
 \subsubsection{Empirical Model}
 
@@ -159,43 +162,18 @@ $$
 \ln P_{it} = \alpha_0 + \sum_{j=1}^{J} \alpha_j Z_{ij} + \beta r_i + \gamma Exposed_i + \delta Post_{it} + \theta_t (Post_{it} \times Exposed_i) + \varepsilon_{it}
 $$
 
--   $P_{it}$ is the logarithm of the price of add $i$ at time $t$. **Prices** are prices of houses for sale on the Liffull website.
+-   $P_{it}$ is the logarithm of the price of add $i$ at time $t$. **Prices** are prices of houses for sale.
 
--   $Z_{ij}$ is a set of characteristics.
+-   $Z_{ij}$ is a set of individual characteristics likely to affect the price\footnote{See table below}.
 
-of add $i$ at time $t$, $Z$ is a set of structural characteristics of the good. Since I consider only the Kumamōto earthquake in my setting, $Post_i$ is a dummy that takes 1 when $i$ is published one month following the earthquake (from 16apr2016 to 16may2016).
+-   $\text{Exposed}_i = \begin{cases} 1 & \text{if } p_i > 0.26 \\ 0 & \text{if } p_i < 0.06 \end{cases}$, with $p_i$ being the probability of house $i$ to experience an earthquake of intensity 6 Upper in the next 30 years.
 
-![](images/did_housesale.tex)
+-   $Post_{it}$ is a dummy that takes the value 1 if add $i$ is published $x$ months after the Kumamōto earthquake. In the following, I have tried for $x = 1, 2, 3, 4, 5, 6$.
 
-\begin{tcolorbox}[title=Controls used]
+-   $r_i$ are the fixed effects. Table~\ref{tab:regression} show the results for a combination of FE. Those are : time (year and year/month) and space(region and prefecture).
 
-\begin{itemize}
-    \item Number of rooms (\texttt{rooms})
-    \item Average room size (\texttt{room\_sqft})
-    \item Floor (\texttt{floor})
-    \item \texttt{age\_g}
-    \begin{itemize}
-        \item Age $< 3$
-        \item After the Tohoku earthquake (from 2011)
-        \item After the Kobe earthquake (1995--2010)
-        \item After the para-seismic law (1981--1994)
-        \item After the City Planning Law (1968--1980)
-        \item After the WW2 (1945--1967)
-    \end{itemize}
-    \item Distance to the nearest station as a proxy for distance to the center (\texttt{station1\_distance})
-    \item Number of inhabitants of the municipality as a (bad) proxy for density (\texttt{pop\_total\_linear})
-    \begin{itemize}
-        \item To be replaced by number of inhabitants divided by municipality size
-    \end{itemize}
-    \item Density measured as follows:
-    \begin{itemize}
-        \item Rural if DID (Density Inhabited Districts) does not exist
-        \item $\log(\text{density})$ otherwise
-    \end{itemize}
-    \item Share of migration at the municipality level as a proxy for attractiveness (\texttt{net\_migration\_rate})
-\end{itemize}
+\input{images/did_housesale.tex}
 
-\end{tcolorbox}
 
 \section{Robustness checks}
 
@@ -215,6 +193,12 @@ Caveats:
 
 \section{Acknowledgments}
 
-\section{Questions}
+\section{Appendix}
+
+![Screenshot of a listing on Liffull Homes website](images/screenshot_blurred.png) 
+**Note :** The picture shows a listing example. When considering renting an appartment or buying a house, households have access to the Hazard information of the property, which come from the J-SHIS maps.
+
+\input{images/var_def.tex}
+
 
 \section{References}
