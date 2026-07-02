@@ -1,0 +1,39 @@
+\begin{table}[htbp]
+\centering
+\def\sym#1{\ifmmode^{#1}\else\(^{#1}\)\fi}
+\caption{Effect of Exposure on Log Average Unit Price}
+\begin{tabular}{l*{11}{c}}
+\toprule
+ & (1) & (2) & (3) & (4) & (5) & (6) & (7) & (8) & (9) & (10) & (11) \\
+ & \small 2 mo. & \small 3 mo. & \small 4 mo. & \small 5 mo. & \small 6 mo. 
+ & \small 7 mo. & \small 8 mo. & \small 9 mo. & \small 10 mo. & \small 11 mo. & \small 12 mo. \\
+\midrule
+
+\multicolumn{12}{l}{\textit{Main effect}} \\[2pt]
+\quad Exposed          
+  & $-$0.0587 & $-$0.0589 & $-$0.0585 & $-$0.0585 & $-$0.0589
+  & $-$0.0589 & $-$0.0590 & $-$0.0593 & $-$0.0595 & $-$0.0593 & $-$0.0600 \\
+  & (0.0506) & (0.0503) & (0.0504) & (0.0503) & (0.0505)
+  & (0.0504) & (0.0504) & (0.0510) & (0.0511) & (0.0510) & (0.0514) \\[6pt]
+
+\multicolumn{12}{l}{\textit{Post indicator}} \\[2pt]
+\quad Post $x$ months  
+  & 0.00468 & $-$0.00165 & 0.00646 & 0.00556 & $-$0.00394
+  & $-$0.00353 & 0.00534 & $-$0.00537 & $-$0.0102 & $-$0.0157\sym{**} & $-$0.0211\sym{*} \\
+  & (0.0100) & (0.00901) & (0.00469) & (0.00458) & (0.00610)
+  & (0.00468) & (0.00396) & (0.00281) & (0.00544) & (0.00380) & (0.00928) \\[6pt]
+
+\multicolumn{12}{l}{\textit{Interaction: Exposed $\times$ Post $x$ months}} \\[2pt]
+\quad Exposed $\times$ Post  
+  & 0.0211 & 0.0206\sym{*} & 0.00673 & 0.00561 & 0.00943
+  & 0.00908 & 0.00763 & 0.0103 & 0.0107 & 0.00913 & 0.0123 \\
+  & (0.0114) & (0.00920) & (0.00887) & (0.00775) & (0.00598)
+  & (0.00575) & (0.00577) & (0.00653) & (0.00674) & (0.00601) & (0.00809) \\
+
+\midrule
+Observations & \multicolumn{11}{c}{22{,}390} \\
+\bottomrule
+\multicolumn{12}{l}{\footnotesize Standard errors in parentheses.
+  \sym{*} $p<0.10$,\ \sym{**} $p<0.05$,\ \sym{***} $p<0.01$}\\
+\end{tabular}
+\end{table}
